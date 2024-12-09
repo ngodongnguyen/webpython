@@ -1,21 +1,46 @@
-{%extends "layout/base.html"%}
-{%block title%}Dang Nhap{%endblock%}
-{%block content%}
-<form method="post" action="\login">
-    <h1 class="text-center text-info mt-1">Đăng nhập</h1>
-    <div class="form-floating mb-3 mt-3">
-        <input type="text" class="form-control" id="username" placeholder="ten dang nhap" name="username">
-        <label for="username">Ten dang nhap</label>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">Đăng Nhập</h4>
+                        <form method="POST" action="{{ url_for('main.login') }}">
+                            <!-- Tên Tài Khoản -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Tên Tài Khoản</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <!-- Mật Khẩu -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mật Khẩu</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <!-- Nút Đăng Nhập -->
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+                                <a href="{{ url_for('main.forgot_password') }}" class="btn btn-link">Quên Mật Khẩu?</a>
+                            </div>
+                        </form>
+                        <hr>
+                        <!-- Đăng Ký -->
+                        <div class="text-center">
+                            <p>Chưa có tài khoản? <a href="{{ url_for('main.register') }}">Đăng Ký ngay</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-floating mt-3 mb-3">
-        <input type="password" class="form-control" id="password" placeholder="mat khau" name="password">
-        <label for="password">mat khau</label>
-    </div>
-    <div class="form-floating mt-3 mb-3">
-        <button class="btn btn-success" type="submit">Đăng nhập
-
-        </button>
-    </div>
-</form>
-{%endblock%}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

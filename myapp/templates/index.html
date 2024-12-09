@@ -12,6 +12,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
+        .container{
+            margin-top:50px
+        }
         .hero-section {
             background: url('https://via.placeholder.com/1600x500') center/cover no-repeat;
             color: white;
@@ -25,6 +28,110 @@
         }
         .service-card i {
             font-size: 2em;
+        }
+        .question-container {
+            margin-top: 20px;
+        }
+        .answer-container {
+            display: none;
+            margin-top: 10px;
+            background-color: #f1f1f1;
+            padding: 10px;
+        }
+        .question-container {
+            margin-top: 20px;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            font-size: 1.5em;
+            margin-right: 100px;
+
+        }
+        .doctor-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+        .doctor-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .doctor-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .doctor-card h5 {
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+        .doctor-card p {
+            font-size: 1em;
+            color: #555;
+        }
+        .doctor-card .contact {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .doctor-experience {
+            display: flex;
+            flex-wrap: wrap;  /* Cho phép xuống dòng */
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .doctor-experience span {
+            flex: 1; /* Allows it to take the left side */
+            text-align: left;
+        }
+
+        .doctor-description {
+            flex: 2; /* Allows it to take the right side */
+            text-align: right;
+            flex-basis: 100%;  /* Đảm bảo phần miêu tả nằm bên trái khi xuống dòng */
+            font-size: 18px;
+            color: #555;
+        }
+        /* Section for Contact Method (Icons) */
+        .contact-icons i {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        /* Line separator under "Chuyên khoa" */
+        .doctor-card p.separator {
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* Doctor Name */
+        .doctor-card h5 {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Contact Information Style */
+        .contact {
+            font-size: 14px;
+            color: #555;
+        }
+        .login-btn {
+            color: white;
+            background-color: #007bff; /* Màu xanh mặc định của Bootstrap */
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none; /* Bỏ gạch chân */
+        }
+        
+        .login-btn:hover {
+            background-color: #0056b3; /* Màu xanh khi hover */
+            text-decoration: none;
         }
     </style>
 </head>
@@ -69,7 +176,9 @@
                     <li class="nav-item mx-2"><a class="nav-link" href="#">Doctors</a></li>
                     <li class="nav-item mx-2"><a class="nav-link" href="#">Blog</a></li>
                     <li class="nav-item mx-2"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item mx-8"><a class="nav-link login-btn" href="{{ url_for('main.login') }}">Đăng nhập</a></li>
                 </ul>
+
             </div>
         </div>
     </nav>
@@ -125,14 +234,132 @@
         </div>
     </section>
 
-    <!-- Health Service Section -->
-    <section class="py-5">
-        <div class="container text-center">
-            <h2>Awesome Health Service</h2>
-            <p class="lead">Land meat winged called subdue without very light in all years sea appear midst forth image him third there set.</p>
+    <div class="container">
+        <!-- Section for Doctors -->
+        <div class="doctor-experience">
+            <span>Bác sĩ giàu kinh nghiệm</span>
+            <div class="doctor-description">
+                <p>Chúng tôi tự hào giới thiệu đội ngũ bác sĩ giỏi, giàu kinh nghiệm, tận tâm với bệnh nhân tại bệnh viện của chúng tôi.</p>
+            </div>
         </div>
-    </section>
+        <div class="doctor-container d-flex justify-content-around">
+            <!-- Doctor 1 -->
+            <div class="doctor-card">
+                <img src="https://via.placeholder.com/250x250" alt="Doctor 1">
+                <h5>Bác Sĩ Nguyễn Văn A</h5>
+                <p><i>Bác sĩ chuyên khoa Nội khoa</i></p>
+                <p><strong>Chuyên khoa:</strong> Nội khoa</p>
+                <p class="contact">Số điện thoại: 0901234567</p>
+                <p class="contact-icons">
+                    <i class="bi bi-telephone-fill"></i> Zalo
+                    <i class="bi bi-facebook"></i> Facebook
+                </p>
+                <p class="separator"></p> <!-- Line separator -->
+            </div>
 
+            <!-- Doctor 2 -->
+            <div class="doctor-card">
+                <img src="https://via.placeholder.com/250x250" alt="Doctor 2">
+                <h5>Bác Sĩ Trần Thị B</h5>
+                <p><i>Bác sĩ chuyên khoa Ngoại khoa</i></p>
+                <p><strong>Chuyên khoa:</strong> Ngoại khoa</p>
+                <p class="contact">Số điện thoại: 0907654321</p>
+                <p class="contact-icons">
+                    <i class="bi bi-telephone-fill"></i> Zalo
+                    <i class="bi bi-envelope-fill"></i> Email
+                </p>
+                <p class="separator"></p> <!-- Line separator -->
+            </div>
+
+            <!-- Doctor 3 -->
+            <div class="doctor-card">
+                <img src="https://via.placeholder.com/250x250" alt="Doctor 3">
+                <h5>Bác Sĩ Lê Minh C</h5>
+                <p><i>Bác sĩ chuyên khoa Nhi khoa</i></p>
+                <p><strong>Chuyên khoa:</strong> Nhi khoa</p>
+                <p class="contact">Số điện thoại: 0909876543</p>
+                <p class="contact-icons">
+                    <i class="bi bi-telephone-fill"></i> Zalo
+                    <i class="bi bi-whatsapp"></i> WhatsApp
+                </p>
+                <p class="separator"></p> <!-- Line separator -->
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <!-- Cột bên trái - Câu hỏi sức khỏe -->
+            <div class="col-md-6">
+                <div class="question-container">
+                        <strong>1. Một ngày bạn cần uống bao nhiêu lít nước?</strong>
+                        <span class="toggle-btn">+</span>
+                        <div id="answer1" class="answer-container">
+                            <p>Trung bình một người trưởng thành cần uống khoảng 2-3 lít nước mỗi ngày.</p>
+                        </div>
+                </div>
+                <div class="question-container">
+                        <strong>2. Bạn có thường xuyên tập thể dục không?</strong>
+                        <span class="toggle-btn">+</span>
+                        <div id="answer2" class="answer-container">
+                            <p>Tập thể dục đều đặn giúp cải thiện sức khỏe tim mạch và giảm nguy cơ mắc bệnh mãn tính.</p>
+                        </div>
+                </div>
+                <div class="question-container">
+                        <strong>3. Bạn có tiền sử bệnh lý nào không?</strong>
+                        <span class="toggle-btn">+</span>
+                        <div id="answer3" class="answer-container">
+                            <p>Cung cấp thông tin về tiền sử bệnh lý giúp bác sĩ chẩn đoán và đưa ra phương pháp điều trị phù hợp.</p>
+                        </div>
+                </div>
+                <div class="question-container">
+                        <strong>4. Bạn có đang sử dụng thuốc nào không?</strong>
+                        <span class="toggle-btn">+</span>
+                        <div id="answer4" class="answer-container">
+                            <p>Thông tin về thuốc đang sử dụng sẽ giúp bác sĩ tránh tương tác thuốc và đưa ra chỉ định phù hợp.</p>
+                        </div>
+                    </div>
+            </div>
+    
+            <!-- Cột bên phải - Form đăng ký khám bệnh -->
+            <div class="col-md-6">
+                <div class="form-container">
+                    <h4>Đăng Ký Khám Bệnh</h4>
+                    <form>
+                        <div class="mb-3">
+                            <label for="patientName" class="form-label">Tên Bệnh Nhân</label>
+                            <input type="text" class="form-control" id="patientName" placeholder="Nhập tên bệnh nhân" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Số Tuổi</label>
+                            <input type="number" class="form-control" id="age" placeholder="Nhập số tuổi" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Ngày Sinh</label>
+                            <input type="date" class="form-control" id="dob" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số Điện Thoại</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="appointmentDate" class="form-label">Chọn Ngày Khám</label>
+                            <input type="date" class="form-control" id="appointmentDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="doctor" class="form-label">Chọn Bác Sĩ</label>
+                            <select class="form-select" id="doctor" required>
+                                <option value="doctorA">Bác Sĩ A</option>
+                                <option value="doctorB">Bác Sĩ B</option>
+                                <option value="doctorC">Bác Sĩ C</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Đăng Ký</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-4">
         <p>&copy; 2024 MEDCARE Health Solution. All rights reserved.</p>
@@ -140,5 +367,22 @@
 
     <!-- Bootstrap JavaScript và Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".toggle-btn").click(function(){
+                // Đóng tất cả câu trả lời
+                $(".answer-container").slideUp();
+                $(".toggle-btn").text("+");
+                
+                // Nếu câu trả lời chưa mở, mở nó và thay đổi dấu
+                var answerContainer = $(this).next(".answer-container");
+                if (answerContainer.is(":hidden")) {
+                    $(this).text("-");
+                    answerContainer.slideDown();
+                }
+            });
+        });
+    </script>
+   
 </body>
 </html>
