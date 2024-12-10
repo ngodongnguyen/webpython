@@ -1,189 +1,5 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phòng Mạch Tư</title>
-    <!-- Bootstrap CSS từ CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        .container{
-            margin-top:50px
-        }
-        .hero-section {
-            background: url('https://via.placeholder.com/1600x500') center/cover no-repeat;
-            color: white;
-            padding: 100px 0;
-        }
-        .service-card {
-            background-color: #0d6efd;
-            color: white;
-            border: none;
-            padding: 20px;
-        }
-        .service-card i {
-            font-size: 2em;
-        }
-        .question-container {
-            margin-top: 20px;
-        }
-        .answer-container {
-            display: none;
-            margin-top: 10px;
-            background-color: #f1f1f1;
-            padding: 10px;
-        }
-        .question-container {
-            margin-top: 20px;
-        }
-        .toggle-btn {
-            cursor: pointer;
-            font-size: 1.5em;
-            margin-right: 100px;
-
-        }
-        .doctor-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 50px;
-        }
-        .doctor-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            width: 250px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .doctor-card img {
-            width: 100%;
-            border-radius: 10px;
-        }
-        .doctor-card h5 {
-            margin-top: 15px;
-            font-size: 1.2em;
-        }
-        .doctor-card p {
-            font-size: 1em;
-            color: #555;
-        }
-        .doctor-card .contact {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .doctor-experience {
-            display: flex;
-            flex-wrap: wrap;  /* Cho phép xuống dòng */
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 30px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .doctor-experience span {
-            flex: 1; /* Allows it to take the left side */
-            text-align: left;
-        }
-
-        .doctor-description {
-            flex: 2; /* Allows it to take the right side */
-            text-align: right;
-            flex-basis: 100%;  /* Đảm bảo phần miêu tả nằm bên trái khi xuống dòng */
-            font-size: 18px;
-            color: #555;
-        }
-        /* Section for Contact Method (Icons) */
-        .contact-icons i {
-            font-size: 18px;
-            margin-right: 10px;
-        }
-
-        /* Line separator under "Chuyên khoa" */
-        .doctor-card p.separator {
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        /* Doctor Name */
-        .doctor-card h5 {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        /* Contact Information Style */
-        .contact {
-            font-size: 14px;
-            color: #555;
-        }
-        .login-btn {
-            color: white;
-            background-color: #007bff; /* Màu xanh mặc định của Bootstrap */
-            padding: 8px 16px;
-            border-radius: 4px;
-            text-decoration: none; /* Bỏ gạch chân */
-        }
-        
-        .login-btn:hover {
-            background-color: #0056b3; /* Màu xanh khi hover */
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <header class="bg-light py-2">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center me-auto">  
-                <a href="#" class="text-dark text-decoration-none">medical@example.com</a>
-                <span class="glyphicon">&#x2709;</span>
-    
-                <span class="text-muted mx-2">|</span>
-    
-                <a href="#" class="text-dark text-decoration-none">Find our Location</a>
-                <i class="bi bi-geo-alt"></i>
-            </div>
-            
-            <div class="ms-auto">
-                <a href="#" class="text-dark me-2"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-dark me-2"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
-            </div>
-        </div>
-    </header>
-    
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="../static/pic/logo.jpg" class="img-fluid me-2" alt="Logo" style="max-width: 50px; height: auto;">
-                <span>MEDCARE Health Solution</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">Department</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">Doctors</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">Blog</a></li>
-                    <li class="nav-item mx-2"><a class="nav-link" href="#">Contact</a></li>
-                    <li class="nav-item mx-8"><a class="nav-link login-btn" href="{{ url_for('main.login') }}">Đăng nhập</a></li>
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-    
-    
+{%extends 'layout/base.html'%}
+{%block content%}
 
     <!-- Hero Section -->
     <section class="hero-section text-center text-lg-start">
@@ -245,7 +61,7 @@
         <div class="doctor-container d-flex justify-content-around">
             <!-- Doctor 1 -->
             <div class="doctor-card">
-                <img src="https://via.placeholder.com/250x250" alt="Doctor 1">
+                <img src="../static/pic/logo.jpg" alt="Doctor 1">
                 <h5>Bác Sĩ Nguyễn Văn A</h5>
                 <p><i>Bác sĩ chuyên khoa Nội khoa</i></p>
                 <p><strong>Chuyên khoa:</strong> Nội khoa</p>
@@ -259,7 +75,7 @@
 
             <!-- Doctor 2 -->
             <div class="doctor-card">
-                <img src="https://via.placeholder.com/250x250" alt="Doctor 2">
+                <img src="../static/pic/logo.jpg" alt="Doctor 2">
                 <h5>Bác Sĩ Trần Thị B</h5>
                 <p><i>Bác sĩ chuyên khoa Ngoại khoa</i></p>
                 <p><strong>Chuyên khoa:</strong> Ngoại khoa</p>
@@ -273,7 +89,7 @@
 
             <!-- Doctor 3 -->
             <div class="doctor-card">
-                <img src="https://via.placeholder.com/250x250" alt="Doctor 3">
+                <img src="../static/pic/logo.jpg" alt="Doctor 3">
                 <h5>Bác Sĩ Lê Minh C</h5>
                 <p><i>Bác sĩ chuyên khoa Nhi khoa</i></p>
                 <p><strong>Chuyên khoa:</strong> Nhi khoa</p>
@@ -361,9 +177,7 @@
     </div>
     
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4">
-        <p>&copy; 2024 MEDCARE Health Solution. All rights reserved.</p>
-    </footer>
+
 
     <!-- Bootstrap JavaScript và Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -384,5 +198,5 @@
         });
     </script>
    
-</body>
-</html>
+    {%endblock%}
+

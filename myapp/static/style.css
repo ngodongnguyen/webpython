@@ -1,9 +1,128 @@
-.card:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s;
+.container{
+    margin-top:50px;
+    width: 100%;
+
+}
+.hero-section {
+    background: url('https://via.placeholder.com/1600x500') center/cover no-repeat;
+    color: white;
+    padding: 100px 0;
+}
+.service-card {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    padding: 20px;  
+}
+.service-card i {
+    font-size: 2em;
+}
+.question-container {
+    margin-top: 20px;
+}
+.answer-container {
+    display: none;
+    margin-top: 10px;
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+.question-container {
+    margin-top: 20px;
+}
+.toggle-btn {
+    cursor: pointer;
+    font-size: 1.5em;
+    margin-right: 100px;
+
+}
+.doctor-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+.doctor-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.doctor-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+.doctor-card h5 {
+    margin-top: 15px;
+    font-size: 1.2em;
+}
+.doctor-card p {
+    font-size: 1em;
+    color: #555;
+}
+.doctor-card .contact {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.doctor-experience {
+    display: flex;
+    flex-wrap: wrap;  /* Cho phép xuống dòng */
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.doctor-experience span {
+    flex: 1; /* Allows it to take the left side */
+    text-align: left;
 }
 
-.carousel-item img {
-    object-fit: cover;
-    height: 300px;
+.doctor-description {
+    flex: 2; /* Allows it to take the right side */
+    text-align: right;
+    flex-basis: 100%;  /* Đảm bảo phần miêu tả nằm bên trái khi xuống dòng */
+    font-size: 18px;
+    color: #555;
+}
+/* Section for Contact Method (Icons) */
+.contact-icons i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+/* Line separator under "Chuyên khoa" */
+.doctor-card p.separator {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+/* Doctor Name */
+.doctor-card h5 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Contact Information Style */
+.contact {
+    font-size: 14px;
+    color: #555;
+}
+.login-btn {
+    color: white;
+    background-color: #007bff; /* Màu xanh mặc định của Bootstrap */
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.login-btn:hover {
+    background-color: #0056b3; /* Màu xanh khi hover */
+    text-decoration: none;
+}
+.navbar.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1030; /* Đảm bảo navbar nằm trên các phần tử khác */
 }
