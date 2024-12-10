@@ -21,8 +21,8 @@ def create_app():
     # with app.app_context():
     #     db.create_all()  # Tạo bảng từ tất cả các mô hình đã định nghĩa
 
-    # # Chuyển import vào trong hàm để tránh import vòng
-    # from myapp import routes
-    # app.register_blueprint(routes.bp)
+    # Chuyển import vào trong hàm để tránh import vòng
+    from myapp import routes
+    app.register_blueprint(routes.bp)
 
     return app
