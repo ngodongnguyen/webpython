@@ -12,7 +12,11 @@ class NguoiDung(db.Model):
     gioi_tinh = db.Column(db.Boolean, nullable=False)
     cccd = db.Column(db.String(12), unique=True)
     type = db.Column(db.String(50))  # For polymorphism
+    sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
+    emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
 
+    # Liên kết đến địa chỉ
+    dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True)
     __mapper_args__ = {
         'polymorphic_identity': 'nguoi_dung',
         'polymorphic_on': type
@@ -34,7 +38,7 @@ class BacSi(NhanVien):
     __mapper_args__ = {
         'polymorphic_identity': 'bac_si',
     }
-    phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='bac_si', lazy=True)
+    phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='bac_si_phieu_kham', lazy=True)
 
 
 
@@ -68,15 +72,25 @@ class Sdt(db.Model):
     so_dien_thoai = db.Column(db.String(15), nullable=False)
     nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
     
-    nguoi_dung = db.relationship('NguoiDung', backref='so_dien_thoai', lazy=True)
+    nguoi_dung = db.relationship('NguoiDung', backref='so_dien_thoai_s', lazy=True)
 class DiaChi(db.Model):
     __tablename__ = 'dia_chi'
     id = db.Column(db.Integer, primary_key=True)
     dia_chi = db.Column(db.String(255), nullable=False)
     nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
     
-    nguoi_dung = db.relationship('NguoiDung', backref='dia_chi', lazy=True)
+    nguoi_dung = db.relationship('NguoiDung', backref='dia_chi_s', lazy=True)
 
+class Email(db.Model):
+    __tablename__ = 'email'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
+    
+    nguoi_dung = db.relationship('NguoiDung', backref='emails', lazy=True)
+
+    def __repr__(self):
+        return f"<Email {self.email}>"
 
 
 
@@ -94,17 +108,17 @@ class PhieuKhamBenh(db.Model):
     benh_nhan = db.relationship('BenhNhan', backref='phieu_kham_benh', lazy=True)
     
     # Mối quan hệ với ChiTietDonThuoc (1 phiếu khám có thể có nhiều chi tiết đơn thuốc)
-    thuoc = db.relationship('ChiTietDonThuoc', backref='phieu_kham_benh', lazy=True)
+    thuoc = db.relationship('ChiTietDonThuoc', backref='chi_tiet_don_thuoc', lazy=True)
     
     # Khóa ngoại liên kết đến DanhSachPhieuKhamBenh
     danhsach_id = db.Column(db.Integer, db.ForeignKey('danh_sach_phieu_kham_benh.id'),nullable=False)
     
     # Khóa ngoại và mối quan hệ với Bác Sĩ (1 bác sĩ có thể khám cho nhiều bệnh nhân)
     bac_si_id = db.Column(db.Integer, db.ForeignKey('bac_si.id'), nullable=False)
-    bac_si = db.relationship('BacSi', backref='phieu_kham_benh', lazy=True)
+    bac_si = db.relationship('BacSi', backref='bac_si_phieu_kham', lazy=True)
     
     # Mối quan hệ với HoaDon (1 phiếu khám có thể có một hóa đơn)
-    hoa_don = db.relationship('HoaDon', backref='phieu_kham_benh', lazy=True)
+    hoa_don = db.relationship('HoaDon', backref='hoa_don_phieu_kham', lazy=True)
     
     # Mối quan hệ với DanhSachPhieuKhamBenh (mỗi phiếu khám bệnh thuộc một danh sách)
     danhsach = db.relationship('DanhSachPhieuKhamBenh', backref='phieu_kham_benh', lazy=True)
@@ -125,7 +139,7 @@ class ChiTietDonThuoc(db.Model):
     so_luong_thuoc = db.Column(db.Integer)
 
     # Mối quan hệ với Thuốc và Phiếu Khám Bệnh
-    thuoc = db.relationship('thuoc', backref='chi_tiet_don_thuoc')
+    thuoc = db.relationship('Thuoc', backref='chi_tiet_don_thuoc')
     phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='chi_tiet_don_thuoc')
 
 
@@ -163,7 +177,7 @@ class HoaDon(db.Model):
 
     # Liên kết với Phiếu Khám Bệnh
     phieu_kham_id = db.Column(db.Integer, db.ForeignKey('phieu_kham_benh.id'), nullable=False)
-    phieu_kham_benh = db.relationship('PhieuKhamBenh', backref=db.backref('hoa_don', uselist=False))
+    phieu_kham_benh = db.relationship('PhieuKhamBenh', backref=db.backref('hoa_don_phieu_kham', uselist=False))
 
     # Liên kết với Bệnh Nhân
     benh_nhan_id = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
