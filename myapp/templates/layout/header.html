@@ -36,9 +36,27 @@
                         <li class="nav-item mx-2"><a class="nav-link" href="#">Doctors</a></li>
                         <li class="nav-item mx-2"><a class="nav-link" href="#">Blog</a></li>
                         <li class="nav-item mx-2"><a class="nav-link" href="#">Contact</a></li>
-                        <li class="nav-item mx-8"><a class="nav-link login-btn" href="{{ url_for('main.login') }}">Đăng nhập</a></li>
                     </ul>
-    
+                </div>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Check if the user is logged in -->
+                        {% if 'username' in session %}
+                        <!-- Show greeting message and logout button -->
+                        <li class="nav-item mx-2">
+                            <span class="nav-link">Chào, {{ session['username'] }}</span>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="{{ url_for('main.logout') }}">Đăng Xuất</a>
+                        </li>
+                        {% else %}
+                        <!-- Show login button if user is not logged in -->
+                        <li class="nav-item mx-2 custom-login">
+                            <a class="nav-link login-btn" href="{{ url_for('main.login') }}">Đăng Nhập</a>
+                        </li>
+                        {% endif %}                    
+                    </ul>
+
                 </div>
             </div>
     </nav>
