@@ -87,7 +87,7 @@ class Email(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
     
-    nguoi_dung = db.relationship('NguoiDung', backref='emails', lazy=True)
+    nguoi_dung = db.relationship('NguoiDung', backref='email_addresses', lazy=True)
 
     def __repr__(self):
         return f"<Email {self.email}>"
