@@ -12,7 +12,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = secret_key
     # Cấu hình kết nối cơ sở dữ liệu MySQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Ngodongnguyen2004?@localhost/PhongY'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:huynhtrongnguyen739904@localhost/PhongY'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     # Khởi tạo SQLAlchemy với app
     db.init_app(app)
