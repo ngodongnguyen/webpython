@@ -1,14 +1,28 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session
 from flask_bcrypt import Bcrypt
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
+    # Tạo nhân viên
+#     password="123"
+#     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+#     user = NguoiDung(ho_ten="Nhan Vien", username="nhanvien", password=hashed_password, gioi_tinh=True, cccd="987654", type="nguoi_dung")
+# # Tạo admin
+#     admin = NhanVien(ho_ten="Admin", username="admin", password=hashed_password, gioi_tinh=True, cccd="123456", type="nhan_vien")
+# # Thêm vào cơ sở dữ liệu
+#     db.session.add(user)
+#     db.session.add(admin)
+#     db.session.commit()
     return render_template('index.html')
 # Route cho trang đăng nhập
+@bp.route('/admin', methods=['GET', 'POST'])
+def admin_dashboard():
+    return render_template('admin.html')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -23,8 +37,11 @@ def login():
             if bcrypt.check_password_hash(user.password, password):
                 session['username'] = user.username
                 session['user_id'] = user.id
+                if user.type == 'nhan_vien':  # Kiểm tra nếu user là nhân viên
+                    return redirect(url_for('main.admin_dashboard'))  # Chuyển hướng đến trang quản trị nhân viên
+                else:
                 # Nếu mật khẩu chính xác, đăng nhập thành công và chuyển hướng đến trang chủ
-                return redirect(url_for('main.index'))
+                    return redirect(url_for('main.index'))
             else:
                 # Thông báo lỗi nếu mật khẩu sai
                 flash('Mật khẩu không đúng!', 'danger')
@@ -76,11 +93,9 @@ def register():
         # Sau khi tạo người dùng, thêm số điện thoại và địa chỉ
         new_sdt = Sdt(so_dien_thoai=phone, nguoi_dung_id=new_user.id)
         new_dia_chi = DiaChi(dia_chi=address, nguoi_dung_id=new_user.id)
-        # Thêm số điện thoại và địa chỉ vào cơ sở dữ liệu
-        db.session.add(new_sdt)
-        db.session.add(new_dia_chi)
+        db.session.add(new_dia_chi,new_sdt)
         db.session.commit()
-
+        # Thêm số điện thoại và địa chỉ vào cơ sở dữ liệu
         flash('Đăng ký thành công! Hãy đăng nhập ngay.', 'success')
         return redirect(url_for('main.login'))  # Chuyển hướng đến trang đăng nhập
 
@@ -100,3 +115,4 @@ def logout():
 @bp.route('/forgot-password')
 def forgot_password():
     return render_template('forgot_password.html')
+

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from myapp import db,create_app
+from myapp import db
 
 
 class NguoiDung(db.Model):
@@ -11,9 +11,9 @@ class NguoiDung(db.Model):
     password = db.Column(db.String(100), nullable=False)
     gioi_tinh = db.Column(db.Boolean, nullable=False)
     cccd = db.Column(db.String(12), unique=True)
-    type = db.Column(db.String(50))  # For polymorphism
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
     emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
+    type = db.Column(db.String(20), default='user')  # 'admin', 'nhan_vien', hoặc 'user'
 
     # Liên kết đến địa chỉ
     dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True)

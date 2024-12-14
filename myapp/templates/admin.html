@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Bệnh Viện</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+    <style>
+        /* Thêm một số CSS để bố trí các cột */
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Cột bên trái (sidebar) -->
+            <div class="col-md-2 sidebar">
+                <h4 class="text-center">Quản lý</h4>
+                <a href="#" id="lich">Đặt Lịch</a>
+                <a href="#" id="benhnhan">Bệnh Nhân</a>
+                <a href="#" id="benhan">Bệnh Án</a>
+                <a href="#" id="danhmuc">Danh Mục</a>
+                <a href="#" id="vattu">Vật Tư</a>
+                <a href="#" id="thuoc">Thuốc</a>
+                <a href="#" id="khoa">Khoa</a>
+                <a href="#" id="bacsi">Bác Sĩ</a>
+                <a href="#" id="taikhoan">Tài Khoản</a>
+                <a href="#" id="thongke">Thống Kê</a>
+            </div>
+
+            <!-- Cột bên phải (main content) -->
+            <div class="col-md-10 main-content">
+                <div id="content">
+                    <h2>Chọn một mục từ bảng điều khiển bên trái</h2>
+                    <p>Thông tin chi tiết sẽ được hiển thị ở đây.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm JS cho trang -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Khi nhấn vào một mục trong sidebar, hiển thị nội dung tương ứng
+        document.getElementById('lich').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Đặt Lịch</h2><p>Thông tin về việc đặt lịch khám sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('benhnhan').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Bệnh Nhân</h2><p>Thông tin về bệnh nhân sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('benhan').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Bệnh Án</h2><p>Thông tin về bệnh án sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('danhmuc').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Danh Mục</h2><p>Thông tin về danh mục sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('vattu').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Vật Tư</h2><p>Thông tin về vật tư sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('thuoc').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Thuốc</h2><p>Thông tin về thuốc sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('khoa').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Khoa</h2><p>Thông tin về khoa sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('bacsi').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Bác Sĩ</h2><p>Thông tin về bác sĩ sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('taikhoan').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Tài Khoản</h2><p>Thông tin về tài khoản người dùng sẽ được hiển thị tại đây.</p>';
+        };
+
+        document.getElementById('thongke').onclick = function() {
+            document.getElementById('content').innerHTML = '<h2>Thống Kê</h2><p>Thông tin thống kê sẽ được hiển thị tại đây.</p>';
+        };
+    </script>
+</body>
+</html>
