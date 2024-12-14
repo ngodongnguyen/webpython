@@ -2,7 +2,6 @@ from flask import Flask,session
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_migrate import Migrate
-
 secret_key = os.urandom(24)  # Tạo một chuỗi ngẫu nhiên dài 24 byte
 # Khởi tạo SQLAlchemy
 db = SQLAlchemy()
@@ -16,10 +15,7 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     # Khởi tạo SQLAlchemy với app
     db.init_app(app)
-
-    # Import models để tạo bảng
-    from myapp.models import NguoiDung, BacSi, BenhNhan, YTa
-
+    from myapp import models  # Import models after app and db are initialized
     # Tạo các bảng trong cơ sở dữ liệu (Chỉ dùng khi phát triển)
     with app.app_context():
         db.create_all()  # Tạo bảng từ tất cả các mô hình đã định nghĩa
