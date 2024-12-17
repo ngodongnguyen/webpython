@@ -3,7 +3,7 @@ from flask_bcrypt import Bcrypt
 from myapp import db
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien
 import json
-
+from myapp.controller.client.client_controller import get_doctor_info as gdri
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
