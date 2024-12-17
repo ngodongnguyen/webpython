@@ -1,12 +1,16 @@
 from flask import Flask,session
 from flask_sqlalchemy import SQLAlchemy
 import os
+import cloudinary
 from flask_migrate import Migrate
 secret_key = os.urandom(24)  # Tạo một chuỗi ngẫu nhiên dài 24 byte
 # Khởi tạo SQLAlchemy
 db = SQLAlchemy()
 migrate = Migrate(db)
-
+CLOUD_NAME = 'ouweb'
+API_KEY = '899316619339996'
+API_SECRET = 'gXGG4apFKY4xJ7xRk0UM2WAdGyA'
+cloudinary.config(cloud_name=CLOUD_NAME, api_key=API_KEY, api_secret=API_SECRET,secure=True)
 def create_app():
     app = Flask(__name__)
     app.secret_key = secret_key

@@ -3,11 +3,74 @@
     width: 100%;
 
 }
-.hero-section {
-    background: url('https://via.placeholder.com/1600x500') center/cover no-repeat;
-    color: white;
-    padding: 100px 0;
+/* Đảm bảo Hero Section chiếm toàn bộ màn hình không bị khoảng trắng */
+/* Reset margin và padding mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+/* Hero Section */
+/* Hero Section */
+/* Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Chiều cao toàn màn hình */
+    overflow: hidden;
+}
+
+/* Nền mờ */
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://res.cloudinary.com/ouweb/image/upload/v1734365862/webpython/o4jphvcdgx0g66uqwr7d.jpg') no-repeat center center/cover;
+    filter: blur(8px); /* Làm mờ nền */
+    z-index: -2; /* Nằm phía sau mọi thứ */
+}
+
+/* Hình bác sĩ rõ nét */
+.hero-doctor {
+    position: absolute;
+    bottom: 0;
+    right: 5%; /* Đặt vị trí hình bác sĩ */
+    z-index: -1; /* Nằm dưới nội dung chữ */
+}
+
+.hero-doctor img {
+    max-height: 100vh; /* Chiều cao tối đa */
+    width: auto;
+    object-fit: contain;
+}
+
+/* Nội dung chữ */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: #000; /* Màu chữ đen */
+}
+
+.content-wrapper {
+    margin-left: 10%; /* Căn chữ sang trái */
+    max-width: 600px;
+}
+
+/* Nút bấm */
+.btn {
+    margin-top: 20px;
+}
+
+
+
+
+
 .service-card {
     background-color: #0d6efd;
     color: white;
@@ -130,3 +193,288 @@
 .custom-login {
     margin-right: -1000px; /* Thêm khoảng cách sang trái một chút */
 }
+/* bắt đầu hc banner */
+.hc-banner {
+    position: relative;
+    overflow: hidden;
+}
+
+.hc-banner-content {
+    padding: 150px 0;
+    z-index: 2;
+    position: relative;
+}
+
+.hc-banner-content h2 {
+    font-size: 20px;
+    color: #1abc9c;
+    position: relative;
+}
+
+.hc-banner-content h1 {
+    font-size: 40px;
+    text-transform: capitalize;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.hc-banner-box p {
+    margin: 0;
+}
+
+.hc-banner-box {
+    margin-bottom: 40px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 20px 0 #eee;
+    border-left: 2px solid #fd9678;
+}
+
+.hc-banner-content h2:after {
+    position: absolute;
+    content: '';
+    width: 50px;
+    height: 2px;
+    background: #1abc9c;
+    top: 0;
+    bottom: 0;
+    margin: auto 0 auto 15px;
+}
+
+.hc-banner-img {
+    text-align: center;
+    position: relative;
+    margin: auto;
+    width: 100%; /* Ensures the container scales properly */
+    max-width: 500px; /* Set maximum size for the image */
+    height: auto;
+    z-index: 10;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.hc-banner-img:after,
+.hc-banner-img:before {
+    position: absolute;
+    content: '';
+    max-width: 400px;
+    left: 20px;
+    right: 20px;
+    top: 20px;
+    background: rgb(255 255 255 / 70%);
+    z-index: 0;
+    margin: auto;
+    box-shadow: 0 0 20px 0 #eee;
+    bottom: 20px;
+    border-radius: 5px;
+}
+
+.hc-banner-img:before {
+    top: 50px;
+    bottom: 50px;
+    left: 50px;
+    right: 50px;
+    z-index: 1;
+}
+
+.hc-banner-img img {
+    max-width: 100%;
+    height: auto;
+    z-index: 2;
+    position: relative;
+    object-fit: contain; /* Adjusts image proportions */
+
+}
+
+.hc-banner:after {
+    position: absolute;
+    content: '';
+    right: -200px;
+    top: -100px;
+    bottom: -200px;
+    background: #1abc9c;
+    max-width: 765px;
+    width: 100%;
+    z-index: 0;
+    transform: rotate(15deg);
+}
+
+.hc-banner-shape {
+    position: absolute;
+    top: 100px;
+    right: 0px;
+}
+
+.hc-banner-shape span {
+    width: 235px;
+    height: 235px;
+    background: radial-gradient(#ffffff 2px, transparent 0px);
+    z-index: 1;
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    background-size: 20px 20px;
+    opacity: 0.5;
+    transform: rotate(-10deg);
+}
+
+.hc-banner:before {
+    position: absolute;
+    content: '';
+    left: -150px;
+    bottom: 0;
+    width: 300px;
+    height: 300px;
+    background: #fd9678;
+    border-radius: 100%;
+    opacity: 0.1;
+}
+/* team start */
+.hc-team .row {
+    margin-left: unset;
+    margin-right: unset;
+}
+
+.hc-team-box {
+    background: #ededed;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+    margin: 0 0 20px;
+    transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+}
+
+.hc-team-name {
+    font-size: 24px;
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.hc-team-designation {
+    font-size: 18px;
+    color: #1abc9c;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.hc-team-img img {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: auto;
+    object-fit: cover;
+    border-radius: 100%;
+    box-shadow: 0 10px 20px 0 rgb(0 0 0 / 15%);
+    border: 1px solid #fff;
+}
+
+.hc-dr-rating {
+    font-size: 14px;
+    color: #fd9678;
+    position: absolute;
+    left: 0;
+    top: 20px;
+    padding: 3px 10px;
+    background: rgb(253 150 120 / 15%);
+    border-radius: 0 30px 30px 0
+}
+
+.hc-team-box p {
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.hc-team-social {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.hc-team-social li {
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.hc-team-social li:last-child,
+.hc-blog-social li:last-child {
+    margin-right: 0;
+}
+
+.hc-team-social li a,
+.hc-blog-social li a {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eee;
+    background: #fff;
+    font-size: 16px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+}
+
+.hc-team-social li a:hover,
+.hc-blog-social li a:hover {
+    box-shadow: 0 0 0 3px rgb(253 150 120 / 15%);
+}
+
+.hc-team-box:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: #fd9678;
+    width: 0;
+    transition: 0.3s;
+    margin: auto;
+}
+
+.hc-team-box:hover:after {
+    width: 80%;
+}
+
+.hc-team-box:hover {
+    box-shadow: 3px 10px 20px 0 #cac7c7;
+}
+
+.hc-team-tab-list ul li {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 8px;
+}
+
+.hc-team-tab-list {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hc-team-tab-list ul li:last-child {
+    margin: 0;
+}
+
+.hc-team-tab-list ul li a {
+    border: 2px solid #eee;
+    padding: 2px 20px;
+    display: inline-block;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.hc-team-tab-list ul li a.hc-team-tab-active {
+    color: #fd9678;
+    border-color: #fd9678;
+}
+
+/* team end */
