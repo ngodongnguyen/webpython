@@ -34,12 +34,18 @@ class NhanVien(NguoiDung):
 class BacSi(NhanVien):
     __tablename__ = 'bac_si'
     id = db.Column(db.Integer, db.ForeignKey('nhan_vien.id'), primary_key=True)
-    chuyen_khoa = db.Column(db.String(100))
+    khoa_id = db.Column(db.Integer, db.ForeignKey('khoa.id'))  # Liên kết với bảng Khoa
+    khoa = db.relationship('Khoa', backref='bac_sis', lazy=True)  # Quan hệ ngược lại với Khoa
     __mapper_args__ = {
         'polymorphic_identity': 'bac_si',
     }
     phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='bac_si_phieu_kham', lazy=True)
-
+class Khoa(db.Model):
+    __tablename__ = 'khoa'
+    id = db.Column(db.Integer, primary_key=True)
+    ten_khoa = db.Column(db.String(100), nullable=False)  # Tên khoa
+    mo_ta = db.Column(db.String(255), nullable=True)  # Mô tả về khoa
+    bac_si = db.relationship('BacSi', backref='khoa', lazy=True)  # Liên kết đến bác sĩ
 
 
 class ThuNgan(NhanVien):

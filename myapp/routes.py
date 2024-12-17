@@ -2,6 +2,8 @@ from flask import Blueprint, render_template,request,redirect,url_for,flash,sess
 from flask_bcrypt import Bcrypt
 from myapp import db
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien
+import json
+
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
@@ -115,4 +117,10 @@ def logout():
 @bp.route('/forgot-password')
 def forgot_password():
     return render_template('forgot_password.html')
+@bp.route('/api/client/doctor_list', methods=['post'])
+def get_doctor_info():
+    major_id = request.json.get('major_id')
+    begin_index = request.json.get('begin_index')
+    end_index = request.json.get('end_index')
+    return json.dumps(gdri(major_id=major_id, begin_index=begin_index, end_index=end_index))
 
