@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template,request,redirect,url_for,flash,session
+from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa
+import json
+from myapp.controller.client.client_controller import get_doctor_info as gdri
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
@@ -18,6 +20,7 @@ def index():
 #     db.session.add(user)
 #     db.session.add(admin)
 #     db.session.commit()
+
     return render_template('index.html')
 # Route cho trang đăng nhập
 @bp.route('/admin', methods=['GET', 'POST'])
@@ -115,4 +118,36 @@ def logout():
 @bp.route('/forgot-password')
 def forgot_password():
     return render_template('forgot_password.html')
+@bp.route('/api/doctors', methods=['GET'])
+def get_doctors():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 5, type=int)
+    khoa_id = request.args.get('khoa_id', None, type=int)
+
+    query = BacSi.query
+
+    # Lọc theo khoa nếu có khoa_id
+    if khoa_id:
+        query = query.filter(BacSi.khoa_id == khoa_id)
+
+    doctors_paginated = query.paginate(page=page, per_page=per_page, error_out=False)
+
+    doctor_list = [
+        {
+            "id": doctor.id,
+            "ho_ten": doctor.ho_ten,
+            "khoa": doctor.khoa.ten_khoa if doctor.khoa else "Chưa có khoa",
+            "avatar": doctor.avatar
+        }
+        for doctor in doctors_paginated.items
+    ]
+
+    return jsonify({
+        "doctors": doctor_list,
+        "total": doctors_paginated.total,
+        "pages": doctors_paginated.pages,
+        "current_page": doctors_paginated.page
+    })
+
+
 

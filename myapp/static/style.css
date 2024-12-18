@@ -456,8 +456,12 @@
 }
 
 .hc-team-tab-list {
-    text-align: center;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Căn giữa các phần tử theo trục dọc */
+    justify-content: center; /* Căn giữa toàn bộ thanh */
+    gap: 20px; /* Khoảng cách giữa các nút Trước, container và Tiếp */
+    position: relative;
+    margin: 10px 0; /* Thêm chút khoảng cách với các phần khác */
 }
 
 .hc-team-tab-list ul li:last-child {
@@ -476,5 +480,25 @@
     color: #fd9678;
     border-color: #fd9678;
 }
+#filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các nút khoa */
+    overflow: hidden; /* Ẩn phần tràn */
+    width: 60%; /* Độ rộng vừa đủ để hiển thị 5 mục */
+    transition: transform 0.3s ease-in-out; /* Giảm thời gian chuyển xuống 0.3 giây */
+}
 
+.filter-slide {
+    transform: translateX(-100%); /* Tạo hiệu ứng trượt */
+}
+
+#prev-btn, #next-btn {
+    flex-shrink: 0; /* Không cho nút bị co lại */
+    min-width: 60px; /* Giảm chiều rộng */
+    height: 35px; /* Giảm chiều cao */
+    font-size: 14px; /* Giảm kích thước chữ */
+    padding: 5px 10px; /* Tăng diện tích nhấn */
+}
 /* team end */

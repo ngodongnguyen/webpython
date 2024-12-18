@@ -1,2 +1,1 @@
-thêm email vào NguoiDung
-làm thêm forgot_password
+sửa khoa thành nạp database th
