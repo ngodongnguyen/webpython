@@ -65,12 +65,14 @@
 
         .search-container {
             display: flex;
-            align-items: center;
-        }
-
-        .search-container .form-control {
             flex: 1;
+            gap: 10px;
         }
+        
+        .search-container input {
+            flex: 1; /* Chiếm toàn bộ không gian còn lại */
+        }
+        
     </style>
 </head>
 <body>
@@ -265,10 +267,12 @@
         });
     }
 
-    // Gọi hàm khi trang được tải
-    window.onload = function() {
-        showListYta(ytaData);
-    };
+
+   // Gọi khi trang được tải
+    window.onload = function () {
+    document.getElementById('content').innerHTML = `<p>Vui lòng chọn mục từ menu bên trái.</p>`;
+};
+
 </script>
 </body>
 </html>
