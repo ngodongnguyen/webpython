@@ -2,18 +2,58 @@ from sqlalchemy import func
 from myapp import db
 
 from myapp.models import Khoa,BacSi
+from sqlalchemy.orm import joinedload
+from flask import jsonify
+from myapp import db
+from myapp.models import BacSi, Khoa
 def get_department_amount():
     return {
         'amount': db.session.query(func.count(Khoa.khoa_id)).first()[0]
     }
+
+
+
+
+def get_department_infor(begin_index=None, end_index=None):
+    data = db.session.query(DepartmentModel.name,
+                            DepartmentModel.logo,
+                            DepartmentModel.description) \
+        .order_by(DepartmentModel.name)
+
+    if begin_index is not None and end_index is not None:
+        data = data.slice(begin_index, end_index)
+    data = data.all()
+
+    department_list = []
+    for d in data:
+        department_list.append({
+            'department_name': d[0],
+            'department_logo': d[1],
+            'department_description': d[2]
+        })
+    return department_list
+
+
+def get_doctor_amount(major_id=None):
+    data = db.session.query(func.count(DoctorModel.staff_id))
+
+    if major_id is not None:
+        data = data.join(MajorModel).filter(MajorModel.major_id.__eq__(major_id))
+
+    return {
+        'amount': data.first()[0]
+    }
+
+
 def get_doctor_info(major_id=None, begin_index=None, end_index=None):
-    data = db.session.query(BacSi.last_name,
-                            BacSi.first_name,
-                            BacSi.avatar,
-                            BacSi.phone_number,
-                            Khoa.name,
-                            BacSi.facebook_link,
-                            BacSi.twitter_link) \
+    data = db.session.query(DoctorModel.last_name,
+                            DoctorModel.first_name,
+                            DoctorModel.avatar,
+                            DoctorModel.phone_number,
+                            MajorModel.name,
+                            DepartmentModel.name,
+                            DoctorModel.facebook_link,
+                            DoctorModel.twitter_link) \
         .join(MajorModel) \
         .filter(MajorModel.major_id.__eq__(DoctorModel.major_id)) \
         .join(DepartmentModel) \
@@ -40,3 +80,53 @@ def get_doctor_info(major_id=None, begin_index=None, end_index=None):
             'twitter_link': doctor[7]
         })
     return doctor_list
+
+
+def get_major():
+    data = db.session.query(MajorModel.major_id, MajorModel.name) \
+        .order_by(MajorModel.major_id).all()
+    major_list = []
+    for major in data:
+        major_list.append({
+            'major_id': major[0],
+            'major_name': major[1]
+        })
+    return major_list
+
+
+def add_feedback(**kwargs):
+    customer_fullname = kwargs.get('customer_fullname')
+    customer_email = kwargs.get('customer_email')
+    feedback_subject = kwargs.get('feedback_subject')
+    feedback_content = kwargs.get('feedback_content')
+    try:
+        feedback = FeedbackModel(customer_name=customer_fullname,
+                                 gmail=customer_email,
+                                 content=feedback_content,
+                                 subject=feedback_subject)
+        db.session.add(feedback)
+        db.session.commit()
+        return True
+    except:
+        db.session.rollback()
+        return False
+    pass
+
+
+def get_staff_amount():
+    return {
+        'amount': db.session.query(func.count(StaffModel.staff_id)).first()[0]
+    }
+
+
+def get_exp_doctor_amount():
+    return {
+        'amount': db.session.query(func.count(DoctorModel.staff_id))\
+        .filter(DoctorModel.exp_year.__gt__(1.0)).first()[0]
+    }
+
+
+def get_medical_examination_amount():
+    return {
+        'amount': db.session.query(func.count(MedicalExaminationModel.document_id)).first()[0]
+    }

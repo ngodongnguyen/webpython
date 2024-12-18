@@ -13,21 +13,20 @@ class NguoiDung(db.Model):
     cccd = db.Column(db.String(12), unique=True)
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
     emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
-    type = db.Column(db.String(20), default='user')  # 'admin', 'nhan_vien', hoặc 'user'
 
     # Liên kết đến địa chỉ
     dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True)
-    __mapper_args__ = {
-        'polymorphic_identity': 'nguoi_dung',
-        'polymorphic_on': type
-    }
+
 
 class NhanVien(NguoiDung):
     __tablename__ = 'nhan_vien'
     id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), primary_key=True)
     chuc_vu = db.Column(db.String(100))
+    avatar = db.Column(db.String(255), nullable=True)  # Thêm cột avatar
+    type = db.Column(db.String(20), nullable=False)  # Phân loại 'bac_si', 'y_ta', 'thu_ngan'
     __mapper_args__ = {
         'polymorphic_identity': 'nhan_vien',
+        'polymorphic_on': type
     }
 
 
@@ -35,7 +34,6 @@ class BacSi(NhanVien):
     __tablename__ = 'bac_si'
     id = db.Column(db.Integer, db.ForeignKey('nhan_vien.id'), primary_key=True)
     khoa_id = db.Column(db.Integer, db.ForeignKey('khoa.id'))  # Liên kết với bảng Khoa
-    khoa = db.relationship('Khoa', backref='bac_sis', lazy=True)  # Quan hệ ngược lại với Khoa
     __mapper_args__ = {
         'polymorphic_identity': 'bac_si',
     }
@@ -45,7 +43,7 @@ class Khoa(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ten_khoa = db.Column(db.String(100), nullable=False)  # Tên khoa
     mo_ta = db.Column(db.String(255), nullable=True)  # Mô tả về khoa
-    bac_si = db.relationship('BacSi', backref='khoa', lazy=True)  # Liên kết đến bác sĩ
+    bac_sis = db.relationship('BacSi', backref='khoa', lazy=True)  # Liên kết đến bác sĩ
 
 
 class ThuNgan(NhanVien):

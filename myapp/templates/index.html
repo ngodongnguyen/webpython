@@ -80,18 +80,32 @@
                         <h1 class="hc-heading">Chúng tôi rất hân hạnh phục vụ bạn</h1>
                     </div>
                 </div>
-    
+                <div class="hc-team-tab-list text-center mb-4">
+                    <button id="prev-btn" class="btn btn-outline-secondary">&gt;Trước</button>
+                    <div id="filter-container" class="d-inline-block">
+                    <button class="btn btn-outline-primary active" data-khoa-id="">Tất cả</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="1">Khoa Nội</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="2">Khoa Ngoại</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="3">Khoa Sản</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="4">Khoa Nhi</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="5">Khoa Da Liễu</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="6">Khoa Mắt</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="7">Khoa Tai Mũi Họng</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="8">Khoa Răng Hàm Mặt</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="9">Khoa Xét Nghiẹm</button>
+                    <button class="btn btn-outline-primary" data-khoa-id="10">Khoa Chẩn Đoán Hình Ảnh</button>
+                </div>
+                <button id="next-btn" class="btn btn-outline-secondary">Tiếp &gt;</button>
+                </div>
+                
                 <div class="col-lg-12">
-                    <div class="hc-team-tab-list">
-                        <ul id = "major_list">
-                        </ul>
-                    </div>
                     <div class="row hc-team-grid justify-content-center" id="doctor_list"></div>
-                    <ul class="pagination" id="pagination_doctor"></ul>
+                    <ul class="pagination justify-content-center" id="pagination_doctor"></ul>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="container">
         <div class="row">
             <!-- Cột bên trái - Câu hỏi sức khỏe -->
@@ -187,6 +201,169 @@
             });
         });
     </script>
-   
+    <script>
+        // Script xử lý câu hỏi và câu trả lời
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButtons = document.querySelectorAll(".toggle-btn");
+            toggleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    // Đóng tất cả các câu trả lời khác
+                    document.querySelectorAll(".answer-container").forEach(answer => {
+                        answer.style.display = "none";
+                    });
+                    document.querySelectorAll(".toggle-btn").forEach(btn => {
+                        btn.textContent = "+";
+                    });
+    
+                    // Mở câu trả lời liên quan nếu đang bị ẩn
+                    const answerContainer = this.nextElementSibling;
+                    if (answerContainer.style.display === "none" || answerContainer.style.display === "") {
+                        answerContainer.style.display = "block";
+                        this.textContent = "-";
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <script>
+            // Định nghĩa hàm fetchDoctors trước
+            function fetchDoctors(page = 1, khoaId = "") {
+                console.log(`Fetching doctors for khoaId: ${khoaId}, page: ${page}`);
+                fetch(`/api/doctors?page=${page}&per_page=5&khoa_id=${khoaId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const doctorList = document.getElementById("doctor_list");
+                        const pagination = document.getElementById("pagination_doctor");
+        
+                        doctorList.innerHTML = "";
+                        pagination.innerHTML = "";
+        
+                        data.doctors.forEach(doctor => {
+                            const doctorItem = document.createElement("div");
+                            doctorItem.className = "col-md-4 text-center";
+                            doctorItem.innerHTML = `
+                                <div class="hc-team-member">
+                                    <img src="${doctor.avatar}" alt="${doctor.ho_ten}" class="img-fluid rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                                    <h3>${doctor.ho_ten}</h3>
+                                    <p>Khoa: ${doctor.khoa}</p>
+                                </div>
+                            `;
+                            doctorList.appendChild(doctorItem);
+                        });
+        
+                        if (data.total > 5) {
+                            for (let i = 1; i <= data.pages; i++) {
+                                const pageItem = document.createElement("li");
+                                pageItem.className = `page-item ${i === data.current_page ? "active" : ""}`;
+                                pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                                pageItem.querySelector("a").addEventListener("click", function (e) {
+                                    e.preventDefault();
+                                    fetchDoctors(i, khoaId);
+                                });
+                                pagination.appendChild(pageItem);
+                            }
+                        }
+                    })
+                    .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
+            }
+        
+             //Gán sự kiện click cho các nút khoa
+            document.addEventListener("DOMContentLoaded", function () {
+                const filterButtons = document.querySelectorAll(".hc-team-tab-list button");
+                filterButtons.forEach(button => {
+                    button.addEventListener("click", function () {
+                        const khoaId = this.getAttribute("data-khoa-id") || "";
+                        console.log(`Button clicked. KhoaId: ${khoaId}`);
+                        filterButtons.forEach(btn => btn.classList.remove("active"));
+                        this.classList.add("active");
+                        fetchDoctors(1, khoaId);
+                    });
+                });
+        
+                // Gọi API lần đầu để hiển thị tất cả bác sĩ
+                fetchDoctors();
+            });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const khoaData = [
+                { id: "", name: "Tất cả" },
+                { id: "1", name: "Khoa Nội" },
+                { id: "2", name: "Khoa Ngoại" },
+                { id: "3", name: "Khoa Sản" },
+                { id: "4", name: "Khoa Nhi" },
+                { id: "5", name: "Khoa Da Liễu" },
+                { id: "6", name: "Khoa Mắt" },
+                { id: "7", name: "Khoa Tai Mũi Họng" },
+                { id: "8", name: "Khoa Răng Hàm Mặt" },
+                { id: "9", name: "Khoa Xét Nghiệm" },
+                { id: "10", name: "Khoa Chẩn Đoán Hình Ảnh" }
+            ];
+        
+            const filterContainer = document.getElementById("filter-container");
+            const prevBtn = document.getElementById("prev-btn");
+            const nextBtn = document.getElementById("next-btn");
+        
+            let currentIndex = 0; // Vị trí hiện tại trong danh sách khoa
+            const itemsPerPage = 5; // Số mục hiển thị tối đa
+        
+            function renderFilters() {
+                filterContainer.innerHTML = ""; // Xóa nội dung cũ
+                const visibleItems = khoaData.slice(currentIndex, currentIndex + itemsPerPage);
+            
+                visibleItems.forEach(khoa => {
+                    const button = document.createElement("button");
+                    button.className = "btn btn-outline-primary mx-1";
+                    button.setAttribute("data-khoa-id", khoa.id);
+                    button.textContent = khoa.name;
+            
+                    // Sự kiện khi bấm vào nút khoa
+                    button.addEventListener("click", function () {
+                        // Đổi trạng thái nút active
+                        document.querySelectorAll(".btn-outline-primary").forEach(btn => btn.classList.remove("active"));
+                        button.classList.add("active");
+            
+                        // Lấy id của khoa và gọi API fetchDoctors
+                        const khoaId = button.getAttribute("data-khoa-id");
+                        fetchDoctors(1, khoaId); // Gọi API lọc bác sĩ theo khoa
+                    });
+            
+                    filterContainer.appendChild(button);
+                });
+            }
+            
+        
+            // Nút "Tiếp"
+            nextBtn.addEventListener("click", function () {
+                if (currentIndex + itemsPerPage < khoaData.length) {
+                    currentIndex += itemsPerPage;
+                    filterContainer.classList.add("filter-slide");
+                    setTimeout(() => {
+                        filterContainer.classList.remove("filter-slide");
+                        renderFilters();
+                    }, 200); // Delay để trượt mượt
+                }
+            });
+        
+            // Nút "Trước"
+            prevBtn.addEventListener("click", function () {
+                if (currentIndex - itemsPerPage >= 0) {
+                    currentIndex -= itemsPerPage;
+                    filterContainer.classList.add("filter-slide");
+                    setTimeout(() => {
+                        filterContainer.classList.remove("filter-slide");
+                        renderFilters();
+                    }, 200);
+                }
+            });
+        
+            // Gọi render lần đầu
+            renderFilters();
+        });
+        
+        
+    </script>
+
+    
     {%endblock%}
 
