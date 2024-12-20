@@ -102,4 +102,45 @@ SET khoa_id = CASE
     WHEN id BETWEEN 11 AND 20 THEN id - 10 -- Đặt khoa_id = id - 10 nếu id từ 11 đến 20
     ELSE khoa_id -- Giữ nguyên khoa_id cho các id còn lại
 END;
+-- insert dữ liệu vô y tá
+INSERT INTO nguoi_dung (ho_ten, username, password, gioi_tinh, cccd)
+VALUES
+    ('Người Dùng 1', 'username_1', 'password', TRUE, 'CCCD_1'),
+    ('Người Dùng 2', 'username_2', 'password', TRUE, 'CCCD_2'),
+    ('Người Dùng 3', 'username_3', 'password', TRUE, 'CCCD_3'),
+    ('Người Dùng 4', 'username_4', 'password', TRUE, 'CCCD_4'),
+    ('Người Dùng 5', 'username_5', 'password', TRUE, 'CCCD_5'),
+    ('Người Dùng 6', 'username_6', 'password', TRUE, 'CCCD_6'),
+    ('Người Dùng 7', 'username_7', 'password', TRUE, 'CCCD_7'),
+    ('Người Dùng 8', 'username_8', 'password', TRUE, 'CCCD_8'),
+    ('Người Dùng 9', 'username_9', 'password', TRUE, 'CCCD_9'),
+    ('Người Dùng 10', 'username_10', 'password', TRUE, 'CCCD_10');
+    -- Tạo 10 nhân viên (y tá)
+INSERT INTO nhan_vien (id, chuc_vu, avatar, type)
+SELECT id, 'Y Tá', 'path/to/avatar.png', 'y_ta'
+FROM nguoi_dung
+WHERE id BETWEEN 23  AND 33;  -- Giả sử id của nguoi_dung từ 1 đến 10
+select * from nhan_vien
+-- Tạo 10 bản ghi trong bảng 'y_ta' liên kết với bảng 'nhan_vien'
+INSERT INTO y_ta (id)
+SELECT id
+FROM nhan_vien
+WHERE type = 'y_ta' AND id BETWEEN 23 AND 33;
+select * from y_ta
+-- tạo 10 bệnh nhân
+INSERT INTO nguoi_dung (ho_ten, username, password, gioi_tinh, cccd)
+VALUES
+    ('Bệnh nhân 1', 'benh_nhan_1', 'password1', TRUE, 'CCCD_11'),
+    ('Bệnh nhân 2', 'benh_nhan_2', 'password2', FALSE, 'CCCD_12'),
+    ('Bệnh nhân 3', 'benh_nhan_3', 'password3', TRUE, 'CCCD_13'),
+    ('Bệnh nhân 4', 'benh_nhan_4', 'password4', FALSE, 'CCCD_14'),
+    ('Bệnh nhân 5', 'benh_nhan_5', 'password5', TRUE, 'CCCD_15'),
+    ('Bệnh nhân 6', 'benh_nhan_6', 'password6', FALSE, 'CCCD_16'),
+    ('Bệnh nhân 7', 'benh_nhan_7', 'password7', TRUE, 'CCCD_17'),
+    ('Bệnh nhân 8', 'benh_nhan_8', 'password8', FALSE, 'CCCD_18'),
+    ('Bệnh nhân 9', 'benh_nhan_9', 'password9', TRUE, 'CCCD_19'),
+    ('Bệnh nhân 10', 'benh_nhan_10', 'password10', FALSE, 'CCCD_20');
+-- Thêm 10 bản ghi vào bảng benh_nhan (sử dụng id từ bảng nguoi_dung)
+INSERT INTO benh_nhan (id)
+SELECT id FROM nguoi_dung WHERE id BETWEEN 1 AND 10;
 

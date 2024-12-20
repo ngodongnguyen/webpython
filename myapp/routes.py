@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
 bcrypt = Bcrypt()
@@ -148,6 +148,15 @@ def get_doctors():
         "pages": doctors_paginated.pages,
         "current_page": doctors_paginated.page
     })
-
+@bp.route('/api/client/dem_dang_ki_kham', methods=['GET'])
+def dem_dang_ki_kham():
+    # Đếm số lượng bản ghi trong bảng 'danh_sach_dang_ky_kham'
+    count = DanhSachDangKyKham.query.count()
+    
+    # Trả về kết quả dưới dạng JSON
+    return jsonify({
+        'status': 'success',
+        'count': count
+    })
 
 

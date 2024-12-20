@@ -1,62 +1,56 @@
-    <!-- Header -->
-    <header class="bg-light py-2">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center me-auto">  
-                <a href="#" class="text-dark text-decoration-none">medical@example.com</a>
-                <span class="glyphicon">&#x2709;</span>
-    
-                <span class="text-muted mx-2">|</span>
-    
-                <a href="#" class="text-dark text-decoration-none">Find our Location</a>
-                <i class="bi bi-geo-alt"></i>
-            </div>
-            
-            <div class="ms-auto">
-                <a href="#" class="text-dark me-2"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-dark me-2"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
-            </div>
-        </div>
-    </header>
-        <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="../static/pic/logo.jpg" class="img-fluid me-2" alt="Logo" style="max-width: 50px; height: auto;">
-                    <span>MEDCARE Health Solution</span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">About</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">Department</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">Doctors</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">Blog</a></li>
-                        <li class="nav-item mx-2"><a class="nav-link" href="#">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Check if the user is logged in -->
-                        {% if 'username' in session %}
-                        <!-- Show greeting message and logout button -->
-                        <li class="nav-item mx-2">
-                            <span class="nav-link">Chào, {{ session['username'] }}</span>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" href="{{ url_for('main.logout') }}">Đăng Xuất</a>
-                        </li>
-                        {% else %}
-                        <!-- Show login button if user is not logged in -->
-                        <li class="nav-item mx-2 custom-login">
-                            <a class="nav-link login-btn" href="{{ url_for('main.login') }}">Đăng Nhập</a>
-                        </li>
-                        {% endif %}                    
-                    </ul>
+ <!-- Header -->
+ <header class="bg-light py-2">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center me-auto">  
+            <a href="#" class="text-dark text-decoration-none">medical@example.com</a>
+            <span class="glyphicon">&#x2709;</span>
 
-                </div>
-            </div>
-    </nav>
+            <span class="text-muted mx-2">|</span>
+
+            <a href="#" class="text-dark text-decoration-none">Find our Location</a>
+            <i class="bi bi-geo-alt"></i>
+        </div>
+        
+        <div class="ms-auto">
+            <a href="#" class="text-dark me-2"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="text-dark me-2"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+        </div>
+    </div>
+</header>
+<!-- navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
+        <!-- Logo (Bên trái) -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="https://res.cloudinary.com/ouweb/image/upload/v1734676566/webpython/wpemg5yr88cxjaxpuatw.png" class="img-fluid me-2" alt="Logo" style="max-width: 50px; height: auto;">
+        </a>
+
+        <!-- Toggle button cho giao diện di động -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links (Căn giữa) -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Trang chủ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Dịch vụ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Về chúng tôi</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Đội ngũ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Liên hệ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#">Bài viết</a></li>
+            </ul>
+        </div>
+
+        <!-- Bên phải (Thông tin người dùng hoặc Đăng nhập) -->
+        <div class="hc-head-btn">
+            <button class="hc-btn" data-toggle="modal" data-target="#hc-appointment">
+                Đặt lịch hẹn
+            </button>
+        </div>
+    </div>
+</nav>
+
+
+
