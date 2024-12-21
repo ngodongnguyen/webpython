@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
 bcrypt = Bcrypt()
@@ -21,8 +21,17 @@ def index():
 #     db.session.add(admin)
 #     db.session.commit()
 
-    return render_template('index.html')
-# Route cho trang đăng nhập
+    try:
+        # Fetch the total number of registrations
+        total_slots = 30  # Example: Total number of slots available per day
+        registered_count = DangKyKham.query.count()
+        remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
+
+        # Pass remainingSlots to the template
+        return render_template('index.html', remainingSlots=remaining_slots)
+    except Exception as e:
+        # Handle potential errors
+        return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin_dashboard():
     return render_template('admin.html')
@@ -148,15 +157,67 @@ def get_doctors():
         "pages": doctors_paginated.pages,
         "current_page": doctors_paginated.page
     })
-@bp.route('/api/client/dem_dang_ki_kham', methods=['GET'])
-def dem_dang_ki_kham():
-    # Đếm số lượng bản ghi trong bảng 'danh_sach_dang_ky_kham'
-    count = DanhSachDangKyKham.query.count()
-    
-    # Trả về kết quả dưới dạng JSON
-    return jsonify({
-        'status': 'success',
-        'count': count
-    })
+@bp.route('/api/client/online_registration', methods=['POST'])
+def online_registration():
+    try:
+        # Lấy dữ liệu từ form
+        data = request.form
 
+        # Lấy từng trường dữ liệu
+        id_card = data.get('id_card')
+        last_name = data.get('last_name')
+        first_name = data.get('first_name')
+        sex = data.get('sex')
+        date_of_birth = data.get('date_of_birth')
+        email = data.get('email')
+        phone_number = data.get('phone_number')
+        address = data.get('address')
+
+        # Kiểm tra dữ liệu hợp lệ (ví dụ: kiểm tra định dạng căn cước công dân)
+        if not id_card or len(id_card) < 10 or len(id_card) > 12:
+            return jsonify({'status': 'error', 'message': 'Căn cước công dân không hợp lệ'}), 400
+
+        # Lưu dữ liệu vào cơ sở dữ liệu
+        new_registration = DanhSachDangKyKham(
+            id_card=id_card,
+            last_name=last_name,
+            first_name=first_name,
+            sex=sex,
+            date_of_birth=date_of_birth,
+            email=email,
+            phone_number=phone_number,
+            address=address
+        )
+        db.session.add(new_registration)
+        db.session.commit()
+
+        # Trả về phản hồi thành công
+        return jsonify({'status': 'success', 'message': 'Đăng ký thành công'})
+    except Exception as e:
+        # Trả về lỗi nếu có vấn đề
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+@bp.route('/api/counter', methods=['GET'])
+def get_counters():
+    try:
+        # Đếm số lượng trong từng bảng
+        medical_amount = DangKyKham.query.count()  # Số lượng đăng ký khám
+        doctor_amount = BacSi.query.count()       # Số lượng bác sĩ
+        nurse_amount = YTa.query.count()         # Số lượng y tá
+        staff_amount = NhanVien.query.count()    # Số lượng nhân viên
+
+        # Trả về kết quả dạng JSON
+        return jsonify({
+            'status': 'success',
+            'counter': {
+                'medical_amount': medical_amount,
+                'doctor_amount': doctor_amount,
+                'nurse_amount': nurse_amount,
+                'staff_amount': staff_amount
+            }
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
 

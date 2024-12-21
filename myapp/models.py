@@ -7,8 +7,6 @@ class NguoiDung(db.Model):
     __tablename__ = 'nguoi_dung'
     id = db.Column(db.Integer, primary_key=True)
     ho_ten = db.Column(db.String(100), nullable=False)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
     gioi_tinh = db.Column(db.Boolean, nullable=False)
     cccd = db.Column(db.String(12), unique=True)
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
@@ -22,6 +20,8 @@ class NhanVien(NguoiDung):
     __tablename__ = 'nhan_vien'
     id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), primary_key=True)
     chuc_vu = db.Column(db.String(100))
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     avatar = db.Column(db.String(255), nullable=True)  # Thêm cột avatar
     type = db.Column(db.String(20), nullable=False)  # Phân loại 'bac_si', 'y_ta', 'thu_ngan'
     __mapper_args__ = {
