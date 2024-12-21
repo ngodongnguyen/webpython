@@ -32,9 +32,9 @@ def index():
     except Exception as e:
         # Handle potential errors
         return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
-@bp.route('/admin', methods=['GET', 'POST'])
+@bp.route('/admin/trangchu', methods=['GET', 'POST'])
 def admin_dashboard():
-    return render_template('admin.html')
+    return render_template('/admin/trangchu.html')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
