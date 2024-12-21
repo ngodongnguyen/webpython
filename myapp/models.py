@@ -6,7 +6,8 @@ from myapp import db
 class NguoiDung(db.Model):
     __tablename__ = 'nguoi_dung'
     id = db.Column(db.Integer, primary_key=True)
-    ho_ten = db.Column(db.String(100), nullable=False)
+    ho = db.Column(db.String(100), nullable=False)
+    ten = db.Column(db.String(100), nullable=False)
     gioi_tinh = db.Column(db.Boolean, nullable=False)
     cccd = db.Column(db.String(12), unique=True)
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
@@ -19,7 +20,6 @@ class NguoiDung(db.Model):
 class NhanVien(NguoiDung):
     __tablename__ = 'nhan_vien'
     id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), primary_key=True)
-    chuc_vu = db.Column(db.String(100))
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     avatar = db.Column(db.String(255), nullable=True)  # Thêm cột avatar
@@ -202,7 +202,7 @@ class DangKyKham(db.Model):
     id_benh_nhan = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
     
     # Liên kết với Y Tá (1 y tá có thể thuộc nhiều đăng ký khám)
-    id_y_ta = db.Column(db.Integer, db.ForeignKey('y_ta.id'), nullable=False)
+    id_y_ta = db.Column(db.Integer, db.ForeignKey('y_ta.id'), nullable=True)
     
     # Khóa ngoại tham chiếu tới DanhSachDangKyKham (nếu cần)
     danh_sach_id = db.Column(db.Integer, db.ForeignKey('danh_sach_dang_ky_kham.id'), nullable=False)

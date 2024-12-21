@@ -144,7 +144,8 @@ def get_doctors():
     doctor_list = [
         {
             "id": doctor.id,
-            "ho_ten": doctor.ho_ten,
+            "ho": doctor.ho,
+            "ten": doctor.ten,
             "khoa": doctor.khoa.ten_khoa if doctor.khoa else "Chưa có khoa",
             "avatar": doctor.avatar
         }

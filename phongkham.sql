@@ -22,32 +22,41 @@ INSERT INTO Khoa (ten_khoa, mo_ta) VALUES
 ('Khoa Hô hấp', 'Chuyên điều trị các bệnh lý về đường hô hấp như hen suyễn, viêm phổi, bệnh phổi tắc nghẽn mãn tính.'),
 ('Khoa Vật lý trị liệu', 'Chuyên hỗ trợ bệnh nhân phục hồi chức năng sau chấn thương, tai nạn hoặc phẫu thuật.');
 -- Dữ liệu bảng bác sĩ
-INSERT INTO nguoi_dung (ho_ten, username, password, gioi_tinh, cccd, type) VALUES
-('Nguyễn Văn A', 'nguyenvana', 'password1', 1, '123456789012', 'nhan_vien'),
-('Nguyễn Thị B', 'nguyenthib', 'password2', 0, '123456789013', 'nhan_vien'),
-('Trần Văn C', 'tranvanc', 'password3', 1, '123456789014', 'nhan_vien'),
-('Lê Thị D', 'lethid', 'password4', 0, '123456789015', 'nhan_vien'),
-('Phạm Văn E', 'phamvane', 'password5', 1, '123456789016', 'nhan_vien'),
-('Hoàng Thị F', 'hoangthif', 'password6', 0, '123456789017', 'nhan_vien'),
-('Vũ Văn G', 'vuvang', 'password7', 1, '123456789018', 'nhan_vien'),
-('Đặng Thị H', 'dangthih', 'password8', 0, '123456789019', 'nhan_vien'),
-('Ngô Văn I', 'ngovanyi', 'password9', 1, '123456789020', 'nhan_vien'),
-('Đỗ Thị J', 'dothij', 'password10', 0, '123456789021', 'nhan_vien'),
-('Nguyễn Văn K', 'nguyenvank', 'password11', 1, '123456789022', 'nhan_vien'),
-('Trần Thị L', 'tranthil', 'password12', 0, '123456789023', 'nhan_vien'),
-('Phan Văn M', 'phanvanm', 'password13', 1, '123456789024', 'nhan_vien'),
-('Bùi Thị N', 'buithin', 'password14', 0, '123456789025', 'nhan_vien'),
-('Lý Văn O', 'lyvano', 'password15', 1, '123456789026', 'nhan_vien'),
-('Trương Thị P', 'truongthip', 'password16', 0, '123456789027', 'nhan_vien'),
-('Tôn Văn Q', 'tonvanq', 'password17', 1, '123456789028', 'nhan_vien'),
-('Đinh Thị R', 'dinhthir', 'password18', 0, '123456789029', 'nhan_vien'),
-('Hồ Văn S', 'hovans', 'password19', 1, '123456789030', 'nhan_vien'),
-('Đặng Thị T', 'dangthit', 'password20', 0, '123456789031', 'nhan_vien');
+INSERT INTO nguoi_dung (ho,ten, gioi_tinh, cccd) VALUES
+('Nguyễn Văn','A', 1, '123456789012'),
+('Nguyễn Thị','B', 0, '123456789013'),
+('Trần Văn','C', 1, '123456789014'),
+('Lê Thị','D', 0, '123456789015'),
+('Phạm Văn','E', 1, '123456789016'),
+('Hoàng Thị','F', 0, '123456789017'),
+('Vũ Văn','G', 1, '123456789018'),
+('Đặng Thị','H', 0, '123456789019'),
+('Ngô Văn', 'I',1, '123456789020'),
+('Đỗ Thị','J', 0,'123456789021'),
+('Nguyễn Văn','K', 1, '123456789022'),
+('Trần Thị','L',  0, '123456789023'),
+('Phan Văn','M',  1, '123456789024'),
+('Bùi Thị','N',  0, '123456789025'),
+('Lý Văn','O',  1, '123456789026'),
+('Trương Thị','P',  0, '123456789027'),
+('Tôn Văn','Q', 1, '123456789028'),
+('Đinh Thị','R', 0, '123456789029'),
+('Hồ Văn','S', 1, '123456789030'),
+('Đặng Thị','T',  0, '123456789031');
 
-INSERT INTO nhan_vien (id, chuc_vu) 
-SELECT id, 'Bác sĩ' 
-FROM nguoi_dung 
-WHERE type = 'nhan_vien' AND id NOT IN (SELECT id FROM nhan_vien);
+INSERT INTO nhan_vien (id, username, password, avatar, type)
+VALUES
+(1, 'nv01', 'password01', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(2, 'nv02', 'password02', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(3, 'nv03', 'password03', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(4, 'nv04', 'password04', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(5, 'nv05', 'password05', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(6, 'nv06', 'password06', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(7, 'nv07', 'password07', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(8, 'nv08', 'password08', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(9, 'nv09', 'password09', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
+(10, 'nv10', 'password10','https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si');
+
 
 UPDATE nhan_vien SET type = 'bac_si' WHERE id IN (SELECT id FROM bac_si);
 
