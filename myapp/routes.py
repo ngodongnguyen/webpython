@@ -1,9 +1,15 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,BenhNhan,Email
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
+from sqlalchemy import func
+from datetime import datetime,date
+from sqlalchemy.exc import IntegrityError
+import re
+
+
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
@@ -147,7 +153,10 @@ def get_doctors():
             "ho": doctor.ho,
             "ten": doctor.ten,
             "khoa": doctor.khoa.ten_khoa if doctor.khoa else "Chưa có khoa",
-            "avatar": doctor.avatar
+            "avatar": doctor.avatar,
+            "sdt": [s.so_dien_thoai for s in doctor.sdt],  # Lấy danh sách số điện thoại
+            "emails": [e.email for e in doctor.emails],  # Lấy danh sách email
+            "dia_chi": [d.dia_chi for d in doctor.dia_chi]  # Lấy danh sách địa chỉ
         }
         for doctor in doctors_paginated.items
     ]
@@ -158,45 +167,6 @@ def get_doctors():
         "pages": doctors_paginated.pages,
         "current_page": doctors_paginated.page
     })
-@bp.route('/api/client/online_registration', methods=['POST'])
-def online_registration():
-    try:
-        # Lấy dữ liệu từ form
-        data = request.form
-
-        # Lấy từng trường dữ liệu
-        id_card = data.get('id_card')
-        last_name = data.get('last_name')
-        first_name = data.get('first_name')
-        sex = data.get('sex')
-        date_of_birth = data.get('date_of_birth')
-        email = data.get('email')
-        phone_number = data.get('phone_number')
-        address = data.get('address')
-
-        # Kiểm tra dữ liệu hợp lệ (ví dụ: kiểm tra định dạng căn cước công dân)
-        if not id_card or len(id_card) < 10 or len(id_card) > 12:
-            return jsonify({'status': 'error', 'message': 'Căn cước công dân không hợp lệ'}), 400
-
-        # Lưu dữ liệu vào cơ sở dữ liệu
-        new_registration = DanhSachDangKyKham(
-            id_card=id_card,
-            last_name=last_name,
-            first_name=first_name,
-            sex=sex,
-            date_of_birth=date_of_birth,
-            email=email,
-            phone_number=phone_number,
-            address=address
-        )
-        db.session.add(new_registration)
-        db.session.commit()
-
-        # Trả về phản hồi thành công
-        return jsonify({'status': 'success', 'message': 'Đăng ký thành công'})
-    except Exception as e:
-        # Trả về lỗi nếu có vấn đề
-        return jsonify({'status': 'error', 'message': str(e)}), 500
 @bp.route('/api/counter', methods=['GET'])
 def get_counters():
     try:
@@ -221,4 +191,137 @@ def get_counters():
             'status': 'error',
             'message': str(e)
         }), 500
+@bp.route('/api/get_slots', methods=['GET'])
+def get_slots():
+    from datetime import datetime, timedelta
+
+    today = datetime.now()
+    max_days = 30
+    slots = {}
+
+    # Dữ liệu slot mẫu
+    for i in range(max_days):
+        date = (today + timedelta(days=i)).strftime('%Y-%m-%d')
+        slots[date] = 10 if i % 5 != 0 else 0  # Ví dụ: hết slot mỗi 5 ngày
+
+    return jsonify({"status": "success", "slots": slots})
+@bp.route('/api/check_slots', methods=['GET'])
+def check_slots():
+    date = request.args.get('date')
+    if not date:
+        return jsonify({'error': 'Invalid date'}), 400
+
+    # Count the number of registrations for the selected date
+    count = db.session.query(func.count(DangKyKham.id)).filter(DangKyKham.ngay_dang_ky == date).scalar()
+    remaining_slots = max(0, 30 - count)
+
+    return jsonify({'remainingSlots': remaining_slots})
+
+
+from sqlalchemy.exc import IntegrityError
+
+@bp.route('/api/client/online_registration', methods=['POST'])
+def online_registration():
+    try:
+        # Lấy dữ liệu từ form
+        ho = request.form.get('last_name')
+        ten = request.form.get('first_name')
+        gioi_tinh = request.form.get('sex') == 'male'
+        ngay_sinh = request.form.get('date_of_birth')
+        cccd = request.form.get('id_card')
+        so_dien_thoai = request.form.get('phone_number')
+        email = request.form.get('email')
+        dia_chi = request.form.get('address')
+        ngay_dang_ky = request.form.get('registration_date')
+
+        # Kiểm tra ngày sinh phải nhỏ hơn hôm nay
+        if date.fromisoformat(ngay_sinh) >= date.today():
+            flash('Ngày sinh phải nhỏ hơn ngày hiện tại!', 'error')
+            return redirect(url_for('main.index'))  # Thay 'main.index' bằng route form của bạn
+
+        # Kiểm tra CCCD đã đăng ký trong ngày chưa
+        existing_registration = (
+            db.session.query(DangKyKham)
+            .join(BenhNhan, DangKyKham.id_benh_nhan == BenhNhan.id)
+            .filter(BenhNhan.cccd == cccd, DangKyKham.ngay_dang_ky == ngay_dang_ky)
+            .first()
+        )
+        if existing_registration:
+            flash('CCCD đã được đăng ký trong ngày hôm nay!', 'error')
+            return redirect(url_for('main.index'))
+
+        # Tạo bệnh nhân
+        benh_nhan = BenhNhan(ho=ho, ten=ten, gioi_tinh=gioi_tinh, ngay_sinh=ngay_sinh, cccd=cccd)
+        db.session.add(benh_nhan)
+        db.session.flush()  # Lưu tạm để lấy ID
+
+        # Lưu số điện thoại
+        if so_dien_thoai:
+            db.session.add(Sdt(so_dien_thoai=so_dien_thoai, nguoi_dung_id=benh_nhan.id))
+
+        # Lưu email
+        if email:
+            db.session.add(Email(email=email, nguoi_dung_id=benh_nhan.id))
+
+        # Lưu địa chỉ
+        if dia_chi:
+            db.session.add(DiaChi(dia_chi=dia_chi, nguoi_dung_id=benh_nhan.id))
+
+        # Lưu đăng ký khám
+        db.session.add(DangKyKham(ngay_dang_ky=ngay_dang_ky, id_benh_nhan=benh_nhan.id))
+        db.session.commit()
+
+        flash('Đăng ký thành công!', 'success')
+        return redirect(url_for('main.index'))
+
+    except IntegrityError as e:
+        db.session.rollback()
+        # Lấy thông tin chi tiết từ IntegrityError
+        error_message = str(e.orig)  # Thông báo lỗi chi tiết từ cơ sở dữ liệu
+        flash(f'Lỗi khi lưu thông tin: {error_message}', 'error')
+        return redirect(url_for('main.index'))
+
+    except Exception as e:
+        db.session.rollback()
+        # Xóa bệnh nhân nếu tạo thất bại
+        if 'benh_nhan' in locals():
+            db.session.delete(benh_nhan)
+            db.session.commit()
+        flash(f'Đã xảy ra lỗi không xác định: {e}', 'error')
+        return redirect(url_for('main.index'))
+
+@bp.context_processor
+def inject_today_date():
+    return {'today_date': date.today().isoformat()}
+def is_valid_email(email):
+    regex = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(regex, email) is not None
+
+# Hàm kiểm tra định dạng số điện thoại
+def is_valid_phone(phone):
+    regex = r'^\d{9,10}$'  # Số điện thoại Việt Nam thường có 10 chữ số
+    return re.match(regex, phone) is not None
+@bp.route('/api/check_cccd', methods=['POST'])
+def check_cccd():
+    data = request.json
+    cccd = data.get('cccd')
+    ngay_dang_ky = data.get('ngay_dang_ky')
+
+    # Kiểm tra đầu vào
+    if not cccd or not ngay_dang_ky:
+        return jsonify({'error': 'CCCD và ngày đăng ký là bắt buộc!'}), 400
+
+    # Kiểm tra CCCD đã đăng ký trong ngày này chưa
+    existing_registration = (
+        db.session.query(DangKyKham)
+        .join(BenhNhan, DangKyKham.id_benh_nhan == BenhNhan.id)
+        .filter(BenhNhan.cccd == cccd, DangKyKham.ngay_dang_ky == ngay_dang_ky)
+        .first()
+    )
+
+    if existing_registration:
+        return jsonify({'exists': True, 'message': 'CCCD đã được đăng ký trong ngày này!'}), 200
+
+    return jsonify({'exists': False, 'message': 'CCCD hợp lệ.'}), 200
+
 

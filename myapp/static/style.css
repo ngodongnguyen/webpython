@@ -511,6 +511,61 @@ header .bi {
     opacity: 0.1;
 }
 /* team start */
+.hc-team-member {
+    background: #ffffff; /* Màu nền trắng */
+    padding: 25px; /* Khoảng cách nội dung với khung */
+    border-radius: 15px; /* Bo góc mềm mại hơn */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Đổ bóng mượt hơn */
+    border: 2px solid transparent; /* Ban đầu viền trong suốt */
+    margin: 20px 0; /* Khoảng cách giữa các khung */
+    transition: all 0.4s ease; /* Hiệu ứng hover mượt mà */
+}
+
+.hc-team-member:hover {
+    border-color: #1abc9c; /* Viền đổi màu xanh khi hover */
+    box-shadow: 0 8px 20px rgba(26, 188, 156, 0.3); /* Đổ bóng rõ hơn khi hover */
+    transform: translateY(-5px); /* Khung nổi lên nhẹ khi hover */
+}
+
+.hc-team-member .hc-avatar {
+    display: inline-block;
+    padding: 8px; /* Không gian giữa ảnh và khung */
+    border: 3px solid #1abc9c; /* Viền xanh nổi bật */
+    border-radius: 50%; /* Bo tròn hoàn toàn */
+    background-color: #ffffff; /* Nền trắng cho avatar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    transition: transform 0.3s ease; /* Hiệu ứng hover */
+}
+
+.hc-team-member .hc-avatar:hover {
+    transform: scale(1.1); /* Phóng to avatar khi hover */
+}
+
+.hc-team-member img {
+    width: 120px; /* Kích thước avatar */
+    height: 120px;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    border-radius: 50%; /* Giữ avatar tròn */
+}
+.hc-team-member h3 {
+    font-size: 22px; /* Tăng kích thước chữ */
+    font-weight: bold;
+    color: #333; /* Màu chữ đậm */
+    margin-top: 15px; /* Khoảng cách với avatar */
+    transition: color 0.3s ease; /* Hiệu ứng hover cho tên */
+}
+
+.hc-team-member:hover h3 {
+    color: #1abc9c; /* Đổi màu tên khi hover */
+}
+
+.hc-team-member p {
+    font-size: 16px; /* Chữ vừa đủ đọc */
+    color: #666; /* Màu chữ nhạt hơn để phân biệt */
+    margin-top: 5px;
+}
+
+
 .hc-team .row {
     margin-left: unset;
     margin-right: unset;
@@ -636,12 +691,12 @@ header .bi {
 }
 
 .hc-team-tab-list {
-    display: flex;
+    display: flex; /* Đặt các phần tử nằm ngang */
     align-items: center; /* Căn giữa các phần tử theo trục dọc */
     justify-content: center; /* Căn giữa toàn bộ thanh */
-    gap: 20px; /* Khoảng cách giữa các nút Trước, container và Tiếp */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
     position: relative;
-    margin: 10px 0; /* Thêm chút khoảng cách với các phần khác */
+    margin: 10px 0; /* Khoảng cách với các phần khác */
 }
 
 .hc-team-tab-list ul li:last-child {
@@ -661,13 +716,13 @@ header .bi {
     border-color: #fd9678;
 }
 #filter-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; /* Đặt các nút khoa nằm ngang */
+    justify-content: center; /* Căn giữa các nút bên trong */
+    align-items: center; /* Căn giữa theo trục dọc */
     gap: 10px; /* Khoảng cách giữa các nút khoa */
-    overflow: hidden; /* Ẩn phần tràn */
-    width: 60%; /* Độ rộng vừa đủ để hiển thị 5 mục */
-    transition: transform 0.3s ease-in-out; /* Giảm thời gian chuyển xuống 0.3 giây */
+    overflow: hidden; /* Ẩn các phần bị tràn */
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu không đủ không gian */
+    width: auto; /* Để chiều rộng co giãn theo nội dung */
 }
 
 .filter-slide {
@@ -676,10 +731,90 @@ header .bi {
 
 #prev-btn, #next-btn {
     flex-shrink: 0; /* Không cho nút bị co lại */
-    min-width: 60px; /* Giảm chiều rộng */
-    height: 35px; /* Giảm chiều cao */
-    font-size: 14px; /* Giảm kích thước chữ */
-    padding: 5px 10px; /* Tăng diện tích nhấn */
+    min-width: 60px; /* Chiều rộng tối thiểu */
+    height: 40px; /* Chiều cao nút */
+    font-size: 14px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ đậm */
+    color: #fff; /* Màu chữ trắng */
+    background-color: #1abc9c; /* Màu nền xanh lá đẹp */
+    border: none; /* Loại bỏ viền mặc định */
+    border-radius: 5px; /* Bo góc nút */
+    padding: 5px 15px; /* Tăng diện tích nhấn */
+    cursor: pointer; /* Con trỏ chuột khi hover */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hiệu ứng chuyển màu và di chuyển */
+}
+
+/* Hiệu ứng hover */
+#prev-btn:hover, #next-btn:hover {
+    background-color: #16a085; /* Màu xanh lá đậm hơn */
+    transform: translateY(-3px); /* Nút nhô lên khi hover */
+}
+
+/* Hiệu ứng khi nhấn */
+#prev-btn:active, #next-btn:active {
+    transform: translateY(0); /* Trả nút về vị trí ban đầu */
+    background-color: #12876f; /* Màu tối hơn khi nhấn */
+}
+
+/* Thêm hiệu ứng shadow */
+#prev-btn, #next-btn {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+#prev-btn:hover, #next-btn:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Bóng rõ hơn khi hover */
+}
+.pagination {
+    display: flex; /* Sử dụng flexbox để căn giữa các phần tử con */
+    justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+    align-items: center; /* Căn giữa nội dung theo chiều dọc (nếu cần) */
+    gap: 10px; /* Khoảng cách giữa các mục phân trang */
+    padding: 10px 0; /* Khoảng cách phía trên và dưới */
+    list-style: none; /* Loại bỏ dấu đầu dòng (nếu có) */
+}
+
+.pagination li {
+    display: inline-block; /* Đặt mỗi mục phân trang nằm ngang */
+}
+
+.pagination a {
+    display: block; /* Hiển thị liên kết dạng khối */
+    padding: 8px 12px; /* Tăng diện tích bấm */
+    border: 1px solid #ddd; /* Viền cho mỗi nút */
+    border-radius: 5px; /* Bo góc cho nút */
+    background-color: #f9f9f9; /* Màu nền nhạt */
+    color: #333; /* Màu chữ */
+    text-decoration: none; /* Loại bỏ gạch chân */
+    font-size: 14px; /* Kích thước chữ */
+    transition: all 0.3s ease; /* Hiệu ứng hover */
+}
+
+/* Hiệu ứng hover cho các nút */
+.pagination a:hover {
+    background-color: #1abc9c; /* Đổi nền khi hover */
+    color: #fff; /* Đổi màu chữ khi hover */
+    border-color: #1abc9c; /* Đổi màu viền khi hover */
+}
+
+/* Nút phân trang hiện tại */
+.pagination .active a {
+    background-color: #1abc9c; /* Nền xanh cho nút hiện tại */
+    color: #fff; /* Màu chữ trắng */
+    border-color: #1abc9c; /* Màu viền xanh */
+}
+.hc-team-member i {
+    margin-right: 8px; /* Khoảng cách giữa icon và nội dung */
+    font-size: 18px; /* Kích thước icon */
+    vertical-align: middle; /* Canh giữa icon với chữ */
+}
+
+.hc-team-member a {
+    text-decoration: none; /* Loại bỏ gạch chân */
+    color: #1abc9c; /* Màu mặc định cho liên kết */
+}
+
+.hc-team-member a:hover {
+    color: #16a085; /* Đổi màu khi hover */
 }
 /* team end */
 /* contact start */
@@ -1134,3 +1269,21 @@ background-position: top left;
 }
 
 /* blog end */
+/* cccd trong đặt lịch hẹn start */
+.text-danger {
+    color: red;
+    font-size: 0.875rem;
+}
+
+.text-success {
+    color: green;
+    font-size: 0.875rem;
+}
+button[disabled], html input[disabled] {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    opacity: 0.6 !important;
+}
+
+/* cccd trong đặt lịch hẹn end */
+

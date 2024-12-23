@@ -10,16 +10,8 @@
             <div class="modal-body">
                 <div class="hc-contact-box">
                     {# Chú thích: Kiểm tra số lượng đăng ký còn lại #}
-                     {% if remainingSlots > 0 %}
-                     <div><span class="font-weight-bold">Số lượt đăng ký còn lại trong ngày của phòng khám</span>:
-                        {{remainingSlots}}</div>
                     <form action="/api/client/online_registration" method="post">
-                        <div class="form-group row">
-                            <label for="id_card" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Căn cước công dân<span class="required-label">*</span></label>
-                            <div class="col-lg-9 col-md-7 col-sm-12">
-                                <input type="text" placeholder="Nhập căn cước công dân...." name="id_card" id="id_card" pattern="[0-9]{10,12}" class="require" required title="Chỉ gồm chữ số (0-9). Chiều dài từ 10 đến 12 kí tự" oninvalid="this.setCustomValidity('Chỉ gồm chữ số (0-9). Chiều dài từ 10 đến 12 kí tự')" oninput="this.setCustomValidity('')" />
-                            </div>
-                        </div>
+                        
 
                         <div class="form-group row">
                             <label for="last_name" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Họ và tên đệm<span class="required-label">*</span></label>
@@ -27,14 +19,13 @@
                                 <input type="text" placeholder="Nhập họ và tên đệm..." name="last_name" id="last_name" pattern=".{1,50}" class="require" required title="Chiều dài từ 1 đến 50 ký tự" oninvalid="this.setCustomValidity('Chiều dài từ 1 đến 50 ký tự')" oninput="this.setCustomValidity('')" />
                             </div>
                         </div>
-
+                        
                         <div class="form-group row">
                             <label for="first_name" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Tên<span class="required-label">*</span></label>
                             <div class="col-lg-9 col-md-7 col-sm-12">
                                 <input type="text" placeholder="Nhập tên...." name="first_name" id="first_name" pattern=".{1,20}" class="require" required title="Chiều dài từ 1 đến 20 ký tự" oninvalid="this.setCustomValidity('Chiều dài từ 1 đến 20 ký tự')" oninput="this.setCustomValidity('')" />
                             </div>
                         </div>
-
                         <div class="form-group row">
                             <label class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Giới tính <span class="required-label">*</span></label>
                             <div class="col-lg-9 col-md-7 col-sm-12 d-flex align-items-center">
@@ -48,28 +39,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="date_of_birth" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Ngày sinh <span class="required-label">*</span></label>
-                            <div class="col-lg-9 col-md-7 col-sm-12">
-                                <input type="date" class="require" id="date_of_birth" name="date_of_birth" required />
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Email</label>
-                            <div class="col-lg-9 col-md-7 col-sm-12">
-                                <input type="email" placeholder="Email" name="email" id="email" class="require" data-valid="email" data-error="Email should be valid." maxlength="50" oninvalid="this.setCustomValidity('Chỉ gồm chữ số (0-9). Chiều dài từ 1 đến 50 kí tự')" oninput="this.setCustomValidity('')" />
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="phone_number" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Số điện thoại <span class="required-label">*</span></label>
-                            <div class="col-lg-9 col-md-7 col-sm-12">
-                                <input type="tel" placeholder="Số điện thoại" name="phone_number" id="phone_number" pattern="[0-9]{9,10}" class="require" required title="Chỉ gồm các số (0-9). Chiều dài từ 9 đến 10 ký tự" oninvalid="this.setCustomValidity('Chỉ gồm chữ số (0-9). Chiều dài từ 9 đến 10 kí tự')" oninput="this.setCustomValidity('')" />
-                            </div>
-                        </div>
-
                         <div class="form-group row">
                             <label for="address" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Địa chỉ <span class="required-label">*</span></label>
                             <div class="col-lg-9 col-md-7 col-sm-12">
@@ -77,34 +46,264 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <input type="submit" class="hc-btn" id="cfm_btn" value="Xác nhận" style="margin-top:unset;margin-bottom:unset;" />
+                            <label for="date_of_birth" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Ngày sinh <span class="required-label">*</span></label>
+                            <div class="col-lg-9 col-md-7 col-sm-12">
+                                <input type="date" class="require" id="date_of_birth" name="date_of_birth" max="{{ today_date }}" required />
+                            </div>
                         </div>
-                        <div class="response"></div>
+                        <div class="form-group row">
+                            <label for="id_card" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Căn cước công dân<span class="required-label">*</span></label>
+                            <div class="col-lg-9 col-md-7 col-sm-12">
+                                <input type="text" placeholder="Nhập căn cước công dân..." name="id_card" id="id_card" pattern="[0-9]{10,12}" class="require" required 
+                                       title="Chỉ gồm chữ số (0-9). Chiều dài từ 10 đến 12 ký tự" oninput="validateCCCD(this.value)" />
+                                <small id="cccd_feedback" class="text-danger"></small> <!-- Phản hồi cho CCCD -->
+                            </div>
+                        </div>
+                        
+                        
+
+                        
+
+                        <div class="form-group row">
+                            <label for="email" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Email</label>
+                            <div class="col-lg-9 col-md-7 col-sm-12">
+                                <input type="email" placeholder="Email" name="email" id="email" class="require" data-valid="email" data-error="Email should be valid." maxlength="50" oninvalid="this.setCustomValidity('Chỉ gồm chữ số (0-9). Chiều dài từ 1 đến 50 kí tự')" oninput="this.setCustomValidity('')" />
+                                <small id="email_feedback" class="text-danger"></small> <!-- Phản hồi cho Email -->
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="phone_number" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Số điện thoại <span class="required-label">*</span></label>
+                            <div class="col-lg-9 col-md-7 col-sm-12">
+                                <input type="tel" placeholder="Số điện thoại" name="phone_number" id="phone_number" pattern="[0-9]{9,10}" class="require" required title="Chỉ gồm các số (0-9). Chiều dài từ 9 đến 10 ký tự" oninvalid="this.setCustomValidity('Chỉ gồm chữ số (0-9). Chiều dài từ 9 đến 10 kí tự')" oninput="this.setCustomValidity('')" />
+                                <small id="phone_number_feedback" class="text-danger"></small> <!-- Phản hồi cho Số điện thoại -->
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="registration_date" class="col-lg-3 col-md-5 col-sm-12 mt-sm-2">Ngày đăng ký <span class="required-label">*</span></label>
+                            <div class="col-lg-9 col-md-7 col-sm-12">
+                                <input type="date" id="registration_date" name="registration_date" min="{{ today_date }}" class="form-require" required onchange="checkRemainingSlots(this.value)" />
+                                <div id="calendar_info" class="mt-2">
+                                    <small class="text-muted">Số slot còn lại: <span id="remaining_slots_display">...</span></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <input type="submit" class="hc-btn" id="cfm_btn" value="Xác nhận" style="margin-top:unset;margin-bottom:unset;" disabled />
+                        </div>
+                        
                     </form>
-                    {%else%}
-                    <h5 class="text-center">Số lượt đăng ký trong ngày đã hết, xin vui lòng quay lại vào ngày mai!!!
-                    </h5>
-                    {%endif%}
 
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+<!-- Phần HTML không thay đổi -->
+
+<!-- JavaScript Bootstrap, jQuery và Flatpickr -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    // Gọi API để lấy số lượng đăng ký khám
-    fetch('/api/client/dem_dang_ki_kham')
+    // Biến toàn cục để quản lý trạng thái
+    let isCCCDValid = false;
+    let isEmailValid = false;
+    let isPhoneValid = false;
+    let hasRemainingSlots = false;
+
+    // Hàm cập nhật trạng thái nút "Xác nhận"
+    function updateSubmitButton() {
+        const submitButton = document.getElementById('cfm_btn');
+        if (isCCCDValid && isEmailValid && isPhoneValid && hasRemainingSlots) {
+            submitButton.disabled = false;
+        } else {
+            submitButton.disabled = true;
+        }
+    }
+
+    // Hàm kiểm tra định dạng email
+    function isValidEmail(email) {
+        const regex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+        return regex.test(email);
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại
+    function isValidPhone(phone) {
+        const regex = /^\d{9,10}$/;
+        return regex.test(phone);
+    }
+
+    // Hàm kiểm tra CCCD
+    function validateCCCD() {
+        const registrationDate = document.getElementById('registration_date').value;
+        const cccd = document.getElementById('id_card').value.trim();
+        const feedback = document.getElementById('cccd_feedback');
+        
+        feedback.textContent = '';
+        isCCCDValid = false; // Mặc định chưa hợp lệ
+        updateSubmitButton();
+
+        if (!registrationDate || !cccd) {
+            // Không đủ dữ liệu để kiểm tra
+            return;
+        }
+
+        if (!/^\d{10,12}$/.test(cccd)) {
+            feedback.textContent = 'CCCD phải là số có từ 10 đến 12 chữ số!';
+            return;
+        }
+
+        // Gọi API để kiểm tra CCCD
+        fetch('/api/check_cccd', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cccd: cccd, ngay_dang_ky: registrationDate }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.exists) {
+                feedback.textContent = data.message;
+                isCCCDValid = false;
+            } else {
+                feedback.textContent = '';
+                isCCCDValid = true;
+            }
+            updateSubmitButton();
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            feedback.textContent = 'Có lỗi xảy ra khi kiểm tra CCCD.';
+            isCCCDValid = false;
+            updateSubmitButton();
+        });
+    }
+
+    // Hàm kiểm tra số slot còn lại
+    function checkRemainingSlots(date) {
+        if (!date) {
+            hasRemainingSlots = false;
+            updateSubmitButton();
+            document.getElementById('remaining_slots_display').textContent = '...';
+            return;
+        }
+
+        fetch(`/api/check_slots?date=${date}`, {
+            method: 'GET',
+        })
         .then(response => response.json())
         .then(data => {
-            // Cập nhật số lượng đăng ký vào phần tử với id "remainingSlots"
-            if (data.status === 'success') {
-                document.getElementById('remainingSlots').innerText = data.count;
+            const remainingSlots = data.remainingSlots;
+            const slotsDisplay = document.getElementById('remaining_slots_display');
+            if (remainingSlots > 0) {
+                slotsDisplay.textContent = `${remainingSlots}`;
+                hasRemainingSlots = true;
             } else {
-                document.getElementById('remainingSlots').innerText = 'Không thể lấy dữ liệu';
+                slotsDisplay.textContent = 'Không còn slot';
+                hasRemainingSlots = false;
             }
+            updateSubmitButton();
         })
         .catch(error => {
-            console.error('Error fetching data:', error);
-            document.getElementById('remainingSlots').innerText = 'Lỗi khi tải dữ liệu';
+            console.error('Error:', error);
+            document.getElementById('remaining_slots_display').innerText = 'Lỗi khi tải dữ liệu';
+            hasRemainingSlots = false;
+            updateSubmitButton();
         });
+    }
+
+    // Hàm debounce để giảm số lần gọi API khi người dùng nhập liệu nhanh
+    let debounceTimeout;
+    function debounceValidateCCCD() {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            validateCCCD();
+        }, 300); // Giới hạn 300ms
+    }
+
+    // Hàm kiểm tra định dạng email và hiển thị phản hồi
+    function validateEmail() {
+        const email = document.getElementById('email').value.trim();
+        const feedback = document.getElementById('email_feedback');
+
+        if (email && !isValidEmail(email)) {
+            feedback.textContent = 'Email không hợp lệ.';
+            isEmailValid = false;
+        } else {
+            feedback.textContent = '';
+            isEmailValid = true;
+        }
+        updateSubmitButton();
+    }
+
+    // Hàm kiểm tra định dạng số điện thoại và hiển thị phản hồi
+    function validatePhone() {
+        const phone = document.getElementById('phone_number').value.trim();
+        const feedback = document.getElementById('phone_number_feedback');
+
+        if (phone && !isValidPhone(phone)) {
+            feedback.textContent = 'Số điện thoại phải là số có từ 9 đến 10 chữ số.';
+            isPhoneValid = false;
+        } else {
+            feedback.textContent = '';
+            isPhoneValid = true;
+        }
+        updateSubmitButton();
+    }
+
+    // Hàm kiểm tra toàn bộ form trước khi submit
+    function validateForm(event) {
+        // Gọi các hàm kiểm tra để cập nhật trạng thái
+        validateEmail();
+        validatePhone();
+        validateCCCD();
+
+        if (!isEmailValid || !isPhoneValid || !isCCCDValid || !hasRemainingSlots) {
+            event.preventDefault();
+            alert('Vui lòng kiểm tra lại thông tin đã nhập.');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Gắn sự kiện cho trường ngày đăng ký
+        document.getElementById('registration_date').addEventListener('change', (event) => {
+            const selectedDate = event.target.value;
+            checkRemainingSlots(selectedDate);
+            validateCCCD();
+        });
+
+        // Gắn sự kiện cho trường CCCD
+        document.getElementById('id_card').addEventListener('input', debounceValidateCCCD);
+
+        // Gắn sự kiện cho trường email
+        document.getElementById('email').addEventListener('input', validateEmail);
+
+        // Gắn sự kiện cho trường số điện thoại
+        document.getElementById('phone_number').addEventListener('input', validatePhone);
+
+        // Gắn sự kiện cho form submit
+        document.getElementById('appointmentForm').addEventListener('submit', validateForm);
+    });
+
+    // Gắn sự kiện ngăn chặn submit khi nút bị disabled
+    document.getElementById('appointmentForm').addEventListener('submit', (event) => {
+        const submitButton = document.getElementById('cfm_btn');
+        if (submitButton.disabled) {
+            event.preventDefault();
+            alert('Thông tin chưa hợp lệ. Không thể gửi form.');
+        }
+    });
 </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<style>
+
+    
+</style>
+

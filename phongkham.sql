@@ -152,4 +152,39 @@ VALUES
 -- Thêm 10 bản ghi vào bảng benh_nhan (sử dụng id từ bảng nguoi_dung)
 INSERT INTO benh_nhan (id)
 SELECT id FROM nguoi_dung WHERE id BETWEEN 1 AND 10;
-
+-- thêm 10 số sđt
+INSERT INTO sdt (so_dien_thoai, nguoi_dung_id) VALUES
+('0123456789', 1),
+('0987654321', 2),
+('0912345678', 3),
+('0934567890', 4),
+('0923456781', 5),
+('0901234567', 6),
+('0945678901', 7),
+('0976543210', 8),
+('0956789012', 9),
+('0998765432', 10);
+-- thêm 10 địa chỉ
+INSERT INTO dia_chi (dia_chi, nguoi_dung_id) VALUES
+('123 Đường ABC, Quận 1, TP.HCM', 1),
+('456 Đường DEF, Quận 2, TP.HCM', 2),
+('789 Đường GHI, Quận 3, TP.HCM', 3),
+('101 Đường JKL, Quận 4, TP.HCM', 4),
+('102 Đường MNO, Quận 5, TP.HCM', 5),
+('103 Đường PQR, Quận 6, TP.HCM', 6),
+('104 Đường STU, Quận 7, TP.HCM', 7),
+('105 Đường VWX, Quận 8, TP.HCM', 8),
+('106 Đường YZA, Quận 9, TP.HCM', 9),
+('107 Đường BCD, Quận 10, TP.HCM', 10);
+--thêm 10 email
+INSERT INTO email (email, nguoi_dung_id) VALUES
+('nguyenvana@example.com', 1),
+('tranthib@example.com', 2),
+('phamvanc@example.com', 3),
+('lethid@example.com', 4),
+('hoangthie@example.com', 5),
+('nguyenthif@example.com', 6),
+('doanhgia@example.com', 7),
+('vutuyet@example.com', 8),
+('buiduc@example.com', 9),
+('nguyenthihoa@example.com', 10);

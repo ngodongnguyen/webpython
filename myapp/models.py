@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from myapp import db
+from sqlalchemy.orm import validates
+from datetime import date
 
 
 class NguoiDung(db.Model):
@@ -9,7 +11,8 @@ class NguoiDung(db.Model):
     ho = db.Column(db.String(100), nullable=False)
     ten = db.Column(db.String(100), nullable=False)
     gioi_tinh = db.Column(db.Boolean, nullable=False)
-    cccd = db.Column(db.String(12), unique=True)
+    cccd = db.Column(db.String(12), unique=False)
+    ngay_sinh = db.Column(db.Date,nullable=False)
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
     emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
 
@@ -88,7 +91,7 @@ class DiaChi(db.Model):
 class Email(db.Model):
     __tablename__ = 'email'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=False, nullable=False)
     nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
     
     nguoi_dung = db.relationship('NguoiDung', backref='email_addresses', lazy=True)
@@ -193,18 +196,20 @@ class HoaDon(db.Model):
 
 
 
+
+
 class DangKyKham(db.Model):
     __tablename__ = 'dang_ky_kham'
     id = db.Column(db.Integer, primary_key=True)
-    ngay_dang_ky = db.Column(db.Date)
+    ngay_dang_ky = db.Column(db.Date, nullable=False)
     
-    # Liên kết với Bệnh Nhân (1 bệnh nhân có thể có nhiều đăng ký khám)
+    # Liên kết với Bệnh Nhân
     id_benh_nhan = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
     
-    # Liên kết với Y Tá (1 y tá có thể thuộc nhiều đăng ký khám)
+    # Liên kết với Y Tá
     id_y_ta = db.Column(db.Integer, db.ForeignKey('y_ta.id'), nullable=True)
     
-    # Khóa ngoại tham chiếu tới DanhSachDangKyKham (nếu cần)
+    # Khóa ngoại tham chiếu tới DanhSachDangKyKham
     danh_sach_id = db.Column(db.Integer, db.ForeignKey('danh_sach_dang_ky_kham.id'), nullable=False)
     
     # Mối quan hệ với Bệnh Nhân
@@ -216,10 +221,26 @@ class DangKyKham(db.Model):
     # Mối quan hệ với DanhSachDangKyKham
     danh_sach = db.relationship('DanhSachDangKyKham', backref='dang_ky_kham', lazy=True)
 
+    @validates('ngay_dang_ky')
+    def validate_ngay_dang_ky(self, key, value):
+        """
+        Tự động thêm vào danh sách đăng ký dựa trên ngày đăng ký.
+        """
+        danh_sach = DanhSachDangKyKham.query.filter_by(ngay_dang_ky=value).first()
+        if not danh_sach:
+            danh_sach = DanhSachDangKyKham(ngay_dang_ky=value)
+            db.session.add(danh_sach)
+            db.session.flush()  # Đảm bảo danh sách mới được thêm vào database
+        self.danh_sach_id = danh_sach.id
+        return value
+
+
 class DanhSachDangKyKham(db.Model):
     __tablename__ = 'danh_sach_dang_ky_kham'
     id = db.Column(db.Integer, primary_key=True)
+    ngay_dang_ky = db.Column(db.Date, nullable=False, unique=True)
     danh_sach = db.relationship('DangKyKham', backref='danh_sach_dang_ky_kham', lazy=True)
+
 
 
 class QuanTri(NhanVien):

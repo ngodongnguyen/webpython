@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="hc-team-tab-list text-center mb-4">
-                    <button id="prev-btn" class="btn btn-outline-secondary">&gt;Trước</button>
+                    <button id="prev-btn" class="btn btn-outline-secondary">Trước</button>
                     <div id="filter-container" class="d-inline-block">
                     <button class="btn btn-outline-primary active" data-khoa-id="">Tất cả</button>
                     <button class="btn btn-outline-primary" data-khoa-id="1">Khoa Nội</button>
@@ -120,7 +120,7 @@
                     <button class="btn btn-outline-primary" data-khoa-id="9">Khoa Xét Nghiẹm</button>
                     <button class="btn btn-outline-primary" data-khoa-id="10">Khoa Chẩn Đoán Hình Ảnh</button>
                 </div>
-                <button id="next-btn" class="btn btn-outline-secondary">Tiếp &gt;</button>
+                <button id="next-btn" class="btn btn-outline-secondary">Tiếp</button>
                 </div>
                 
                 <div class="col-lg-12">
@@ -153,7 +153,7 @@
                                     <img src="https://res.cloudinary.com/ouproject/image/upload/v1639921909/img/counter/counter1_guvgpv.png" alt="counter" />
                                 </div>
                                 <div class="hc-count-head">
-                                    <h2>Đ kí khám hằng tháng</h2>
+                                    <h2>Đăng kí khám hằng tháng</h2>
                                 </div>
                             </div>
                         </div>
@@ -380,11 +380,30 @@
                             const doctorItem = document.createElement("div");
                             doctorItem.className = "col-md-4 text-center";
                             doctorItem.innerHTML = `
-                                <div class="hc-team-member">
-                                    <img src="${doctor.avatar}" alt="${doctor.ho_ten}" class="img-fluid rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
-                                    <h3>${doctor.ho} ${doctor.ten}</h3>
-                                    <p>Khoa: ${doctor.khoa}</p>
-                                </div>
+                               
+                    <div class="hc-team-member">
+                        <img src="${doctor.avatar}" alt="${doctor.ho} ${doctor.ten}" class="img-fluid rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+                        <h3>${doctor.ho} ${doctor.ten}</h3>
+                        <p>Khoa: ${doctor.khoa}</p>
+                        <p>
+                            <i class="fas fa-phone text-success"></i>
+                            ${doctor.sdt.length > 0 
+                                ? doctor.sdt.map(phone => `<a href="tel:${phone}" class="text-primary">${phone}</a>`).join(", ") 
+                                : "Chưa có"}
+                        </p>
+                        <p>
+                            <i class="fas fa-envelope text-danger"></i>
+                            ${doctor.emails.length > 0 
+                                ? doctor.emails.map(email => `<a href="mailto:${email}" class="text-primary">${email}</a>`).join(", ") 
+                                : "Chưa có"}
+                        </p>
+                        <p>
+                            <i class="fas fa-map-marker-alt text-info"></i>
+                            ${doctor.dia_chi.length > 0 
+                                ? doctor.dia_chi.map(diaChi => `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(diaChi)}" target="_blank" class="text-primary">${diaChi}</a>`).join(", ") 
+                                : "Chưa có"}
+                        </p>
+                    </div>
                             `;
                             doctorList.appendChild(doctorItem);
                         });
