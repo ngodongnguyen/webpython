@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt,check_password_hash  
 from myapp import db
-<<<<<<< HEAD
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,BenhNhan,Email
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
@@ -11,26 +10,20 @@ from sqlalchemy.exc import IntegrityError
 import re
 
 
-=======
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
 from myapp.controller.admin.admin_controller import AdminController
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri   
->>>>>>> 99a196b010c6f4f8e8512e0288133eef8412630d
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
-    # Tạo nhân viên
 #     password="123"
 #     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-#     user = NguoiDung(ho_ten="Nhan Vien", username="nhanvien", password=hashed_password, gioi_tinh=True, cccd="987654", type="nguoi_dung")
-# # Tạo admin
-#     admin = NhanVien(ho_ten="Admin", username="admin", password=hashed_password, gioi_tinh=True, cccd="123456", type="nhan_vien")
+#     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
 # # Thêm vào cơ sở dữ liệu
-#     db.session.add(user)
 #     db.session.add(admin)
 #     db.session.commit()
 
@@ -52,30 +45,34 @@ def admin_dashboard():
     return render_template('/admin/trangchu.html')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+    username = None  # Để giữ lại tài khoản nếu có lỗi
+    error_message = None  # Khởi tạo thông báo lỗi
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        user = NhanVien.query.filter_by(username=username).first()
+        username = request.form.get('username')
+        password = request.form.get('password')
 
+        # Tìm người dùng trong cơ sở dữ liệu
+        user = NhanVien.query.filter_by(username=username).first()
+        
         if user:
-            # Kiểm tra mật khẩu đã mã hóa trong cơ sở dữ liệu
+            # Kiểm tra mật khẩu
             if bcrypt.check_password_hash(user.password, password):
                 session['username'] = user.username
                 session['user_id'] = user.id
-                if user.type == 'bac_si':  # Kiểm tra nếu user là nhân viên
-                    return redirect(url_for('main.admin_dashboard'))  # Chuyển hướng đến trang quản trị nhân viên
+
+                # Chuyển hướng tùy thuộc loại người dùng
+                if user.type == 'bac_si':
+                    return redirect(url_for('main.admin_dashboard'))
                 else:
-                # Nếu mật khẩu chính xác, đăng nhập thành công và chuyển hướng đến trang chủ
                     return redirect(url_for('main.index'))
             else:
-                # Thông báo lỗi nếu mật khẩu sai
-                flash('Mật khẩu không đúng!', 'danger')
+                error_message = 'Tài khoản hoặc mật khẩu không đúng!'
         else:
-            # Thông báo lỗi nếu tài khoản không tồn tại
-            flash('Tên tài khoản không đúng!', 'danger')
+            error_message = 'Tài khoản hoặc mật khẩu không đúng!'
+    
+    return render_template('login.html', error_message=error_message,username=username)
 
-    return render_template('login.html')
+
 
 
 # Route đăng ký
@@ -199,7 +196,6 @@ def get_counters():
             'status': 'error',
             'message': str(e)
         }), 500
-<<<<<<< HEAD
 @bp.route('/api/get_slots', methods=['GET'])
 def get_slots():
     from datetime import datetime, timedelta
@@ -332,10 +328,6 @@ def check_cccd():
         return jsonify({'exists': True, 'message': 'CCCD đã được đăng ký trong ngày này!'}), 200
 
     return jsonify({'exists': False, 'message': 'CCCD hợp lệ.'}), 200
-
-=======
-    
->>>>>>> 99a196b010c6f4f8e8512e0288133eef8412630d
 
 @bp.route('/admin/thongke', methods=['GET'])
 def admin_statistic():
