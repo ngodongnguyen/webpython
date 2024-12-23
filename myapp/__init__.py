@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 import cloudinary
 from flask_migrate import Migrate
+# from myapp import HomeView, StatisticView
 secret_key = os.urandom(24)  # Tạo một chuỗi ngẫu nhiên dài 24 byte
 # Khởi tạo SQLAlchemy
 db = SQLAlchemy()

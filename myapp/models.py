@@ -244,25 +244,4 @@ class ThongKe(db.Model):
     quan_tri = db.relationship('QuanTri', backref='thong_ke', lazy=True)
 
 
-# if __name__=="__main__":
-#     with create_app.app_context():
-#         # db.create_all()
-#         # c1 = Category(name="Mobile")
-#         # c2 = Category(name="Laptop")
-#         # c3 = Category(name="Tablet")
-#         # db.session.add_all([c1,c2,c3])
-#         # db.session.commit()
-#         # import json
-#         # with open('data/products.json', encoding='utf-8') as f:
-#         #     products = json.load(f)
-#         #     for p in products:
-#         #         prod = Product(**p)
-#         #         db.session.add(prod)
 
-#         import hashlib
-
-#         password = str(hashlib.md5("123".encode('utf-8')).hexdigest())
-
-#         u = NguoiDung(name="Hau", username="user", password=password)
-#         db.session.add(u)
-#         db.session.commit()
