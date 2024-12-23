@@ -80,7 +80,7 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <h4 class="text-center">Quản lý</h4>
-        <a href="#" id="lich">Đặt Lịch</a>
+        <a href="#" id="lich">Lập danh sách khám</a>
         <a href="#" id="benhnhan">Bệnh Nhân</a>
         <a href="#" id="benhan">Bệnh Án</a>
         <a href="#" id="danhmuc">Danh Mục</a>
@@ -95,13 +95,16 @@
             <a href="#" id="listBacSi" class="ms-3">Bác Sĩ</a>
         </div>
         <a href="#" id="taikhoan">Tài Khoản</a>
-        <a href="#" id="thongke">Thống Kê</a>
+        <a href="{{ url_for('main.admin_statistic') }}" id="thongke">Thống Kê</a>
+        <!-- <a href="{{ url_for('main.admin_statistic') }}" class="btn btn-primary">Thống Kê</a> -->
     </nav>
 
     <!-- Main Content -->
     <div class="content">
         <div id="content">
             <!-- Nội dung bảng sẽ được thêm vào đây -->
+            <a href="{{ url_for('main.logout') }}">Đăng xuất</a>
+
         </div>
     </div>
 </div>

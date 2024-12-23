@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt
 from myapp import db
+<<<<<<< HEAD
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,BenhNhan,Email
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
@@ -10,6 +11,12 @@ from sqlalchemy.exc import IntegrityError
 import re
 
 
+=======
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
+from myapp.controller.admin.admin_controller import AdminController
+import json
+from myapp.controller.client.client_controller import get_doctor_info as gdri   
+>>>>>>> 99a196b010c6f4f8e8512e0288133eef8412630d
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
@@ -38,24 +45,25 @@ def index():
     except Exception as e:
         # Handle potential errors
         return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
-@bp.route('/admin/trangchu', methods=['GET', 'POST'])
+@bp.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
+    # if not session.get('username'):  # Kiểm tra người dùng đã đăng nhập
+    #     return redirect(url_for('main.login'))
     return render_template('/admin/trangchu.html')
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        # Kiểm tra xem người dùng có tồn tại trong cơ sở dữ liệu không
-        user = NguoiDung.query.filter_by(username=username).first()
+        
+        user = NhanVien.query.filter_by(username=username).first()
 
         if user:
             # Kiểm tra mật khẩu đã mã hóa trong cơ sở dữ liệu
             if bcrypt.check_password_hash(user.password, password):
                 session['username'] = user.username
                 session['user_id'] = user.id
-                if user.type == 'nhan_vien':  # Kiểm tra nếu user là nhân viên
+                if user.type == 'bac_si':  # Kiểm tra nếu user là nhân viên
                     return redirect(url_for('main.admin_dashboard'))  # Chuyển hướng đến trang quản trị nhân viên
                 else:
                 # Nếu mật khẩu chính xác, đăng nhập thành công và chuyển hướng đến trang chủ
@@ -191,6 +199,7 @@ def get_counters():
             'status': 'error',
             'message': str(e)
         }), 500
+<<<<<<< HEAD
 @bp.route('/api/get_slots', methods=['GET'])
 def get_slots():
     from datetime import datetime, timedelta
@@ -324,4 +333,10 @@ def check_cccd():
 
     return jsonify({'exists': False, 'message': 'CCCD hợp lệ.'}), 200
 
+=======
+    
+>>>>>>> 99a196b010c6f4f8e8512e0288133eef8412630d
 
+@bp.route('/admin/thongke', methods=['GET'])
+def admin_statistic():
+    return render_template('admin/thongke.html')
