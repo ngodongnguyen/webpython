@@ -1,31 +1,40 @@
-from flask import Flask,session
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 import os
 import cloudinary
+from myapp.extensions import db, migrate
+from flask_admin import Admin
 from flask_migrate import Migrate
-# from myapp import HomeView, StatisticView
-secret_key = os.urandom(24)  # Tạo một chuỗi ngẫu nhiên dài 24 byte
-# Khởi tạo SQLAlchemy
-db = SQLAlchemy()
-migrate = Migrate(db)
+from flask_sqlalchemy import SQLAlchemy
+
+# Cloudinary config
 CLOUD_NAME = 'ouweb'
 API_KEY = '899316619339996'
 API_SECRET = 'gXGG4apFKY4xJ7xRk0UM2WAdGyA'
-cloudinary.config(cloud_name=CLOUD_NAME, api_key=API_KEY, api_secret=API_SECRET,secure=True)
+cloudinary.config(cloud_name=CLOUD_NAME, api_key=API_KEY, api_secret=API_SECRET, secure=True)
+
+# Secret key
+secret_key = os.urandom(24)
+
 def create_app():
     app = Flask(__name__)
     app.secret_key = secret_key
-    # Cấu hình kết nối cơ sở dữ liệu MySQL
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Ngodongnguyen2004?@localhost/PhongY'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    # Khởi tạo SQLAlchemy với app
-    db.init_app(app)
-    from myapp import models  # Import models after app and db are initialized
-    # Tạo các bảng trong cơ sở dữ liệu (Chỉ dùng khi phát triển)
-    with app.app_context():
-        db.create_all()  # Tạo bảng từ tất cả các mô hình đã định nghĩa
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    # Chuyển import vào trong hàm để tránh import vòng
+    # Initialize extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    # Import models (sau khi khởi tạo db)
+    with app.app_context():
+        from myapp.models import NhanVien  # Import model ở đây
+
+        # Flask-Admin
+        from myapp.view.admin.human.y_ta import NurseView
+        admin = Admin(app, name="Phòng mạch", template_mode="bootstrap4")
+        admin.add_view(NurseView(NhanVien, db.session, name="Quản lý Y tá"))
+
+    # Đăng ký route (nếu có)
     from myapp import routes
     app.register_blueprint(routes.bp)
 

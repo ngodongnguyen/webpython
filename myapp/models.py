@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from myapp import db
+from myapp.extensions import db
 from sqlalchemy.orm import validates
 from datetime import date
 
