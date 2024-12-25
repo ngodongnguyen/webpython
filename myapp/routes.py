@@ -38,7 +38,7 @@ def index():
     except Exception as e:
         # Handle potential errors
         return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
-@bp.route('/admin/dashboard', methods=['GET', 'POST'])
+@bp.route('/admin', methods=['GET', 'POST'])
 def admin_dashboard():
     # if not session.get('username'):  # Kiểm tra người dùng đã đăng nhập
     #     return redirect(url_for('main.login'))
@@ -328,7 +328,11 @@ def check_cccd():
         return jsonify({'exists': True, 'message': 'CCCD đã được đăng ký trong ngày này!'}), 200
 
     return jsonify({'exists': False, 'message': 'CCCD hợp lệ.'}), 200
+@bp.route('/list_nurses')
+def list_nurses():
+    nurses = NhanVien.query.filter_by(type='y_ta').all()
+    return render_template('trangchu.html', nurses=nurses)
 
-@bp.route('/admin/thongke', methods=['GET'])
+@bp.route('/admin/statistic')
 def admin_statistic():
-    return render_template('admin/thongke.html')
+    return render_template('admin_statistic.html')

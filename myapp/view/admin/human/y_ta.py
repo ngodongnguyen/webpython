@@ -3,6 +3,8 @@ from wtforms import validators, StringField, DateField, TelField, FileField
 import cloudinary.uploader
 from myapp.models import NhanVien, Sdt, DiaChi, Email
 from myapp.extensions import db
+from flask_admin import Admin
+from myapp.view.home_view import HomeView
 
 
 class NurseView(ModelView):
@@ -67,3 +69,6 @@ class NurseView(ModelView):
     column_formatters = {
         'gioi_tinh': _format_gender,
     }
+    
+admin = Admin(name='Phòng mạch', template_mode='bootstrap4', index_view=HomeView())
+admin.add_view(NurseView(NhanVien, db.session, name="Quản lý Y Tá"))

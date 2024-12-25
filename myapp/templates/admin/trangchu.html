@@ -91,11 +91,11 @@
             <span class="float-end"><i class="bi bi-chevron-down"></i></span>
             Nhân Viên</a>
         <div class="collapse" id="employeeCollapse">
-            <a href="#" id="listYta" class="ms-3">Y Tá</a>
+            <a href="{{ url_for('main.list_nurses') }}" id="listYta" class="ms-3">Y Tá</a>
             <a href="#" id="listBacSi" class="ms-3">Bác Sĩ</a>
         </div>
         <a href="#" id="taikhoan">Tài Khoản</a>
-        <a href="{{ url_for('main.admin_statistic') }}" id="thongke">Thống Kê</a>
+        <a href="{{ url_for('main.admin_statistic') }}">Thống Kê</a>
         <!-- <a href="{{ url_for('main.admin_statistic') }}" class="btn btn-primary">Thống Kê</a> -->
     </nav>
 
@@ -111,7 +111,7 @@
 
 <!-- Thêm JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-<script>
+<!-- <script>
     // Dữ liệu mẫu để hiển thị
     let ytaData = [
         { ma: 21, ten: "Hoàng Ái Ly", hoDem: "Nguyễn", ngaySinh: "2021-12-06", gioiTinh: "FEMALE", cccd: "01723456789", diaChi: "375B Tổ 3" },
@@ -276,6 +276,45 @@
     document.getElementById('content').innerHTML = `<p>Vui lòng chọn mục từ menu bên trái.</p>`;
 };
 
-</script>
+</script> -->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Thao tác</th>
+                <th>Mã</th>
+                <th>Tên</th>
+                <th>Họ và tên đệm</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Căn cước công dân</th>
+                <th>Địa chỉ</th>
+            </tr>
+        </thead>
+        <tbody id="ytaTableBody">
+            {% for nurse in nurses %}
+                <tr>
+                    <td>
+                        <i class="bi bi-pencil-square table-icon"></i>
+                        <i class="bi bi-eye table-icon"></i>
+                        <i class="bi bi-trash table-icon"></i>
+                    </td>
+                    <td>{{ nurse.id }}</td>
+                    <td>{{ nurse.ten }}</td>
+                    <td>{{ nurse.ho }}</td>
+                    <td>{{ nurse.ngay_sinh }}</td>
+                    <td>{{ 'Nam' if nurse.gioi_tinh else 'Nữ' }}</td>
+                    <td>{{ nurse.cccd }}</td>
+                    <td>{{ nurse.dia_chi }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Không có dữ liệu.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
