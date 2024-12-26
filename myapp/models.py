@@ -3,6 +3,9 @@ from sqlalchemy.orm import relationship
 from myapp.extensions import db
 from sqlalchemy.orm import validates
 from datetime import date
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.ext.hybrid import hybrid_property
 
 
 class NguoiDung(db.Model):
@@ -20,7 +23,7 @@ class NguoiDung(db.Model):
     dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True)
 
 
-class NhanVien(NguoiDung):
+class NhanVien(UserMixin,NguoiDung):
     __tablename__ = 'nhan_vien'
     id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -31,22 +34,36 @@ class NhanVien(NguoiDung):
         'polymorphic_identity': 'nhan_vien',
         'polymorphic_on': type
     }
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 class BacSi(NhanVien):
     __tablename__ = 'bac_si'
     id = db.Column(db.Integer, db.ForeignKey('nhan_vien.id'), primary_key=True)
     khoa_id = db.Column(db.Integer, db.ForeignKey('khoa.id'))  # Liên kết với bảng Khoa
+    khoa = db.relationship('Khoa', backref='bac_si_list', lazy=True)  # Mối quan hệ với Khoa
+
     __mapper_args__ = {
         'polymorphic_identity': 'bac_si',
     }
     phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='bac_si_phieu_kham', lazy=True)
+    # Quan hệ với Sdt, DiaChi, Email thông qua `NguoiDung`
+    so_dien_thoai_s = db.relationship('Sdt', backref='bac_si_sdt', lazy=True)  # Đổi tên backref
+    dia_chi_s = db.relationship('DiaChi', backref='bac_si_dia_chi', lazy=True)  # Đổi tên backref
+    email_addresses = db.relationship('Email', backref='bac_si_email', lazy=True)  # Đổi tên backref
+    @hybrid_property
+    def full_name(self):
+        return f"{self.ho} {self.ten}"
 class Khoa(db.Model):
     __tablename__ = 'khoa'
     id = db.Column(db.Integer, primary_key=True)
     ten_khoa = db.Column(db.String(100), nullable=False)  # Tên khoa
     mo_ta = db.Column(db.String(255), nullable=True)  # Mô tả về khoa
-    bac_sis = db.relationship('BacSi', backref='khoa', lazy=True)  # Liên kết đến bác sĩ
+    bac_sis = db.relationship('BacSi', backref='danh_sach_bac_si', lazy=True)  # Liên kết đến bác sĩ
 
 
 class ThuNgan(NhanVien):

@@ -70,5 +70,3 @@ class NurseView(ModelView):
         'gioi_tinh': _format_gender,
     }
     
-admin = Admin(name='Phòng mạch', template_mode='bootstrap4', index_view=HomeView())
-admin.add_view(NurseView(NhanVien, db.session, name="Quản lý Y Tá"))

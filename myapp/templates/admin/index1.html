@@ -1,0 +1,10 @@
+{% extends 'admin/base.html' %}
+
+{% block body %}
+<h1>Welcome to the Admin Dashboard</h1>
+<ul>
+    {% for view in admin_views %}
+        <li><a href="{{ view.url }}">{{ view.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

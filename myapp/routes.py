@@ -8,12 +8,15 @@ from sqlalchemy import func
 from datetime import datetime,date
 from sqlalchemy.exc import IntegrityError
 import re
-
-
+from flask_login import login_user, logout_user, login_required
 from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
 from myapp.controller.admin.admin_controller import AdminController
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri   
+from flask_admin import helpers
+from myapp import admin
+
+
 bcrypt = Bcrypt()
 
 bp = Blueprint('main', __name__)
@@ -38,39 +41,35 @@ def index():
     except Exception as e:
         # Handle potential errors
         return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
-@bp.route('/admin', methods=['GET', 'POST'])
-def admin_dashboard():
-    # if not session.get('username'):  # Kiểm tra người dùng đã đăng nhập
-    #     return redirect(url_for('main.login'))
-    return render_template('/admin/trangchu.html')
+# @bp.route('/admin', methods=['GET', 'POST'])
+# def admin_dashboard():
+#     # if not session.get('username'):  # Kiểm tra người dùng đã đăng nhập
+#     #     return redirect(url_for('main.login'))
+#     print("Rendering admin/index.html")
+#     admin_views = admin._views
+#     return render_template('admin/index.html', admin_views=admin_views)
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    username = None  # Để giữ lại tài khoản nếu có lỗi
-    error_message = None  # Khởi tạo thông báo lỗi
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Tìm người dùng trong cơ sở dữ liệu
         user = NhanVien.query.filter_by(username=username).first()
-        
-        if user:
-            # Kiểm tra mật khẩu
-            if bcrypt.check_password_hash(user.password, password):
-                session['username'] = user.username
-                session['user_id'] = user.id
-
-                # Chuyển hướng tùy thuộc loại người dùng
-                if user.type == 'bac_si':
-                    return redirect(url_for('main.admin_dashboard'))
-                else:
-                    return redirect(url_for('main.index'))
-            else:
-                error_message = 'Tài khoản hoặc mật khẩu không đúng!'
+        if user:  # Kiểm tra mật khẩu
+            login_user(user)  # Đăng nhập người dùng
+            flash('Đăng nhập thành công!', 'success')
+            return redirect(url_for('admin.index'))  # Chuyển hướng tới trang Admin
         else:
-            error_message = 'Tài khoản hoặc mật khẩu không đúng!'
-    
-    return render_template('login.html', error_message=error_message,username=username)
+            flash('Tài khoản hoặc mật khẩu không chính xác.', 'danger')
+
+    return render_template('login.html')
+@bp.route('/admin/debug', methods=['GET'])
+def admin_debug():
+    for view in admin._views:
+        print(f"View Name: {view.name}, URL: {view.url}, Accessible: {view.is_accessible()}")
+    return "Check console for debug output"
+
+
 
 
 
