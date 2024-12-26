@@ -1,0 +1,21 @@
+.form-control {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+}
+
+select {
+    width: 100% !important;
+    height: auto !important;
+    font-size: 16px !important;
+    background-color: white !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+select:focus {
+    outline: none !important;
+    border-color: #007bff !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important;
+}

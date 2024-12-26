@@ -26,7 +26,7 @@ def index():
 #     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
 #     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
-# # Thêm vào cơ sở dữ liệu
+# Thêm vào cơ sở dữ liệu
 #     db.session.add(admin)
 #     db.session.commit()
 
@@ -41,13 +41,7 @@ def index():
     except Exception as e:
         # Handle potential errors
         return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
-# @bp.route('/admin', methods=['GET', 'POST'])
-# def admin_dashboard():
-#     # if not session.get('username'):  # Kiểm tra người dùng đã đăng nhập
-#     #     return redirect(url_for('main.login'))
-#     print("Rendering admin/index.html")
-#     admin_views = admin._views
-#     return render_template('admin/index.html', admin_views=admin_views)
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -335,3 +329,6 @@ def list_nurses():
 @bp.route('/admin/statistic')
 def admin_statistic():
     return render_template('admin_statistic.html')
+@bp.context_processor
+def inject_custom_css():
+    return dict(admin_css='/static/css/admin_custom.css')

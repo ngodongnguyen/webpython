@@ -16,7 +16,7 @@ class NguoiDung(db.Model):
     gioi_tinh = db.Column(db.Boolean, nullable=False)
     cccd = db.Column(db.String(12), unique=False)
     ngay_sinh = db.Column(db.Date,nullable=False)
-    sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True)
+    sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True,cascade="all, delete-orphan")
     emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
 
     # Liên kết đến địa chỉ
@@ -52,9 +52,6 @@ class BacSi(NhanVien):
     }
     phieu_kham_benh = db.relationship('PhieuKhamBenh', backref='bac_si_phieu_kham', lazy=True)
     # Quan hệ với Sdt, DiaChi, Email thông qua `NguoiDung`
-    so_dien_thoai_s = db.relationship('Sdt', backref='bac_si_sdt', lazy=True)  # Đổi tên backref
-    dia_chi_s = db.relationship('DiaChi', backref='bac_si_dia_chi', lazy=True)  # Đổi tên backref
-    email_addresses = db.relationship('Email', backref='bac_si_email', lazy=True)  # Đổi tên backref
     @hybrid_property
     def full_name(self):
         return f"{self.ho} {self.ten}"
