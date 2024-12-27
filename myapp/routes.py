@@ -26,7 +26,7 @@ def index():
 #     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
 #     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
-# Thêm vào cơ sở dữ liệu
+# # Thêm vào cơ sở dữ liệu
 #     db.session.add(admin)
 #     db.session.commit()
 

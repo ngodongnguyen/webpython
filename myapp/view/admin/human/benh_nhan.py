@@ -2,7 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for
 from flask_login import current_user
 from myapp.extensions import db
-from myapp.models import BacSi, Sdt, DiaChi, Email,NguoiDung
+from myapp.models import BacSi, Sdt, DiaChi, Email,NguoiDung,BenhNhan
 from sqlalchemy import or_
 from flask import request
 from wtforms import StringField, SelectField
@@ -27,8 +27,8 @@ def remove_accents(input_str):
     nfkd_form = unicodedata.normalize('NFKD', input_str)
     return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
-class DoctorView(ModelView):
-    form_columns = ['ho', 'ten', 'gioi_tinh', 'ngay_sinh', 'cccd', 'username', 'password']
+class BenhNhanView(ModelView):
+    form_columns = ['ho', 'ten', 'gioi_tinh', 'ngay_sinh', 'cccd']
 
     # Đảm bảo sử dụng mối quan hệ trong `inline_models`
     inline_models = [
@@ -41,10 +41,6 @@ class DoctorView(ModelView):
     form_overrides = {
         'gioi_tinh': SelectField  # Dùng SelectField cho `gioi_tinh`
     }
-    form_extra_fields = {
-        'username': StringField('Username', [DataRequired(), Length(min=5, max=50)]),
-        'password': PasswordField('Password', [DataRequired(), Length(min=8, max=100)])
-    }
     # Cập nhật form_choices để sử dụng SelectField
     form_choices = {
     'gioi_tinh': [(True, 'Nam'), (False, 'Nữ')]
@@ -52,8 +48,7 @@ class DoctorView(ModelView):
 
 
     column_list = [
-        'id', 'ho', 'ten', 'gioi_tinh', 'ngay_sinh', 'cccd',
-        'khoa.ten_khoa', 'so_dien_thoai', 'dia_chi', 'email'
+        'id', 'ho', 'ten', 'gioi_tinh', 'ngay_sinh', 'cccd', 'so_dien_thoai', 'dia_chi', 'email'
     ]
 
     column_labels = {
@@ -63,14 +58,13 @@ class DoctorView(ModelView):
         'gioi_tinh': 'Giới tính',
         'ngay_sinh': 'Ngày sinh',
         'cccd': 'CCCD',
-        'khoa.ten_khoa': 'Khoa',
         'so_dien_thoai': 'Số điện thoại',
         'dia_chi': 'Địa chỉ',
         'email': 'Email',
     }
 
     column_searchable_list = [
-        'ho', 'ten', 'cccd',  # Các cột từ bảng BacSi
+        'ho', 'ten', 'cccd',  # Các cột từ bảng BenhNhan
         'so_dien_thoai_s.so_dien_thoai',  # Số điện thoại từ bảng liên kết
         'email_addresses.email',         # Email từ bảng liên kết
         'dia_chi_s.dia_chi'              # Địa chỉ từ bảng liên kết
@@ -80,20 +74,21 @@ class DoctorView(ModelView):
         """
         Override default query to add custom search behavior.
         """
-        query = super(DoctorView, self).get_query()
+        query = super(BenhNhanView, self).get_query()
         search_term = request.args.get('search')  # Lấy từ khóa tìm kiếm từ query string
 
         if search_term:  # Chỉ xử lý nếu có từ khóa tìm kiếm
             normalized_term = remove_accents(search_term)  # Loại bỏ dấu
-            query = query.join(Sdt, BacSi.id == Sdt.nguoi_dung_id, isouter=True) \
-                         .join(DiaChi, BacSi.id == DiaChi.nguoi_dung_id, isouter=True) \
-                         .join(Email, BacSi.id == Email.nguoi_dung_id, isouter=True) \
+            query = query.join(Sdt, BenhNhan.id == Sdt.nguoi_dung_id, isouter=True) \
+                         .join(DiaChi, BenhNhan.id == DiaChi.nguoi_dung_id, isouter=True) \
+                         .join(Email, BenhNhan.id == Email.nguoi_dung_id, isouter=True) \
                          .filter(
                              or_(
-                                 BacSi.ho.ilike(f"%{search_term}%"),
-                                 BacSi.ten.ilike(f"%{search_term}%"),
-                                 BacSi.ho.ilike(f"%{normalized_term}%"),
-                                 BacSi.ten.ilike(f"%{normalized_term}%"),
+                                 BenhNhan.ho.ilike(f"%{search_term}%"),
+                                 BenhNhan.ten.ilike(f"%{search_term}%"),
+                                 BenhNhan.ho.ilike(f"%{normalized_term}%"),
+                                 BenhNhan.ten.ilike(f"%{normalized_term}%"),
+                                BenhNhan.cccd.ilike(f"%{search_term}%"),  # Tìm kiếm theo cccd
                                  Sdt.so_dien_thoai.ilike(f"%{search_term}%"),
                                  DiaChi.dia_chi.ilike(f"%{search_term}%"),
                                  Email.email.ilike(f"%{search_term}%")
@@ -102,20 +97,7 @@ class DoctorView(ModelView):
             print(query.all())  # Debug dữ liệu
 
         return query
-    def on_model_change(self, form, model, is_created):
-        try:
-            print(f"=== START DEBUG on_model_change ===")
-            print(f"Model before saving: {model} (Type: {type(model)})")
-            print(f"Model type: {model.type}")
-            print(f"Is BacSi instance? {isinstance(model, BacSi)}")
-            # Bước 1: Lưu các trường chính (BacSi)
-            db.session.add(model)
-            db.session.flush()  # Flush để lấy ID mà không commit
-            print(f"Model ID after flush: {model.id}")
-        except Exception as e:
-            print(f"Error occurred: {e}")
-            db.session.rollback()
-            raise
+
 
 
 

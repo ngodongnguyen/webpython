@@ -7,13 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 from myapp.extensions import db, migrate
 from myapp.view.home_view import HomeView
 from flask_login import LoginManager
-from myapp.models import NhanVien,YTa,BacSi
+from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham
 from myapp.view.admin.human.y_ta import NurseView
 from flask_admin.contrib.sqla import ModelView
 from myapp.view.admin.human.nhan_vien import EmployeeView
 from myapp.view.admin.human.bac_si import DoctorView
-
-
+from myapp.view.admin.human.benh_nhan import BenhNhanView
+from myapp.view.admin.khoa import KhoaView
+from myapp.view.admin.main_usecase.dat_lich_kham import DangKyKhamView
 class SimpleView(ModelView):
     pass
 
@@ -62,16 +63,19 @@ def create_app():
     return app
 def initAdmin():
     try:
-        admin.add_view(NurseView(YTa, db.session, name="Y tá"))
+        admin.add_view(NurseView(YTa, db.session, name="Y tá",endpoint="yta"))
         print("Y tá view added successfully")
     except Exception as e:
         print(f"Error adding Y tá view: {e}")
 
     try:
-        admin.add_view(DoctorView(BacSi, db.session, name="Quản lý Bác Sĩ"))
+        admin.add_view(DoctorView(BacSi, db.session, name="Bác Sĩ"))
         print("Doctor view added successfully")
     except Exception as e:
         print(f"Error adding Doctor view: {e}")
+    admin.add_view(BenhNhanView(BenhNhan, db.session,name='Bệnh Nhân'))
+    admin.add_view(KhoaView(Khoa, db.session, name='Quản lý khoa'))
+    admin.add_view(DangKyKhamView(DangKyKham, db.session, name='Quản lý lịch khám'))
     print(f"Views in Admin: {[view.name for view in admin._views]}")
 
 

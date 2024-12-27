@@ -17,17 +17,21 @@ class NguoiDung(db.Model):
     cccd = db.Column(db.String(12), unique=False)
     ngay_sinh = db.Column(db.Date,nullable=False)
     sdt = db.relationship('Sdt', backref='nguoi_dung_s', lazy=True,cascade="all, delete-orphan")
-    emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True)
+    emails = db.relationship('Email', backref='nguoi_dung_s', lazy=True,cascade="all, delete-orphan")
 
     # Liên kết đến địa chỉ
-    dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True)
+    dia_chi = db.relationship('DiaChi', backref='nguoi_dung_s', lazy=True,cascade="all, delete-orphan")
+    __mapper_args__ = {
+        'polymorphic_identity': 'nguoi_dung',  # Định danh lớp cơ sở
+        'polymorphic_on': None                 # Không cần `type` ở đây
+    }
 
 
 class NhanVien(UserMixin,NguoiDung):
     __tablename__ = 'nhan_vien'
     id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     avatar = db.Column(db.String(255), nullable=True)  # Thêm cột avatar
     type = db.Column(db.String(20), nullable=False)  # Phân loại 'bac_si', 'y_ta', 'thu_ngan'
     __mapper_args__ = {
@@ -83,17 +87,23 @@ class YTa(NhanVien):
 
 class BenhNhan(NguoiDung):
     __tablename__ = 'benh_nhan'
-    id = db.Column(db.Integer,db.ForeignKey('nguoi_dung.id'), primary_key=True,)
+    id = db.Column(
+        db.Integer,
+        db.ForeignKey('nguoi_dung.id', ondelete='CASCADE'),  # Kích hoạt xóa tự động
+        primary_key=True
+    )
     __mapper_args__ = {
         'polymorphic_identity': 'benh_nhan',
     }
+
 class Sdt(db.Model):
     __tablename__ = 'sdt'
     id = db.Column(db.Integer, primary_key=True)
     so_dien_thoai = db.Column(db.String(15), nullable=False)
     nguoi_dung_id = db.Column(db.Integer, db.ForeignKey('nguoi_dung.id'), nullable=False)
     
-    nguoi_dung = db.relationship('NguoiDung', backref='so_dien_thoai_s', lazy=True)
+    nguoi_dung = db.relationship('NguoiDung', backref='so_dien_thoai_s', lazy=True  # Tắt kiểm tra kiểu
+)
 class DiaChi(db.Model):
     __tablename__ = 'dia_chi'
     id = db.Column(db.Integer, primary_key=True)
