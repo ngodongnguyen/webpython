@@ -22,17 +22,17 @@ bcrypt = Bcrypt()
 bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
-#     password="123"
-#     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    #     password="123"
+    #     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-#     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
-# # Thêm vào cơ sở dữ liệu
-#     db.session.add(admin)
-#     db.session.commit()
+    #     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
+    # # Thêm vào cơ sở dữ liệu
+    #     db.session.add(admin)
+    #     db.session.commit()
 
     try:
         # Fetch the total number of registrations
-        total_slots = 30  # Example: Total number of slots available per day
+        total_slots = 40  # Example: Total number of slots available per day
         registered_count = DangKyKham.query.count()
         remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
 

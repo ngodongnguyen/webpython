@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey,Enum
 from sqlalchemy.orm import relationship
 from myapp.extensions import db
 from sqlalchemy.orm import validates
@@ -178,25 +178,15 @@ class ChiTietDonThuoc(db.Model):
 class Thuoc(db.Model):
     __tablename__ = 'thuoc'
     id = db.Column(db.Integer, primary_key=True)
-    ten_thuoc = db.Column(db.String(100))
-    so_luong = db.Column(db.Integer)
-    gia_tien = db.Column(db.Float)
-class DanhMucThuoc(db.Model):
-    __tablename__ = 'danh_muc_thuoc'
-    thuoc_id = db.Column(db.Integer, db.ForeignKey('thuoc.id'), primary_key=True)
-    loai_thuoc_id = db.Column(db.Integer, db.ForeignKey('loai_thuoc.id'), primary_key=True)
-    gia_thuoc = db.Column(db.Float)
-    huong_dan_su_dung=db.Column(db.String(255))
-    # Mối quan hệ với ChiTietDonThuoc (chi tiết đơn thuốc)
-    thuoc = db.relationship('Thuoc', backref='danh_muc_thuoc', lazy=True)
-    loaiThuoc = db.relationship('LoaiThuoc', backref='danh_muc_thuoc', lazy=True)
+    ten_thuoc = db.Column(db.String(100), nullable=False)
+    loai = db.Column(Enum('Chai', 'Viên', 'Vỉ', name='loai_thuoc_enum'), nullable=False)  # Loại thuốc: Chai, Viên, Vỉ
+    so_luong = db.Column(db.Integer, nullable=False)
+    gia_tien = db.Column(db.Float, nullable=False)
+    huong_dan_su_dung = db.Column(db.String(255), nullable=True)  # Hướng dẫn sử dụng (có thể để trống)
 
-
-class LoaiThuoc(db.Model):
-    __tablename__ = 'loai_thuoc'
-    id = db.Column(db.Integer, primary_key=True)
-    ten_loai = db.Column(db.String(100))
-
+    def __repr__(self):
+        return (f"<Thuoc(id={self.id}, ten_thuoc={self.ten_thuoc}, loai={self.loai}, "
+                f"so_luong={self.so_luong}, gia_tien={self.gia_tien}, huong_dan_su_dung={self.huong_dan_su_dung})>")
 
 class HoaDon(db.Model):
     __tablename__ = 'hoa_don'
