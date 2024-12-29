@@ -1,0 +1,35 @@
+{% extends 'admin/model/edit.html' %}
+
+{% block head_css %}
+{{ super() }}
+<style>
+    .field-list .form-inline {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .field-list .form-inline select,
+    .field-list .form-inline input {
+        flex: 1;
+        min-width: 100px;
+    }
+</style>
+{% endblock %}
+
+{% block tail_scripts %}
+{{ super() }}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addButton = document.querySelector(".add-row"); // Nút thêm thuốc (auto-generated)
+        const fieldList = document.querySelector(".field-list");
+
+        if (addButton && fieldList) {
+            addButton.addEventListener("click", function () {
+                const newField = fieldList.querySelector(".form-inline").cloneNode(true);
+                fieldList.appendChild(newField);
+            });
+        }
+    });
+</script>
+{% endblock %}

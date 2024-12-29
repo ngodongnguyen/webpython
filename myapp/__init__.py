@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from myapp.extensions import db, migrate
 from myapp.view.home_view import HomeView
 from flask_login import LoginManager
-from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham,Thuoc
+from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham,Thuoc,PhieuKhamBenh,ThongKe,HoaDon
 from myapp.view.admin.human.y_ta import NurseView
 from flask_admin.contrib.sqla import ModelView
 from myapp.view.admin.human.nhan_vien import EmployeeView
@@ -16,6 +16,8 @@ from myapp.view.admin.human.benh_nhan import BenhNhanView
 from myapp.view.admin.khoa import KhoaView
 from myapp.view.admin.main_usecase.dat_lich_kham import DangKyKhamView
 from myapp.view.admin.category.thuoc import ThuocView
+from myapp.view.admin.main_usecase.phieu_kham_benh import PhieuKhamBenhView
+from myapp.view.admin.main_usecase.thong_ke import ThongKeView
 class SimpleView(ModelView):
     pass
 
@@ -78,6 +80,8 @@ def initAdmin():
     admin.add_view(KhoaView(Khoa, db.session, name='Quản lý khoa'))
     admin.add_view(DangKyKhamView(DangKyKham, db.session, name='Quản lý lịch khám'))
     admin.add_view(ThuocView(Thuoc, db.session,name='Thuốc'))
+    admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh"))
+    admin.add_view(ThongKeView(name="Thống Kê", endpoint='thong_ke'))
 
     print(f"Views in Admin: {[view.name for view in admin._views]}")
 
