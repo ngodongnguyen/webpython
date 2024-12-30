@@ -1,9 +1,9 @@
 from flask import flash, redirect, url_for
 from flask_admin import BaseView, expose
 from flask_login import current_user
-from myapp.models import HoaDon
+from myapp.models import HoaDon, PhieuKhamBenh, ChiTietDonThuoc, Thuoc
 from myapp.extensions import db
-from sqlalchemy import extract, func,and_
+from sqlalchemy import extract, func, and_
 
 class ThongKeView(BaseView):
     @expose('/')
@@ -19,7 +19,16 @@ class ThongKeView(BaseView):
                 extract('month', HoaDon.ngay_tinh_tien) <= 12  # Chỉ lấy dữ liệu tháng hợp lệ
             )).group_by(extract('month', HoaDon.ngay_tinh_tien)).all()
 
-            # Xử lý dữ liệu để đảm bảo đủ 12 tháng
+            # Thống kê tần suất sử dụng các thuốc theo tháng
+            thuoc_tan_suat = db.session.query(
+                extract('month', PhieuKhamBenh.ngay_kham).label('thang'),
+                Thuoc.ten_thuoc,
+                func.sum(ChiTietDonThuoc.so_luong_thuoc).label('tong_so_luong')
+            ).select_from(PhieuKhamBenh).join(ChiTietDonThuoc, PhieuKhamBenh.id == ChiTietDonThuoc.phieu_kham_id) \
+            .join(Thuoc, ChiTietDonThuoc.thuoc_id == Thuoc.id) \
+            .group_by(extract('month', PhieuKhamBenh.ngay_kham), Thuoc.ten_thuoc).all()
+
+            # Xử lý dữ liệu để đảm bảo đủ 12 tháng cho doanh thu
             doanh_thu_data = {
                 "tan_suat": [0] * 12,  # Mảng 12 tháng, mặc định giá trị 0
                 "doanh_thu": [0] * 12
@@ -32,13 +41,21 @@ class ThongKeView(BaseView):
                 else:
                     print("Dữ liệu sai tháng:", row)  # Debug dữ liệu sai
 
+            # Xử lý dữ liệu thuốc
+            thuoc_data = {}
+            for row in thuoc_tan_suat:
+                if row.ten_thuoc not in thuoc_data:
+                    thuoc_data[row.ten_thuoc] = [0] * 12  # Mảng 12 tháng, mặc định giá trị 0
+                thuoc_data[row.ten_thuoc][int(row.thang) - 1] = row.tong_so_luong
+
             # Tạo nhãn cho 12 tháng
             doanh_thu_labels = [f"Tháng {i+1}" for i in range(12)]
 
             return self.render(
                 'admin/thongke.html',
                 doanh_thu_labels=doanh_thu_labels,
-                doanh_thu_data=doanh_thu_data
+                doanh_thu_data=doanh_thu_data,
+                thuoc_data=thuoc_data
             )
         except Exception as e:
             print("Lỗi khi lấy dữ liệu:", e)
