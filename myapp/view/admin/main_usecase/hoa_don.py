@@ -1,5 +1,6 @@
 import logging
 from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user
 
 # Cấu hình logging
 logging.basicConfig(level=logging.DEBUG)
@@ -42,3 +43,6 @@ class HoaDonView(ModelView):
     def delete_model(self, model):
         logger.warning("Attempted to delete a HoaDon instance. This action is not allowed.")
         raise Exception("Hóa đơn không thể bị xóa!")
+    def is_accessible(self):
+        print(f"[DEBUG] Kiểm tra quyền truy cập của user: {current_user}")
+        return current_user.is_authenticated and current_user.type in ['quan_tri', 'thu_ngan']

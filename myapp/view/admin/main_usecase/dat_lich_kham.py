@@ -12,7 +12,7 @@ from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_admin.contrib.sqla import ModelView
 from flask import redirect, url_for, flash
 from flask_login import current_user
-from myapp.models import DangKyKham, BenhNhan, Sdt, DiaChi, Email, YTa, DanhSachDangKyKham
+from myapp.models import DangKyKham, BenhNhan, Sdt, DiaChi, Email, YTa, DanhSachDangKyKham,QuyDinh
 from myapp.extensions import db
 from wtforms import StringField, DateField, SelectField
 from wtforms_sqlalchemy.fields import QuerySelectField  # Sử dụng QuerySelectField từ wtforms_sqlalchemy.fields
@@ -132,8 +132,10 @@ class DangKyKhamView(ModelView):
             # Kiểm tra số lượng đăng ký trong ngày
             danh_sach = DangKyKham.query.filter_by(ngay_dang_ky=ngay_dang_ky).count()
             print(f"[DEBUG] Số lượng đăng ký trong ngày: {danh_sach}")
-            if danh_sach >= 30:
-                flash(f"Ngày {ngay_dang_ky.strftime('%d-%m-%Y')} đã đủ 30 lượt đăng ký.", "error")
+            max_so_benh_nhan = QuyDinh.query.first().so_benh_nhan
+# Kiểm tra nếu danh sách đã đạt hoặc vượt giới hạn
+            if danh_sach >= max_so_benh_nhan:
+                flash(f"Ngày {ngay_dang_ky.strftime('%d-%m-%Y')} đã đạt giới hạn {max_so_benh_nhan} lượt đăng ký.", "error")
                 return
 
             # Tạo đăng ký khám
@@ -157,7 +159,7 @@ class DangKyKhamView(ModelView):
 
     def is_accessible(self):
         print(f"[DEBUG] Kiểm tra quyền truy cập của user: {current_user}")
-        return current_user.is_authenticated and current_user.type in ['admin', 'y_ta']
+        return current_user.is_authenticated and current_user.type in ['quan_tri', 'y_ta']
 
     def inaccessible_callback(self, name, **kwargs):
         flash("Bạn không có quyền truy cập vào chức năng này.", "error")

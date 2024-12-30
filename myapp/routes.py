@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template,request,redirect,url_for,flash,session,jsonify
 from flask_bcrypt import Bcrypt,check_password_hash  
 from myapp import db
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,BenhNhan,Email
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,BenhNhan,Email,QuanTri
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri
 from sqlalchemy import func
@@ -9,7 +9,7 @@ from datetime import datetime,date
 from sqlalchemy.exc import IntegrityError
 import re
 from flask_login import login_user, logout_user, login_required
-from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa
+from myapp.models import NguoiDung,Sdt,DiaChi,NhanVien,BacSi,Khoa,DanhSachDangKyKham,DangKyKham,YTa,QuyDinh
 from myapp.controller.admin.admin_controller import AdminController
 import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri   
@@ -22,16 +22,9 @@ bcrypt = Bcrypt()
 bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
-        # password="123"
-        # hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        # admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
-        # # Têm vào cơ sở dữ liệu
-        # db.session.add(admin)
-        # db.session.commit()
-
         try:
             # Fetch the total number of registrations
-            total_slots = 40  # Example: Total number of slots available per day
+            total_slots = QuyDinh.query.first().so_benh_nhân  # Example: Total number of slots available per day
             registered_count = DangKyKham.query.count()
             remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
 
@@ -48,12 +41,11 @@ def login():
         password = request.form.get('password')
 
         user = NhanVien.query.filter_by(username=username).first()
-        if user:  # Kiểm tra mật khẩu
-            login_user(user)  # Đăng nhập người dùng
-            flash('Đăng nhập thành công!', 'success')
-            return redirect(url_for('admin.index'))  # Chuyển hướng tới trang Admin
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('admin.index'))
         else:
-            flash('Tài khoản hoặc mật khẩu không chính xác.', 'danger')
+            return render_template('login.html', error_message="Tài khoản hoặc mật khẩu không chính xác.")
 
     return render_template('login.html')
 @bp.route('/admin/debug', methods=['GET'])
@@ -210,7 +202,7 @@ def check_slots():
 
     # Count the number of registrations for the selected date
     count = db.session.query(func.count(DangKyKham.id)).filter(DangKyKham.ngay_dang_ky == date).scalar()
-    remaining_slots = max(0, 30 - count)
+    remaining_slots = max(0, QuyDinh.query.first().so_benh_nhan - count)
 
     return jsonify({'remainingSlots': remaining_slots})
 

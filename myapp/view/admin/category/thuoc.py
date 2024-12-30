@@ -4,7 +4,7 @@ from flask import flash
 from myapp.models import Thuoc
 from myapp.extensions import db
 from sqlalchemy.exc import SQLAlchemyError
-
+from flask_login import current_user
 class ThuocView(ModelView):
     # Cấu hình hiển thị cột trong giao diện Flask-Admin
     column_list = ['id', 'ten_thuoc', 'loai', 'so_luong', 'gia_tien', 'huong_dan_su_dung']
@@ -58,3 +58,5 @@ class ThuocView(ModelView):
         else:
             flash("Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại.", 'error')
         return False  # Trả về False để Flask-Admin xử lý lỗi
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.type in ['quan_tri']

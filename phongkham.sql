@@ -8,17 +8,8 @@ INSERT INTO Khoa (ten_khoa, mo_ta) VALUES
 ('Khoa Tai mũi họng', 'Chuyên điều trị các bệnh lý về tai, mũi, họng, bao gồm viêm, dị ứng, ung thư.'),
 ('Khoa Răng Hàm Mặt', 'Chuyên điều trị các vấn đề về răng miệng và phẫu thuật hàm mặt.'),
 ('Khoa Xét nghiệm', 'Chuyên thực hiện các xét nghiệm y tế như xét nghiệm máu, nước tiểu, sinh hóa.'),
-('Khoa Chẩn đoán hình ảnh', 'Chuyên thực hiện các phương pháp chẩn đoán hình ảnh như X-quang, siêu âm, CT, MRI.'),
-('Khoa Hồi sức cấp cứu', 'Chuyên điều trị các ca bệnh cấp cứu, cấp cứu ngoại khoa, nội khoa.'),
-('Khoa Phục hồi chức năng', 'Chuyên điều trị phục hồi chức năng cho bệnh nhân sau phẫu thuật hoặc chấn thương.'),
-('Khoa Ung bướu', 'Chuyên điều trị các bệnh ung thư, bao gồm xạ trị, hóa trị, và phẫu thuật.'),
-('Khoa Tâm thần', 'Chuyên điều trị các bệnh lý tâm thần, rối loạn cảm xúc và hành vi.'),
-('Khoa Tim mạch', 'Chuyên điều trị các bệnh lý về tim mạch như bệnh mạch vành, suy tim, huyết áp cao.'),
-('Khoa Tiết niệu', 'Chuyên điều trị các bệnh lý về hệ tiết niệu như sỏi thận, viêm đường tiết niệu.'),
-('Khoa Phẫu thuật thần kinh', 'Chuyên thực hiện phẫu thuật cho các bệnh lý thần kinh, đặc biệt là đột quỵ, u não.'),
-('Khoa Nội tiết', 'Chuyên điều trị các bệnh lý về nội tiết như đái tháo đường, suy giáp, cường giáp.'),
-('Khoa Hô hấp', 'Chuyên điều trị các bệnh lý về đường hô hấp như hen suyễn, viêm phổi, bệnh phổi tắc nghẽn mãn tính.'),
-('Khoa Vật lý trị liệu', 'Chuyên hỗ trợ bệnh nhân phục hồi chức năng sau chấn thương, tai nạn hoặc phẫu thuật.');
+('Khoa Chẩn đoán hình ảnh', 'Chuyên thực hiện các phương pháp chẩn đoán hình ảnh như X-quang, siêu âm, CT, MRI.')
+
 -- Dữ liệu bảng bác sĩ
 INSERT INTO nguoi_dung (ho, ten, gioi_tinh, cccd, ngay_sinh) VALUES
  ('Nguyễn Văn','A', 1, '123456789012', '1990-01-01'),
@@ -46,17 +37,19 @@ INSERT INTO nhan_vien (id, username, password, avatar, type)
 VALUES
 (1, 'nv01', 'password01', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
 (2, 'nv02', 'password02', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(3, 'nv03', 'password03', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(4, 'nv04', 'password04', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(5, 'nv05', 'password05', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(6, 'nv06', 'password06', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(7, 'nv07', 'password07', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(8, 'nv08', 'password08', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(9, 'nv09', 'password09', 'https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si'),
-(10, 'nv10', 'password10','https://res.cloudinary.com/ouweb/image/upload/v1734513762/webpython/doctor/rqktahmpknhwdm8iea1z.jpg', 'bac_si');
+(3, 'nv03', 'password03', 'https://res.cloudinary.com/ouweb/image/upload/v1734513764/webpython/doctor/z8nenfvryfjcfnjsewzx.jpg', 'bac_si'),
+(4, 'nv04', 'password04', 'https://res.cloudinary.com/ouweb/image/upload/v1734513765/webpython/doctor/q2dt17odfydslhjlkyxs.jpg', 'bac_si'),
+(5, 'nv05', 'password05', 'https://res.cloudinary.com/ouweb/image/upload/v1734513768/webpython/doctor/drteti4xn9923mkp7qhs.jpg', 'bac_si'),
+(6, 'nv06', 'password06', 'https://res.cloudinary.com/ouweb/image/upload/v1734513768/webpython/doctor/k5y5v71v40ggrusm2a44.jpg', 'bac_si'),
+(7, 'nv07', 'password07', 'https://res.cloudinary.com/ouweb/image/upload/v1734513770/webpython/doctor/udl8vr64db9f4de6w2tj.jpg', 'bac_si'),
+(8, 'nv08', 'password08', 'https://res.cloudinary.com/ouweb/image/upload/v1734513770/webpython/doctor/cpim4nhkemlisqegnc7i.jpg', 'bac_si'),
+(9, 'nv09', 'password09', 'https://res.cloudinary.com/ouweb/image/upload/v1734513772/webpython/doctor/h0rc9fvfckvwwaxtv84p.jpg', 'bac_si'),
+(10, 'nv10', 'password10','https://res.cloudinary.com/ouweb/image/upload/v1734513772/webpython/doctor/vfg11nygqzrerqvkl8n6.jpg', 'bac_si');
 
 INSERT INTO bac_si (id, khoa_id)
-SELECT id, (SELECT id FROM khoa ORDER BY RAND() LIMIT 1) FROM nhan_vien;
+SELECT id, FLOOR(1 + (RAND() * 10)) AS random_khoa_id
+FROM nhan_vien
+WHERE type = 'bac_si';
 INSERT INTO sdt (so_dien_thoai, nguoi_dung_id) VALUES
 ('0123456789', 1),
 ('0987654321', 2),
@@ -117,23 +110,25 @@ VALUES
 
 -- Insert dữ liệu vào bảng `benh_nhan` liên kết với `nguoi_dung`
 INSERT INTO benh_nhan (id)
-SELECT id FROM nguoi_dung;
+SELECT id 
+FROM nguoi_dung
+WHERE id BETWEEN 21 AND 40;
 INSERT INTO nguoi_dung (id, ho, ten, gioi_tinh, cccd, ngay_sinh)
 VALUES
-(43, 'Nguyen', 'Thu', 1, '123456789012', '1990-01-01'),
-(44, 'Tran', 'Lan', 0, '123456789013', '1992-02-02'),
-(45, 'Le', 'Minh', 1, '123456789014', '1988-03-03'),
-(46, 'Pham', 'Hoa', 0, '123456789015', '1995-04-04'),
-(47, 'Hoang', 'Thao', 0, '123456789016', '1993-05-05');
+(41, 'Nguyen', 'Thu', 1, '123456789012', '1990-01-01'),
+(42, 'Tran', 'Lan', 0, '123456789013', '1992-02-02'),
+(43, 'Le', 'Minh', 1, '123456789014', '1988-03-03'),
+(44, 'Pham', 'Hoa', 0, '123456789015', '1995-04-04'),
+(45, 'Hoang', 'Thao', 0, '123456789016', '1993-05-05');
 
 
 INSERT INTO nhan_vien (id, username, password, avatar, type)
 VALUES
-(43, 'thu1', 'password_hash_1', NULL, 'thu_ngan'),
-(44, 'thu2', 'password_hash_2', NULL, 'thu_ngan'),
-(45, 'thu3', 'password_hash_3', NULL, 'thu_ngan'),
-(46, 'thu4', 'password_hash_4', NULL, 'thu_ngan'),
-(47, 'thu5', 'password_hash_5', NULL, 'thu_ngan');
+(41, 'thu1', 'password_hash_1', NULL, 'thu_ngan'),
+(42, 'thu2', 'password_hash_2', NULL, 'thu_ngan'),
+(43, 'thu3', 'password_hash_3', NULL, 'thu_ngan'),
+(44, 'thu4', 'password_hash_4', NULL, 'thu_ngan'),
+(45, 'thu5', 'password_hash_5', NULL, 'thu_ngan');
 
 
 INSERT INTO thu_ngan (id)
@@ -142,12 +137,7 @@ VALUES
 (2),
 (3),
 (4),
-(5),
-(6),
-(7),
-(8),
-(9),
-(10);
+(5)
 -- tạo 10 danh sách phiếu khám bệnh
 INSERT INTO danh_sach_phieu_kham_benh (id, ngay_tao, tong_so)
 VALUES

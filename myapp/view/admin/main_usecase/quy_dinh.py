@@ -2,7 +2,7 @@ from flask import request, render_template, flash, redirect, url_for
 from flask_admin import expose, BaseView
 from myapp.models import QuyDinh
 from myapp.extensions import db
-
+from flask_login import current_user
 class QuyDinhView(BaseView):
     @expose('/', methods=['GET', 'POST'])
     def edit_view(self):
@@ -43,3 +43,5 @@ class QuyDinhView(BaseView):
         print(f"DEBUG: QuyDinh found: {quy_dinh.so_benh_nhan}, {quy_dinh.so_tien_kham}")  # Kiểm tra dữ liệu quy_dinh
 
         return self.render('admin/edit_quy_dinh.html', quy_dinh=quy_dinh)
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.type in ['quan_tri']

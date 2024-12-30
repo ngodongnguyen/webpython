@@ -144,7 +144,7 @@ class DoctorView(ModelView):
 
 
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.type in ['quan_tri']
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('main.login'))

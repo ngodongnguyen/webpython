@@ -10,7 +10,6 @@ from flask_login import LoginManager
 from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham,Thuoc,PhieuKhamBenh,ThongKe,HoaDon,QuyDinh
 from myapp.view.admin.human.y_ta import NurseView
 from flask_admin.contrib.sqla import ModelView
-from myapp.view.admin.human.nhan_vien import EmployeeView
 from myapp.view.admin.human.bac_si import DoctorView
 from myapp.view.admin.human.benh_nhan import BenhNhanView
 from myapp.view.admin.khoa import KhoaView

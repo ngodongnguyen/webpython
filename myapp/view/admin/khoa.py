@@ -50,7 +50,7 @@ class KhoaView(ModelView):
 
     # Xử lý quyền truy cập
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.type in ['quan_tri']
 
     # Xử lý khi không có quyền truy cập
     def inaccessible_callback(self, name, **kwargs):

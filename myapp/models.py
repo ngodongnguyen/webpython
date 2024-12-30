@@ -131,11 +131,8 @@ class PhieuKhamBenh(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trieu_chung = db.Column(db.String(255))
     chuan_doan = db.Column(db.String(255))
-<<<<<<< HEAD
     ngay_kham = db.Column(db.Date, nullable=False)
-=======
     ngay_kham = db.Column(db.Date, nullable=True)  # Thêm cột này
->>>>>>> 74480efc8d7b20aa2a0cf28bc677af5a9d3ea892
     # Khóa ngoại liên kết với Bệnh Nhân (1 bệnh nhân có thể có nhiều phiếu khám)
     benh_nhan_id = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
     

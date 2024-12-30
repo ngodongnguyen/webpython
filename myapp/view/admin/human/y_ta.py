@@ -91,7 +91,7 @@ class NurseView(ModelView):
             raise
 
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.type in ['quan_tri']
 
     def inaccessible_callback(self, name, **kwargs):
         flash("Bạn không có quyền truy cập vào chức năng này.", "error")
