@@ -29,17 +29,17 @@ def index():
     # db.session.add(admin)
     # db.session.commit()
 
-    try:
-        # Fetch the total number of registrations
-        total_slots = 40  # Example: Total number of slots available per day
-        registered_count = DangKyKham.query.count()
-        remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
+        try:
+            # Fetch the total number of registrations
+            total_slots = 40  # Example: Total number of slots available per day
+            registered_count = DangKyKham.query.count()
+            remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
 
-        # Pass remainingSlots to the template
-        return render_template('index.html', remainingSlots=remaining_slots)
-    except Exception as e:
-        # Handle potential errors
-        return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
+            # Pass remainingSlots to the template
+            return render_template('index.html', remainingSlots=remaining_slots)
+        except Exception as e:
+            # Handle potential errors
+            return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
