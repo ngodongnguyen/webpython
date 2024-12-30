@@ -1,6 +1,20 @@
  <!-- Header -->
  <header class="bg-light py-2">
-    <div class="container d-flex justify-content-between align-items-center">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <style>
+        .navbar-nav .nav-link.active {
+            background-color: transparent;
+            font-weight: bold;
+            color: green !important; /* Hoặc màu bất kỳ mà bạn muốn */
+        }
+    </style>
+
+    
+    <div class="container d-flex justify-content-between align-items-center" id = "home">
         <div class="d-flex align-items-center me-auto">  
             <a href="#" class="text-dark text-decoration-none">medical@example.com</a>
             <span class="glyphicon">&#x2709;</span>
@@ -34,12 +48,12 @@
         <!-- Navbar links (Căn giữa) -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Trang chủ</a></li>
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Dịch vụ</a></li>
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Về chúng tôi</a></li>
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Đội ngũ</a></li>
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Bài viết</a></li>
-                <li class="nav-item mx-4"><a class="nav-link" href="#">Liên hệ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#home">Trang chủ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#services">Dịch vụ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#about">Về chúng tôi</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#team">Đội ngũ</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#blog">Bài viết</a></li>
+                <li class="nav-item mx-4"><a class="nav-link" href="#contact">Liên hệ</a></li>
             </ul>
         </div>
 
@@ -51,6 +65,5 @@
         </div> 
     </div>
 </nav>
-
 
 

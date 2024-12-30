@@ -1,21 +1,22 @@
 {%extends 'layout/base.html'%}
 {%block content%}
+<!-- Thêm Bootstrap JS (Bundle) trước thẻ </body> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Hero Section -->
-<div class="hc-banner">
+<div class="hc-banner" id = "services">
     <div class="container">
         <div class="row">
             <div class="col-lg-5">
                 <div class="hc-banner-content">
-                    <h2 class="wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.2s">Phòng mạch Trung
-                        Thành
+                    <h2 class="wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.2s">Phòng mạch Nguyễn Bảo Nguyên
                     </h2>
-                    <h1 class="wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.5s">Đặt lịch hẹn trực
-                        tuyến với bác sỹ chuyên gia</h1>
+                    <h1 class="wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.5s" style = "font-family: 'Roboto', sans-serif !important;">Đặt lịch hẹn trực
+                        tuyến với bác sĩ chuyên gia</h1>   
                     <div class="hc-banner-box wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="0.8s">
                         <p>
-                            Thành lập năm 2010, Phòng Khám Medic Dĩ An tự hào là thương hiệu phòng khám có bề dầy 10 năm
-                            kinh nghiệm chăm sóc và phục vụ khách hàng.
+                            Được thành lập vào năm 2010, Phòng Khám Medic Dĩ An tự hào với hơn một thập kỷ kinh nghiệm trong chăm sóc sức khỏe và phục vụ khách hàng, khẳng định vị thế là một thương hiệu y tế đáng tin cậy.
                         </p>
                     </div>
                     <a href="javascript:;" class="hc-btn wow fadeInUp" data-wow-duration="1.3s" data-wow-delay="1s">Tìm
@@ -37,7 +38,7 @@
     </div>
 </div>
 <div class="hc-about hc-spacer-top hc-spacer-bottom" id="about">
-    <div class="container">
+    <div class="container" >
         <div class="row">
             <div class="col-lg-5 offset-lg-1">
                 <div class="hc-about-img">
@@ -68,7 +69,7 @@
                         </li>
                     </ul>
                     <div class="tab-content hc-tab-content">
-                        <div class="tab-pane fade show active" id="work">
+                        <div class="tab-pane show active" id="work">
                             Chúng tôi luôn sẵn sàng chăm sóc bạn ân cần như chính thành viên trong gia đình. “CHĂM SÓC
                             TỐT HƠN – SỐNG KHỎE MẠNH HƠN” là điều chúng tôi muốn hướng đến cùng bạn, giúp bạn tận hưởng
                             trọn vẹn niềm vui cuộc sống với một nền sức khỏe vững chắc.
@@ -92,7 +93,8 @@
 
 
 
-    
+
+
 
 
 
@@ -101,7 +103,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="hc-heading-wrap text-center">
-                        <h2 class="hc-sub-heading">Đội ngũ bác sỹ</h2>
+                        <h2 class="hc-sub-heading">Đội ngũ bác sĩ</h2>
                         <h1 class="hc-heading">Chúng tôi rất hân hạnh phục vụ bạn</h1>
                     </div>
                 </div>
@@ -533,9 +535,46 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+              
 
     </script>
-
+    <script>
+        $(document).ready(function() {
+            // Hàm theo dõi vị trí cuộn và cập nhật active
+            $(window).on('scroll', function() {
+                var scrollPosition = $(window).scrollTop();  // Vị trí cuộn của trang
+    
+                // Kiểm tra các phần trong trang và cập nhật active
+                $('div[id]').each(function() {
+                    var sectionTop = $(this).offset().top - 100;  // Vị trí phần (với chút đệm để bắt đầu đổi active sớm)
+                    var sectionBottom = sectionTop + $(this).outerHeight();
+    
+                    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+                        var sectionId = $(this).attr('id');  // Lấy ID của phần hiện tại
+    
+                        // Cập nhật active cho navbar
+                        $('.navbar-nav .nav-link').removeClass('active');
+                        $('a[href="#' + sectionId + '"]').addClass('active');
+                    }
+                });
+            });
+    
+            // Xử lý khi nhấp vào navbar
+            $('.navbar-nav .nav-link').on('click', function() {
+                // Khi nhấp vào navbar, cuộn đến vị trí tương ứng
+                var targetId = $(this).attr('href');
+                $('html, body').animate({
+                    scrollTop: $(targetId).offset().top - 50  // Điều chỉnh đệm nếu cần
+                }, 300);  // Thời gian cuộn nhanh hơn (0.5 giây)
+    
+                return false;  // Ngừng hành động mặc định của liên kết
+            });
+        });
+    </script>
+    
+    
+    
+    
     
     {%endblock%}
 
