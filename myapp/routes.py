@@ -22,25 +22,24 @@ bcrypt = Bcrypt()
 bp = Blueprint('main', __name__)
 @bp.route('/')
 def index():
-    #     password="123"
-    #     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # password="123"
+        # hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
+        # # Têm vào cơ sở dữ liệu
+        # db.session.add(admin)
+        # db.session.commit()
 
-    #     admin = NhanVien(ho="Admin",ten='1', username="admin", password=hashed_password, gioi_tinh=True,ngay_sinh='1990-01-01', cccd="123456", type="bac_si")
-    # # Thêm vào cơ sở dữ liệu
-    #     db.session.add(admin)
-    #     db.session.commit()
+        try:
+            # Fetch the total number of registrations
+            total_slots = 40  # Example: Total number of slots available per day
+            registered_count = DangKyKham.query.count()
+            remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
 
-    try:
-        # Fetch the total number of registrations
-        total_slots = 40  # Example: Total number of slots available per day
-        registered_count = DangKyKham.query.count()
-        remaining_slots = max(0, total_slots - registered_count)  # Ensure non-negative slots
-
-        # Pass remainingSlots to the template
-        return render_template('index.html', remainingSlots=remaining_slots)
-    except Exception as e:
-        # Handle potential errors
-        return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
+            # Pass remainingSlots to the template
+            return render_template('index.html', remainingSlots=remaining_slots)
+        except Exception as e:
+            # Handle potential errors
+            return render_template('index.html', remainingSlots=0, error=str(e))# Route cho trang đăng nhập
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -332,3 +331,16 @@ def admin_statistic():
 @bp.context_processor
 def inject_custom_css():
     return dict(admin_css='/static/css/admin_custom.css')
+@bp.route('/api/search_benh_nhan', methods=['GET'])
+def search_benh_nhan():
+    keyword = request.args.get('q', '').strip()
+    if not keyword:
+        return jsonify([])
+
+    results = BenhNhan.query.filter(
+        (BenhNhan.ho + " " + BenhNhan.ten).ilike(f"%{keyword}%")
+    ).all()
+    
+    return jsonify([
+        {"id": bn.id, "text": f"{bn.ho} {bn.ten}"} for bn in results
+    ])

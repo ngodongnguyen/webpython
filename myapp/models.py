@@ -131,7 +131,11 @@ class PhieuKhamBenh(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trieu_chung = db.Column(db.String(255))
     chuan_doan = db.Column(db.String(255))
-    
+<<<<<<< HEAD
+    ngay_kham = db.Column(db.Date, nullable=False)
+=======
+    ngay_kham = db.Column(db.Date, nullable=True)  # Thêm cột này
+>>>>>>> 74480efc8d7b20aa2a0cf28bc677af5a9d3ea892
     # Khóa ngoại liên kết với Bệnh Nhân (1 bệnh nhân có thể có nhiều phiếu khám)
     benh_nhan_id = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
     
@@ -158,16 +162,18 @@ class PhieuKhamBenh(db.Model):
 class DanhSachPhieuKhamBenh(db.Model):
     __tablename__ = 'danh_sach_phieu_kham_benh'
     id = db.Column(db.Integer, primary_key=True)
-
+    ngay_tao = db.Column(db.Date, nullable=False, unique=True)  # Thêm trường 'ngay_tao'
+    tong_so = db.Column(db.Integer, default=0)
 
 
 
 class ChiTietDonThuoc(db.Model):
     __tablename__ = 'chi_tiet_don_thuoc'
-    
-    thuoc_id = db.Column(db.Integer, db.ForeignKey('thuoc.id'), primary_key=True)
-    phieu_kham_id = db.Column(db.Integer, db.ForeignKey('phieu_kham_benh.id'), primary_key=True)
-    so_luong_thuoc = db.Column(db.Integer)
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Thêm ID tự động tăng
+    thuoc_id = db.Column(db.Integer, db.ForeignKey('thuoc.id'), nullable=False)
+    phieu_kham_id = db.Column(db.Integer, db.ForeignKey('phieu_kham_benh.id'), nullable=False)
+    so_luong_thuoc = db.Column(db.Integer, nullable=False)
 
     # Mối quan hệ với Thuốc và Phiếu Khám Bệnh
     thuoc = db.relationship('Thuoc', backref='chi_tiet_don_thuoc')
@@ -278,5 +284,14 @@ class ThongKe(db.Model):
     # Mối quan hệ ngược lại với QuanTri
     quan_tri = db.relationship('QuanTri', backref='thong_ke', lazy=True)
 
+class QuyDinh(db.Model):
+    __tablename__ = 'quy_dinh'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    so_benh_nhan = db.Column(db.Integer, default=0)  # Số bệnh nhân khám trong ngày
+    so_tien_kham = db.Column(db.Float, default=100000)  # Số tiền khám mặc định
+
+    def __repr__(self):
+        return f"<QuyDinh(id={self.id}, so_benh_nhan={self.so_benh_nhan}, so_tien_kham={self.so_tien_kham})>"
 
 

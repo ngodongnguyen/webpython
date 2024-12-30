@@ -1,0 +1,154 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<h1>Tạo Phiếu Khám Bệnh</h1>
+
+<form method="POST" action="">
+    <label for="benh_nhan_search">Bệnh nhân:</label>
+    <div style="display: flex; align-items: center;">
+        <input type="text" id="benh_nhan_search" name="benh_nhan_search" required>
+        <button type="button" id="search_benh_nhan_btn">Tìm kiếm</button>
+    </div>
+    <div id="benh_nhan_info" style="margin-top: 10px;"></div>
+
+    <div class="form-group">
+        <label for="trieu_chung">Triệu chứng:</label>
+        <textarea id="trieu_chung" name="trieu_chung" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="chuan_doan">Chẩn đoán:</label>
+        <textarea id="chuan_doan" name="chuan_doan" rows="4" required></textarea>
+    </div>
+
+    <div id="thuoc-container">
+        <div class="thuoc-item">
+            <label for="thuoc_id">Thuốc:</label>
+            <select name="thuoc_id" required>
+                {% for thuoc in thuoc_choices %}
+                <option value="{{ thuoc.id }}">{{ thuoc.ten_thuoc }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="so_luong">Số lượng:</label>
+            <input type="number" name="so_luong" min="1" required>
+        </div>
+    </div>
+
+    <button type="button" onclick="addThuoc()">Thêm thuốc</button>
+    <button type="submit">Lưu</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+    $(document).ready(function() {
+        $("#search_benh_nhan_btn").on("click", function() {
+            const term = $("#benh_nhan_search").val().trim();
+            if (!term) {
+                $("#benh_nhan_info").html("<p style='color: red;'>Vui lòng nhập tên bệnh nhân.</p>");
+                return;
+            }
+    
+            // Gửi yêu cầu đến API autocomplete_benh_nhan
+            $.ajax({
+                url: "{{ url_for('phieukhambenh.autocomplete_benh_nhan') }}",
+                data: { term },
+                success: function(response) {
+                    console.log(response); // Kiểm tra dữ liệu nhận được
+                    if (response.length > 0) {
+                        const benh_nhan = response[0]; // Lấy bệnh nhân đầu tiên
+                        const info = `
+                            <p><strong>Giới tính:</strong> ${benh_nhan.info.gioi_tinh}</p>
+                            <p><strong>Ngày sinh:</strong> ${benh_nhan.info.ngay_sinh}</p>
+                            <p><strong>Địa chỉ:</strong> ${benh_nhan.info.dia_chi}</p>
+                            <p><strong>Số điện thoại:</strong> ${benh_nhan.info.sdt}</p>
+                            <p><strong>Email:</strong> ${benh_nhan.info.email}</p>
+                            <p><strong>Đã khám bệnh:</strong> ${benh_nhan.info.da_kham ? 'Có' : 'Không'}</p>
+                            <p><strong>Thông tin khám bệnh:</strong></p>
+                            <ul>
+                                ${benh_nhan.info.thong_tin_kham ? benh_nhan.info.thong_tin_kham.map(function(kham) {
+                                    return `<li><strong>Ngày khám:</strong> ${kham.ngay_kham} - <strong>Triệu chứng:</strong> ${kham.trieu_chung} - <strong>Chẩn đoán:</strong> ${kham.chuan_doan}</li>`;
+                                }).join('') : '<li>Chưa có phiếu khám nào</li>'}
+                            </ul>
+                        `;
+                        $("#benh_nhan_info").html(info);
+                    } else {
+                        $("#benh_nhan_info").html("<p>Không tìm thấy bệnh nhân.</p>");
+                    }
+                },
+                error: function() {
+                    $("#benh_nhan_info").html("<p style='color: red;'>Có lỗi xảy ra khi tìm kiếm.</p>");
+                }
+            });
+        });
+    });
+
+function addThuoc() {
+    const container = document.getElementById('thuoc-container');
+    const item = document.createElement('div');
+    item.className = 'thuoc-item';
+    item.innerHTML = `
+        <label for="thuoc_id">Thuốc:</label>
+        <select name="thuoc_id" required>
+            {% for thuoc in thuoc_choices %}
+            <option value="{{ thuoc.id }}">{{ thuoc.ten_thuoc }}</option>
+            {% endfor %}
+        </select>
+        <label for="so_luong">Số lượng:</label>
+        <input type="number" name="so_luong" min="1" required>
+    `;
+    container.appendChild(item);
+}
+</script>
+
+<style>
+    /* Đặt các trường vào dạng flex để dễ dàng căn chỉnh */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    /* Căn chỉnh form label và input cho rõ ràng */
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Tạo khoảng cách giữa các item thuốc */
+    .thuoc-item {
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
