@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from myapp.extensions import db, migrate
 from myapp.view.home_view import HomeView
 from flask_login import LoginManager
-from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham,Thuoc,PhieuKhamBenh,ThongKe,HoaDon
+from myapp.models import NhanVien,YTa,BacSi,BenhNhan,Khoa,DangKyKham,Thuoc,PhieuKhamBenh,ThongKe,HoaDon,QuyDinh
 from myapp.view.admin.human.y_ta import NurseView
 from flask_admin.contrib.sqla import ModelView
 from myapp.view.admin.human.nhan_vien import EmployeeView
@@ -19,6 +19,7 @@ from myapp.view.admin.category.thuoc import ThuocView
 from myapp.view.admin.main_usecase.phieu_kham_benh import PhieuKhamBenhView
 from myapp.view.admin.main_usecase.thong_ke import ThongKeView
 from myapp.view.admin.main_usecase.hoa_don import HoaDonView
+from myapp.view.admin.main_usecase.quy_dinh import QuyDinhView
 class SimpleView(ModelView):
     pass
 
@@ -41,7 +42,7 @@ app = Flask(__name__)
     
     # Configurations
 app.secret_key = os.urandom(24)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:079204022585B%40o@localhost/PhongY'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Ngodongnguyen2004?@localhost/PhongY'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
@@ -81,9 +82,10 @@ def initAdmin():
     admin.add_view(KhoaView(Khoa, db.session, name='Quản lý khoa'))
     admin.add_view(DangKyKhamView(DangKyKham, db.session, name='Quản lý lịch khám'))
     admin.add_view(ThuocView(Thuoc, db.session,name='Thuốc'))
-    admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh"))
+    admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh",endpoint='phieukhambenh'))
     admin.add_view(HoaDonView(HoaDon, db.session, name="Hóa Đơn"))
     admin.add_view(ThongKeView(name="Thống Kê", endpoint='thong_ke'))
+    admin.add_view(QuyDinhView(QuyDinh, db.session, name="Quy Định", endpoint='quy_dinh'))
 
     print(f"Views in Admin: {[view.name for view in admin._views]}")
 

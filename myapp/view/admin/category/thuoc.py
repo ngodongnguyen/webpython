@@ -35,10 +35,9 @@ class ThuocView(ModelView):
 
     def on_model_change(self, form, model, is_created):
         try:
-            
             # Kiểm tra số lượng thuốc vượt quá 30
             total_thuoc = Thuoc.query.count()
-            if is_created and total_thuoc >= 30:
+            if is_created and total_thuoc > 30:
                 raise ValidationError("Số lượng thuốc trong cơ sở dữ liệu đã đạt giới hạn tối đa (30 thuốc).")
             
             # Tiếp tục thêm/sửa bản ghi nếu hợp lệ
