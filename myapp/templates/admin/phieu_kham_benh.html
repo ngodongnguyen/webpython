@@ -1,0 +1,54 @@
+<form method="POST" action="{{ url_for('admin.phieukhambenhview.create') }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="trieu_chung">Triệu chứng</label>
+        {{ form.trieu_chung(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="chuan_doan">Chẩn đoán</label>
+        {{ form.chuan_doan(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="benh_nhan_search">Tìm kiếm bệnh nhân</label>
+        {{ form.benh_nhan_search(class="form-control") }}
+    </div>
+
+    <div id="thuoc_list">
+        {% for form in form.thuoc_list %}
+            <div class="form-group">
+                <label for="{{ form.thuoc_id.id }}">Thuốc</label>
+                {{ form.thuoc_id(class="form-control") }}
+                <label for="{{ form.so_luong.id }}">Số lượng</label>
+                {{ form.so_luong(class="form-control") }}
+                <button type="button" onclick="removeThuoc(this)" class="btn btn-danger">Xóa thuốc</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" onclick="addThuoc()" class="btn btn-success">Thêm thuốc</button>
+
+    <button type="submit" class="btn btn-primary">Lưu phiếu khám</button>
+</form>
+
+<script type="text/javascript">
+    function addThuoc() {
+        var thuocList = document.getElementById('thuoc_list'); // Lấy danh sách thuốc
+        var newEntry = thuocList.children[0].cloneNode(true); // Tạo bản sao của một trường thuốc
+        
+        // Thêm trường mới vào danh sách
+        thuocList.appendChild(newEntry);
+    }
+
+    // Xử lý việc xóa thuốc trong danh sách
+    function removeThuoc(btn) {
+        var thuocList = document.getElementById('thuoc_list');
+        if (thuocList.children.length > 1) {
+            thuocList.removeChild(btn.parentElement); // Xóa thuốc nếu có nhiều hơn 1 thuốc
+        } else {
+            alert("Không thể xóa thuốc duy nhất.");
+        }
+    }
+</script>

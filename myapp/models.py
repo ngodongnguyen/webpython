@@ -131,7 +131,7 @@ class PhieuKhamBenh(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trieu_chung = db.Column(db.String(255))
     chuan_doan = db.Column(db.String(255))
-    
+    ngay_kham = db.Column(db.Date, nullable=False)
     # Khóa ngoại liên kết với Bệnh Nhân (1 bệnh nhân có thể có nhiều phiếu khám)
     benh_nhan_id = db.Column(db.Integer, db.ForeignKey('benh_nhan.id'), nullable=False)
     
@@ -158,7 +158,8 @@ class PhieuKhamBenh(db.Model):
 class DanhSachPhieuKhamBenh(db.Model):
     __tablename__ = 'danh_sach_phieu_kham_benh'
     id = db.Column(db.Integer, primary_key=True)
-
+    ngay_tao = db.Column(db.Date, nullable=False, unique=True)  # Thêm trường 'ngay_tao'
+    tong_so = db.Column(db.Integer, default=0)
 
 
 
