@@ -6,11 +6,13 @@ const chartData = JSON.parse(chartDataScript.textContent);
 const labels = chartData.labels;
 const tanSuatData = chartData.tanSuat;
 const doanhThuData = chartData.doanhThu;
+const thuocData = chartData.thuoc; // Dữ liệu tần suất thuốc
 
 // Biến biểu đồ toàn cục
 let currentChart = null;
 const tanSuatCtx = document.getElementById('tanSuatChart').getContext('2d');
 const doanhThuCtx = document.getElementById('doanhThuChart').getContext('2d');
+const thuocCtx = document.getElementById('thuocChart').getContext('2d');
 
 // Hàm tạo biểu đồ
 function createChart(ctx, type, labels, data, label) {
@@ -65,20 +67,9 @@ function createChart(ctx, type, labels, data, label) {
 
 // Hàm cập nhật biểu đồ
 function updateChart(ctx, type, labels, data, label) {
-    // Xóa biểu đồ cũ nếu tồn tại
     if (currentChart) {
-        currentChart.destroy();
+        currentChart.destroy(); // Xóa biểu đồ cũ
     }
-
-    // Thêm lớp 'pie' nếu biểu đồ là dạng tròn
-    const container = ctx.canvas.parentElement;
-    if (type === 'pie') {
-        container.classList.add('pie');
-    } else {
-        container.classList.remove('pie');
-    }
-
-    // Tạo biểu đồ mới
     currentChart = createChart(ctx, type, labels, data, label);
 }
 
@@ -87,17 +78,25 @@ const chartSelector = document.getElementById('chartSelector');
 const chartTypeSelector = document.getElementById('chartTypeSelector');
 const tanSuatChartContainer = document.getElementById('tanSuatChartContainer');
 const doanhThuChartContainer = document.getElementById('doanhThuChartContainer');
+const thuocChartContainer = document.getElementById('thuocChartContainer');
 
 chartSelector.addEventListener('change', (event) => {
     const selectedChart = event.target.value;
     if (selectedChart === 'tanSuatChart') {
         tanSuatChartContainer.style.display = 'block';
         doanhThuChartContainer.style.display = 'none';
+        thuocChartContainer.style.display = 'none';
         updateChart(tanSuatCtx, chartTypeSelector.value, labels, tanSuatData, 'Tần suất khám');
     } else if (selectedChart === 'doanhThuChart') {
         tanSuatChartContainer.style.display = 'none';
         doanhThuChartContainer.style.display = 'block';
+        thuocChartContainer.style.display = 'none';
         updateChart(doanhThuCtx, chartTypeSelector.value, labels, doanhThuData, 'Doanh thu');
+    } else if (selectedChart === 'thuocChart') {
+        tanSuatChartContainer.style.display = 'none';
+        doanhThuChartContainer.style.display = 'none';
+        thuocChartContainer.style.display = 'block';
+        updateChart(thuocCtx, chartTypeSelector.value, labels, thuocData, 'Tần suất sử dụng thuốc');
     }
 });
 
@@ -107,6 +106,8 @@ chartTypeSelector.addEventListener('change', (event) => {
         updateChart(tanSuatCtx, type, labels, tanSuatData, 'Tần suất khám');
     } else if (doanhThuChartContainer.style.display === 'block') {
         updateChart(doanhThuCtx, type, labels, doanhThuData, 'Doanh thu');
+    } else if (thuocChartContainer.style.display === 'block') {
+        updateChart(thuocCtx, type, labels, thuocData, 'Tần suất sử dụng thuốc');
     }
 });
 

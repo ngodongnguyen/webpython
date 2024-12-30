@@ -16,6 +16,7 @@
                 <select id="chartSelector">
                     <option value="tanSuatChart">Tần suất khám</option>
                     <option value="doanhThuChart">Doanh thu</option>
+                    <option value="thuocChart">Tần suất sử dụng thuốc</option>
                 </select>
             </div>
 
@@ -40,17 +41,23 @@
                 <canvas id="doanhThuChart"></canvas>
                 <h2>Thống kê doanh thu theo tháng</h2>
             </div>
+
+            <!-- Biểu đồ Tần suất sử dụng thuốc -->
+            <div id="thuocChartContainer" class="chart-container" style="display: none;">
+                <canvas id="thuocChart"></canvas>
+                <h2>Tần suất sử dụng thuốc theo tháng</h2>
+            </div>
         </div>
     </div>
 </div>
-
 
 <!-- Truyền dữ liệu từ server -->
 <script id="chartDataScript" type="application/json">
     {
         "labels": {{ doanh_thu_labels|tojson }},
         "tanSuat": {{ doanh_thu_data.tan_suat|tojson }},
-        "doanhThu": {{ doanh_thu_data.doanh_thu|tojson }}
+        "doanhThu": {{ doanh_thu_data.doanh_thu|tojson }},
+        "thuoc": {{ thuoc_data|tojson }}
     }
 </script>
 
