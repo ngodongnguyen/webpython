@@ -1,158 +1,59 @@
 {% extends 'admin/master.html' %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="dashboard">
     <h1>Thống kê</h1>
+    <!-- Hàng ngang chứa dropdown và biểu đồ -->
+    <div class="row">
+        <!-- Dropdowns bên trái -->
+        <div class="dropdown-column">
+            <div class="dropdown-container">
+                <label for="chartSelector">Chọn biểu đồ:</label>
+                <select id="chartSelector">
+                    <option value="tanSuatChart">Tần suất khám</option>
+                    <option value="doanhThuChart">Doanh thu</option>
+                </select>
+            </div>
 
-    <!-- Dropdown để chọn biểu đồ -->
-    <div class="dropdown-container">
-        <label for="chartSelector">Chọn biểu đồ:</label>
-        <select id="chartSelector">
-            <option value="tanSuatChart">Tần suất khám</option>
-            <option value="doanhThuChart">Doanh thu</option>
-        </select>
+            <div class="dropdown-container">
+                <label for="chartTypeSelector">Chọn kiểu biểu đồ:</label>
+                <select id="chartTypeSelector">
+                    <option value="bar">Cột</option>
+                    <option value="line">Đường</option>
+                    <option value="pie">Tròn</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Biểu đồ bên phải -->
+        <div class="chart-column">
+            <div id="tanSuatChartContainer" class="chart-container">
+                <canvas id="tanSuatChart"></canvas>
+                <h2>Thống kê tần suất khám theo tháng</h2>
+            </div>
+
+            <div id="doanhThuChartContainer" class="chart-container" style="display: none;">
+                <canvas id="doanhThuChart"></canvas>
+                <h2>Thống kê doanh thu theo tháng</h2>
+            </div>
+        </div>
     </div>
-
-    <!-- Dropdown để chọn kiểu biểu đồ -->
-    <div class="dropdown-container">
-        <label for="chartTypeSelector">Chọn kiểu biểu đồ:</label>
-        <select id="chartTypeSelector">
-            <option value="bar">Cột</option>
-            <option value="line">Đường</option>
-            <option value="pie">Tròn</option>
-        </select>
-    </div>
-
-    <!-- Biểu đồ tần suất khám -->
-    <div id="tanSuatChartContainer" class="chart-container">
-        <h2>Thống kê tần suất khám theo tháng</h2>
-        <canvas id="tanSuatChart"></canvas>
-    </div>
-
-    <!-- Biểu đồ doanh thu -->
-    <div id="doanhThuChartContainer" class="chart-container" style="display: none;">
-        <h2>Thống kê doanh thu theo tháng</h2>
-        <canvas id="doanhThuChart"></canvas>
-    </div>
-
-    <!-- Truyền dữ liệu từ server -->
-    <script id="chartDataScript" type="application/json">
-        {
-            "labels": {{ doanh_thu_labels|tojson }},
-            "tanSuat": {{ doanh_thu_data.tan_suat|tojson }},
-            "doanhThu": {{ doanh_thu_data.doanh_thu|tojson }}
-        }
-    </script>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Lấy dữ liệu từ JSON
-    const chartDataScript = document.getElementById('chartDataScript');
-    const chartData = JSON.parse(chartDataScript.textContent);
 
-    // Dữ liệu cho biểu đồ
-    const labels = chartData.labels;
-    const tanSuatData = chartData.tanSuat;
-    const doanhThuData = chartData.doanhThu;
-
-    // Biến biểu đồ toàn cục
-    let currentChart = null;
-    const tanSuatCtx = document.getElementById('tanSuatChart').getContext('2d');
-    const doanhThuCtx = document.getElementById('doanhThuChart').getContext('2d');
-
-    // Hàm tạo biểu đồ
-    function createChart(ctx, type, labels, data, label) {
-        const isPieChart = type === 'pie';
-        return new Chart(ctx, {
-            type: type,
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: label,
-                    data: data,
-                    backgroundColor: isPieChart
-                        ? [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ]
-                        : 'rgba(54, 162, 235, 0.2)',
-                    borderColor: isPieChart
-                        ? [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ]
-                        : 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: isPieChart // Hiển thị legend chỉ cho biểu đồ tròn
-                    }
-                },
-                scales: type !== 'pie'
-                    ? {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                    : {}
-            }
-        });
+<!-- Truyền dữ liệu từ server -->
+<script id="chartDataScript" type="application/json">
+    {
+        "labels": {{ doanh_thu_labels|tojson }},
+        "tanSuat": {{ doanh_thu_data.tan_suat|tojson }},
+        "doanhThu": {{ doanh_thu_data.doanh_thu|tojson }}
     }
-
-    // Hàm cập nhật biểu đồ
-    function updateChart(ctx, type, labels, data, label) {
-        if (currentChart) {
-            currentChart.destroy(); // Xóa biểu đồ cũ
-        }
-        currentChart = createChart(ctx, type, labels, data, label);
-    }
-
-    // Xử lý hiển thị biểu đồ theo lựa chọn dropdown
-    const chartSelector = document.getElementById('chartSelector');
-    const chartTypeSelector = document.getElementById('chartTypeSelector');
-    const tanSuatChartContainer = document.getElementById('tanSuatChartContainer');
-    const doanhThuChartContainer = document.getElementById('doanhThuChartContainer');
-
-    chartSelector.addEventListener('change', (event) => {
-        const selectedChart = event.target.value;
-        if (selectedChart === 'tanSuatChart') {
-            tanSuatChartContainer.style.display = 'block';
-            doanhThuChartContainer.style.display = 'none';
-            updateChart(tanSuatCtx, chartTypeSelector.value, labels, tanSuatData, 'Tần suất khám');
-        } else if (selectedChart === 'doanhThuChart') {
-            tanSuatChartContainer.style.display = 'none';
-            doanhThuChartContainer.style.display = 'block';
-            updateChart(doanhThuCtx, chartTypeSelector.value, labels, doanhThuData, 'Doanh thu');
-        }
-    });
-
-    chartTypeSelector.addEventListener('change', (event) => {
-        const type = event.target.value;
-        if (tanSuatChartContainer.style.display === 'block') {
-            updateChart(tanSuatCtx, type, labels, tanSuatData, 'Tần suất khám');
-        } else if (doanhThuChartContainer.style.display === 'block') {
-            updateChart(doanhThuCtx, type, labels, doanhThuData, 'Doanh thu');
-        }
-    });
-
-    // Khởi tạo biểu đồ mặc định
-    updateChart(tanSuatCtx, 'bar', labels, tanSuatData, 'Tần suất khám');
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/admin/thongke.js') }}"></script>
 {% endblock %}
