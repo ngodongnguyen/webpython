@@ -118,72 +118,13 @@ VALUES
 -- Insert dữ liệu vào bảng `benh_nhan` liên kết với `nguoi_dung`
 INSERT INTO benh_nhan (id)
 SELECT id FROM nguoi_dung;
--- tạo 10 danh sách phiếu khám bệnh
-INSERT INTO danh_sach_phieu_kham_benh (id)
-VALUES
-(1),
-(2),
-(3),
-(4),
-(5),
-(6),
-(7),
-(8),
-(9),
-(10);
--- tạo 20 phiếu khám bệnh
-INSERT INTO phieu_kham_benh (id, trieu_chung, chuan_doan, benh_nhan_id, danhsach_id, bac_si_id) 
-VALUES
-(1, 'Sốt cao, đau đầu', 'Sốt xuất huyết', 1, 1, 1),
-(2, 'Ho, đau họng', 'Viêm họng', 2, 1, 2),
-(3, 'Đau bụng, tiêu chảy', 'Rối loạn tiêu hóa', 3, 2, 1),
-(4, 'Khó thở, tức ngực', 'Hen suyễn', 4, 2, 3),
-(5, 'Sốt nhẹ, mệt mỏi', 'Cảm cúm', 5, 3, 2),
-(6, 'Đau lưng', 'Thoát vị đĩa đệm', 6, 3, 4),
-(7, 'Đau khớp', 'Viêm khớp dạng thấp', 7, 4, 3),
-(8, 'Ngứa, nổi mẩn đỏ', 'Dị ứng da', 8, 4, 2),
-(9, 'Đau mắt, nhức mắt', 'Viêm kết mạc', 9, 5, 1),
-(10, 'Đau răng, sưng nướu', 'Viêm lợi', 10, 5, 4),
-(11, 'Đau tai, ù tai', 'Viêm tai giữa', 11, 6, 3),
-(12, 'Khó ngủ, mệt mỏi', 'Rối loạn giấc ngủ', 12, 6, 1),
-(13, 'Đau ngực, khó thở', 'Bệnh tim mạch', 13, 7, 2),
-(14, 'Tay chân lạnh', 'Hạ huyết áp', 14, 7, 4),
-(15, 'Ngất xỉu, chóng mặt', 'Thiếu máu', 15, 8, 1),
-(16, 'Sốt, đau họng', 'Viêm amidan', 16, 8, 3),
-(17, 'Đau bụng, buồn nôn', 'Viêm dạ dày', 17, 9, 2),
-(18, 'Mệt mỏi, đau nhức toàn thân', 'Sốt xuất huyết', 18, 9, 4),
-(19, 'Khó tiêu, đầy bụng', 'Rối loạn tiêu hóa', 19, 10, 1),
-(20, 'Chóng mặt, đau đầu', 'Thiếu máu não', 20, 10, 3);
-
-INSERT INTO hoa_don (id, ngay_tinh_tien, tien_kham_benh, tien_thuoc, tong_tien, phieu_kham_id, benh_nhan_id, thu_ngan_id)
-VALUES
-(1, '2024-12-20', 150000, 50000, 200000, 1, 1, 1),
-(2, '2024-12-21', 200000, 100000, 300000, 2, 2, 2),
-(3, '2024-12-22', 180000, 80000, 260000, 3, 3, 1),
-(4, '2024-12-23', 150000, NULL, 150000, 4, 4, 2),
-(5, '2024-12-24', 200000, 120000, 320000, 5, 5, 3),
-(6, '2024-12-25', 170000, 70000, 240000, 6, 6, 1),
-(7, '2024-12-26', 150000, 50000, 200000, 7, 7, 2),
-(8, '2024-12-27', 180000, 60000, 240000, 8, 8, 3),
-(9, '2024-12-28', 190000, 70000, 260000, 9, 9, 1),
-(10, '2024-12-29', 160000, 40000, 200000, 10, 10, 2),
-(11, '2024-12-30', 200000, 150000, 350000, 11, 11, 3),
-(12, '2024-12-31', 150000, 50000, 200000, 12, 12, 1),
-(13, '2025-01-01', 180000, 60000, 240000, 13, 13, 2),
-(14, '2025-01-02', 190000, NULL, 190000, 14, 14, 3),
-(15, '2025-01-03', 200000, 80000, 280000, 15, 15, 1),
-(16, '2025-01-04', 170000, 90000, 260000, 16, 16, 2),
-(17, '2025-01-05', 150000, 70000, 220000, 17, 17, 3),
-(18, '2025-01-06', 180000, 80000, 260000, 18, 18, 1),
-(19, '2025-01-07', 160000, 60000, 220000, 19, 19, 2),
-(20, '2025-01-08', 200000, 100000, 300000, 20, 20, 3);
 INSERT INTO nguoi_dung (id, ho, ten, gioi_tinh, cccd, ngay_sinh)
 VALUES
 (43, 'Nguyen', 'Thu', 1, '123456789012', '1990-01-01'),
 (44, 'Tran', 'Lan', 0, '123456789013', '1992-02-02'),
 (45, 'Le', 'Minh', 1, '123456789014', '1988-03-03'),
 (46, 'Pham', 'Hoa', 0, '123456789015', '1995-04-04'),
-(47, 'Hoang', 'Thao', 0, '123456789016', '1993-05-05')
+(47, 'Hoang', 'Thao', 0, '123456789016', '1993-05-05');
 
 
 INSERT INTO nhan_vien (id, username, password, avatar, type)
@@ -192,7 +133,7 @@ VALUES
 (44, 'thu2', 'password_hash_2', NULL, 'thu_ngan'),
 (45, 'thu3', 'password_hash_3', NULL, 'thu_ngan'),
 (46, 'thu4', 'password_hash_4', NULL, 'thu_ngan'),
-(47, 'thu5', 'password_hash_5', NULL, 'thu_ngan')
+(47, 'thu5', 'password_hash_5', NULL, 'thu_ngan');
 
 
 INSERT INTO thu_ngan (id)
@@ -207,3 +148,86 @@ VALUES
 (8),
 (9),
 (10);
+-- tạo 10 danh sách phiếu khám bệnh
+INSERT INTO danh_sach_phieu_kham_benh (id, ngay_tao, tong_so)
+VALUES
+(1, '2024-12-30', 0),
+(2, '2024-11-30', 0),
+(3, '2024-10-30', 0),
+(4, '2024-9-30', 0),
+(5, '2024-8-30', 0),
+(6, '2024-7-30', 0),
+(7, '2024-6-30', 0),
+(8, '2024-5-30', 0),
+(9, '2024-4-30', 0),
+(10, '2024-3-30', 0);
+
+-- tạo 20 phiếu khám bệnh
+INSERT INTO phieu_kham_benh (id, trieu_chung, chuan_doan, benh_nhan_id, danhsach_id, bac_si_id, ngay_kham) 
+VALUES
+(1, 'Sốt cao, đau đầu', 'Sốt xuất huyết', 1, 1, 1, '2024-12-20'),
+(2, 'Ho, đau họng', 'Viêm họng', 2, 1, 2, '2024-12-20'),
+(3, 'Đau bụng, tiêu chảy', 'Rối loạn tiêu hóa', 3, 2, 1, '2024-12-20'),
+(4, 'Khó thở, tức ngực', 'Hen suyễn', 4, 2, 3, '2024-12-20'),
+(5, 'Sốt nhẹ, mệt mỏi', 'Cảm cúm', 5, 3, 2, '2024-12-20'),
+(6, 'Đau lưng', 'Thoát vị đĩa đệm', 6, 3, 4, '2024-12-20'),
+(7, 'Đau khớp', 'Viêm khớp dạng thấp', 7, 4, 3, '2024-12-20'),
+(8, 'Ngứa, nổi mẩn đỏ', 'Dị ứng da', 8, 4, 2, '2024-12-20'),
+(9, 'Đau mắt, nhức mắt', 'Viêm kết mạc', 9, 5, 1, '2024-12-20'),
+(10, 'Đau răng, sưng nướu', 'Viêm lợi', 10, 5, 4, '2024-12-20');
+
+
+INSERT INTO hoa_don (id, ngay_tinh_tien, tien_kham_benh, tien_thuoc, tong_tien, phieu_kham_id, benh_nhan_id, thu_ngan_id)
+VALUES
+(1, '2024-12-20', 150000, 50000, 200000, 1, 1, 1),
+(2, '2024-12-21', 200000, 100000, 300000, 2, 2, 2),
+(3, '2024-12-22', 180000, 80000, 260000, 3, 3, 1),
+(4, '2024-12-23', 150000, NULL, 150000, 4, 4, 2),
+(5, '2024-12-24', 200000, 120000, 320000, 5, 5, 3),
+(6, '2024-12-25', 170000, 70000, 240000, 6, 6, 1),
+(7, '2024-12-26', 150000, 50000, 200000, 7, 7, 2),
+(8, '2024-12-27', 180000, 60000, 240000, 8, 8, 3),
+(9, '2024-12-28', 190000, 70000, 260000, 9, 9, 1),
+(10, '2024-12-29', 160000, 40000, 200000, 10, 10, 2),
+(11, '2024-12-30', 200000, 150000, 350000, 10, 11, 3),
+(12, '2024-12-31', 150000, 50000, 200000, 10, 12, 1),
+(13, '2025-01-01', 180000, 60000, 240000, 10, 13, 2),
+(14, '2025-01-02', 190000, NULL, 190000, 10, 14, 3),
+(15, '2025-01-03', 200000, 80000, 280000, 10, 15, 1),
+(16, '2025-01-04', 170000, 90000, 260000, 10, 16, 2),
+(17, '2025-01-05', 150000, 70000, 220000, 10, 17, 3),
+(18, '2025-01-06', 180000, 80000, 260000, 10, 18, 1),
+(19, '2025-01-07', 160000, 60000, 220000, 10, 19, 2),
+(20, '2025-01-08', 200000, 100000, 300000, 10, 20, 3);
+INSERT INTO thuoc (ten_thuoc, loai, so_luong, gia_tien, huong_dan_su_dung) VALUES
+('Paracetamol', 'Viên', 100, 5000, 'Dùng 1 viên mỗi 4-6 giờ'),
+('Ibuprofen', 'Viên', 50, 12000, 'Uống 1 viên mỗi 6 giờ khi cần'),
+('Aspirin', 'Viên', 200, 3000, 'Uống 1 viên mỗi 8 giờ'),
+('Amoxicillin', 'Vỉ', 300, 15000, 'Dùng 1 viên mỗi 12 giờ'),
+('Cetirizine', 'Viên', 150, 7000, 'Dùng 1 viên mỗi ngày'),
+('Loratadine', 'Viên', 80, 9000, 'Dùng 1 viên vào buổi sáng'),
+('Vitamin C', 'Viên', 500, 2000, 'Uống 1 viên mỗi ngày'),
+('Omeprazole', 'Viên', 120, 25000, 'Dùng 1 viên vào buổi sáng trước ăn'),
+('Diphenhydramine', 'Viên', 200, 4000, 'Uống 1 viên trước khi ngủ'),
+('Metformin', 'Viên', 100, 18000, 'Uống 1 viên sáng và tối'),
+('Prednisolone', 'Viên', 150, 22000, 'Dùng theo chỉ định của bác sĩ'),
+('Lorazepam', 'Viên', 80, 15000, 'Uống 1 viên vào buổi tối'),
+('Clindamycin', 'Vỉ', 60, 35000, 'Dùng 1 viên mỗi 8 giờ trong 10 ngày'),
+('Ciprofloxacin', 'Viên', 300, 12000, 'Uống 1 viên mỗi 12 giờ'),
+('Doxycycline', 'Viên', 200, 10000, 'Dùng 1 viên vào buổi sáng và tối'),
+('Prednisone', 'Viên', 80, 20000, 'Dùng 1 viên mỗi ngày'),
+('Furosemide', 'Viên', 150, 8000, 'Uống 1 viên vào buổi sáng'),
+('Losartan', 'Viên', 200, 14000, 'Dùng 1 viên mỗi ngày'),
+('Alprazolam', 'Viên', 100, 22000, 'Dùng 1 viên khi cần thiết'),
+('Simvastatin', 'Viên', 250, 10000, 'Uống 1 viên mỗi ngày vào buổi tối'),
+('Amlodipine', 'Viên', 180, 14000, 'Dùng 1 viên mỗi ngày'),
+('Clopidogrel', 'Viên', 100, 15000, 'Uống 1 viên mỗi ngày'),
+('Ranitidine', 'Viên', 120, 7000, 'Uống 1 viên mỗi ngày vào buổi tối'),
+('Losartan Potassium', 'Viên', 100, 11000, 'Dùng 1 viên vào buổi sáng'),
+('Fluoxetine', 'Viên', 80, 19000, 'Dùng 1 viên mỗi ngày'),
+('Sertraline', 'Viên', 130, 16000, 'Uống 1 viên vào buổi sáng'),
+('Levothyroxine', 'Viên', 90, 25000, 'Uống 1 viên vào sáng sớm'),
+('Hydrochlorothiazide', 'Viên', 160, 11000, 'Dùng 1 viên mỗi ngày'),
+('Methylprednisolone', 'Viên', 200, 23000, 'Dùng theo chỉ định của bác sĩ');
+insert into quy_dinh(so_benh_nhan,so_tien_kham)
+values(40,100000)

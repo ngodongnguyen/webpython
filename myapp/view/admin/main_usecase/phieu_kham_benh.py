@@ -2,7 +2,7 @@ from flask import request, render_template, redirect, flash, url_for,jsonify
 from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
-from myapp.models import PhieuKhamBenh, BenhNhan, Thuoc, ChiTietDonThuoc, DanhSachPhieuKhamBenh,HoaDon
+from myapp.models import PhieuKhamBenh, BenhNhan, Thuoc, ChiTietDonThuoc, DanhSachPhieuKhamBenh,HoaDon,QuyDinh
 from myapp.extensions import db
 from datetime import datetime
 from sqlalchemy import func
@@ -123,7 +123,7 @@ class PhieuKhamBenhView(ModelView):
                             db.session.rollback()  # Nếu không đủ số lượng thuốc, rollback giao dịch
                             return self.render('admin/create_phieu_kham.html', thuoc_choices=Thuoc.query.all())
                 # Tự động tạo hóa đơn
-                tien_kham = 100000  # Giá trị mặc định của tiền khám bệnh
+                tien_kham = QuyDinh.query.first().so_tien_kham
                 tong_tien = tien_kham + tien_thuoc
 
                 hoa_don = HoaDon(

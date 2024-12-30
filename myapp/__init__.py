@@ -85,8 +85,7 @@ def initAdmin():
     admin.add_view(PhieuKhamBenhView(PhieuKhamBenh, db.session, name="Phiếu Khám Bệnh",endpoint='phieukhambenh'))
     admin.add_view(HoaDonView(HoaDon, db.session, name="Hóa Đơn"))
     admin.add_view(ThongKeView(name="Thống Kê", endpoint='thong_ke'))
-    admin.add_view(QuyDinhView(QuyDinh, db.session, name="Quy Định", endpoint='quy_dinh'))
-
+    admin.add_view(QuyDinhView(name="Quy Định", endpoint='quy_dinh'))
     print(f"Views in Admin: {[view.name for view in admin._views]}")
 
 
