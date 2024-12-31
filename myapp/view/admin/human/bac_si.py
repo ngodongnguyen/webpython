@@ -106,9 +106,16 @@ class DoctorView(ModelView):
         try:
             print(f"=== START DEBUG on_model_change ===")
             print(f"Model before saving: {model} (Type: {type(model)})")
-            print(f"Model type: {model.type}")
             print(f"Is BacSi instance? {isinstance(model, BacSi)}")
-            # Bước 1: Lưu các trường chính (BacSi)
+    
+            # Bước 1: Hash mật khẩu nếu cần
+            if hasattr(model, 'password') and form.password.data:
+                if is_created or model.password != form.password.data:
+                    print(f"Hashing password for model: {model}")
+                    from werkzeug.security import generate_password_hash
+                    model.password = generate_password_hash(form.password.data)
+    
+            # Bước 2: Lưu các trường chính (BacSi)
             db.session.add(model)
             db.session.flush()  # Flush để lấy ID mà không commit
             print(f"Model ID after flush: {model.id}")
@@ -116,7 +123,6 @@ class DoctorView(ModelView):
             print(f"Error occurred: {e}")
             db.session.rollback()
             raise
-
 
 
     def _format_phone(view, context, model, name):

@@ -133,7 +133,7 @@ class PhieuKhamBenhView(ModelView):
                     tong_tien=tong_tien,
                     phieu_kham_id=phieu_kham.id,
                     benh_nhan_id=benh_nhans[0].id,
-                    thu_ngan_id=benh_nhans[0].id  # Cập nhật nếu có logic xử lý thêm
+                    thu_ngan_id=1  # Cập nhật nếu có logic xử lý thêm
                 )
                 db.session.add(hoa_don)
 

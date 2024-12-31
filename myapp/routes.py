@@ -15,6 +15,7 @@ import json
 from myapp.controller.client.client_controller import get_doctor_info as gdri   
 from flask_admin import helpers
 from myapp import admin
+from werkzeug.security import check_password_hash as werkzeug_check
 
 
 bcrypt = Bcrypt()
@@ -41,11 +42,27 @@ def login():
         password = request.form.get('password')
 
         user = NhanVien.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('admin.index'))
-        else:
-            return render_template('login.html', error_message="Tài khoản hoặc mật khẩu không chính xác.")
+        
+        if user:
+            hashed_password = user.password
+            # Kiểm tra mật khẩu với bcrypt
+            try:
+                if bcrypt.check_password_hash(hashed_password, password):
+                    login_user(user)
+                    return redirect(url_for('admin.index'))
+            except ValueError:
+                pass  # Nếu lỗi salt, tiếp tục thử cách khác
+            
+            # Kiểm tra mật khẩu với werkzeug
+            try:
+                if werkzeug_check(hashed_password, password):
+                    login_user(user)
+                    return redirect(url_for('admin.index'))
+            except ValueError:
+                pass  # Nếu lỗi salt, tiếp tục thử cách khác
+
+        # Nếu không khớp với cả hai phương pháp, trả về lỗi
+        return render_template('login.html', error_message="Tài khoản hoặc mật khẩu không chính xác.")
 
     return render_template('login.html')
 @bp.route('/admin/debug', methods=['GET'])
