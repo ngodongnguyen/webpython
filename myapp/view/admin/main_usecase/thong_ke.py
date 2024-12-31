@@ -1,9 +1,9 @@
-from flask import flash, redirect, url_for
+from flask import flash, redirect, url_for, render_template
 from flask_admin import BaseView, expose
 from flask_login import current_user
 from myapp.models import HoaDon, PhieuKhamBenh, ChiTietDonThuoc, Thuoc
 from myapp.extensions import db
-from sqlalchemy import extract, func, and_
+from sqlalchemy import func
 
 class ThongKeView(BaseView):
     @expose('/')
@@ -15,7 +15,12 @@ class ThongKeView(BaseView):
                 func.extract('month', HoaDon.ngay_tinh_tien).label('thang'),
                 func.count(HoaDon.id).label('tan_suat'),
                 func.sum(HoaDon.tong_tien).label('doanh_thu')
-            ).group_by(func.extract('year', HoaDon.ngay_tinh_tien), func.extract('month', HoaDon.ngay_tinh_tien)).all()
+            ).group_by(
+                func.extract('year', HoaDon.ngay_tinh_tien), 
+                func.extract('month', HoaDon.ngay_tinh_tien)
+            ).all()
+            
+            print("Doanh thu và tần suất khám:", doanh_thu_tan_suat)
 
             # Thống kê tần suất sử dụng thuốc
             thuoc_tan_suat = db.session.query(
@@ -23,11 +28,17 @@ class ThongKeView(BaseView):
                 func.extract('month', PhieuKhamBenh.ngay_kham).label('thang'),
                 Thuoc.ten_thuoc,
                 func.sum(ChiTietDonThuoc.so_luong_thuoc).label('tong_so_luong')
-            ).select_from(PhieuKhamBenh) \
-                .join(ChiTietDonThuoc, PhieuKhamBenh.id == ChiTietDonThuoc.phieu_kham_id) \
-                .join(Thuoc, ChiTietDonThuoc.thuoc_id == Thuoc.id) \
-                .group_by(func.extract('year', PhieuKhamBenh.ngay_kham),
-                          func.extract('month', PhieuKhamBenh.ngay_kham), Thuoc.ten_thuoc).all()
+            ).join(
+                ChiTietDonThuoc, PhieuKhamBenh.id == ChiTietDonThuoc.phieu_kham_id
+            ).join(
+                Thuoc, ChiTietDonThuoc.thuoc_id == Thuoc.id
+            ).group_by(
+                func.extract('year', PhieuKhamBenh.ngay_kham),
+                func.extract('month', PhieuKhamBenh.ngay_kham), 
+                Thuoc.ten_thuoc
+            ).all()
+            
+            print("Thuốc tần suất:", thuoc_tan_suat)
 
             # Xử lý dữ liệu doanh thu và tần suất khám
             tan_suat_theo_nam = {}
@@ -44,6 +55,9 @@ class ThongKeView(BaseView):
                 tan_suat_theo_nam[year][month_index] = row.tan_suat or 0
                 doanh_thu_theo_nam[year][month_index] = row.doanh_thu or 0
 
+            print("Tần suất theo năm:", tan_suat_theo_nam)
+            print("Doanh thu theo năm:", doanh_thu_theo_nam)
+
             # Xử lý dữ liệu thuốc
             thuoc_theo_nam = {}
             for row in thuoc_tan_suat:
@@ -58,6 +72,8 @@ class ThongKeView(BaseView):
                     thuoc_theo_nam[year][ten_thuoc] = [0] * 12
 
                 thuoc_theo_nam[year][ten_thuoc][month_index] = so_luong
+
+            print("Thuốc theo năm:", thuoc_theo_nam)
 
             return self.render(
                 'admin/thongke.html',

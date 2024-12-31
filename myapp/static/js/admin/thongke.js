@@ -2,6 +2,8 @@
 const chartDataScript = document.getElementById('chartDataScript');
 const chartData = JSON.parse(chartDataScript.textContent);
 
+console.log("Dữ liệu JSON từ backend:", chartData);
+
 const labels = chartData.labels; // Nhãn các tháng
 const tanSuatData = chartData.tanSuat; // Dữ liệu tần suất khám
 const doanhThuData = chartData.doanhThu; // Dữ liệu doanh thu
@@ -20,6 +22,7 @@ const chartTypeSelector = document.getElementById('chartTypeSelector');
 
 // Hàm tạo biểu đồ
 function createChart(ctx, type, labels, datasets, removeXLabels = false) {
+    console.log("Tạo biểu đồ với các tham số:", { type, labels, datasets });
     return new Chart(ctx, {
         type: type,
         data: {
@@ -49,11 +52,18 @@ function createChart(ctx, type, labels, datasets, removeXLabels = false) {
 
 // Hàm cập nhật biểu đồ
 function updateChart(chartType, year, month = 0) {
-    if (currentChart) currentChart.destroy(); // Hủy biểu đồ cũ
+    if (currentChart) {
+        console.log("Hủy biểu đồ cũ...");
+        currentChart.destroy(); // Hủy biểu đồ cũ
+    }
+
     const selectedType = chartTypeSelector.value;
+    console.log("Đang cập nhật biểu đồ:", { chartType, year, month, selectedType });
 
     if (chartType === 'tanSuat') {
         const data = tanSuatData[year] || Array(12).fill(0);
+        console.log(`Dữ liệu tần suất khám cho năm ${year}:`, data);
+
         currentChart = createChart(tanSuatCtx, selectedType, labels, [{
             label: `Tần suất khám - ${year}`,
             data: data,
@@ -63,6 +73,8 @@ function updateChart(chartType, year, month = 0) {
         }]);
     } else if (chartType === 'doanhThu') {
         const data = doanhThuData[year] || Array(12).fill(0);
+        console.log(`Dữ liệu doanh thu cho năm ${year}:`, data);
+
         currentChart = createChart(doanhThuCtx, selectedType, labels, [{
             label: `Doanh thu - ${year}`,
             data: data,
@@ -75,6 +87,8 @@ function updateChart(chartType, year, month = 0) {
         const data = thuocData[year] || {};
         let datasets;
         const removeXLabels = true; // Ẩn nhãn dưới cột cho tần suất sử dụng thuốc
+
+        console.log(`Dữ liệu thuốc cho năm ${year}:`, data);
 
         if (month === 0) {
             // Hiển thị cả năm
@@ -90,7 +104,7 @@ function updateChart(chartType, year, month = 0) {
             // Hiển thị theo tháng
             datasets = Object.keys(data).map((thuoc, idx) => ({
                 label: thuoc,
-                data: [data[thuoc][month - 1]],
+                data: [data[thuoc][month - 1] || 0],
                 backgroundColor: `rgba(${50 + idx * 20}, ${100 + idx * 30}, ${150 + idx * 40}, 0.5)`,
                 borderColor: `rgba(${50 + idx * 20}, ${100 + idx * 30}, ${150 + idx * 40}, 1)`,
                 borderWidth: 1
@@ -102,6 +116,8 @@ function updateChart(chartType, year, month = 0) {
 
 // Hiển thị biểu đồ theo loại
 function toggleChartVisibility(chartType) {
+    console.log("Chuyển đổi hiển thị biểu đồ:", chartType);
+
     document.getElementById('tanSuatChartContainer').style.display = chartType === 'tanSuat' ? 'block' : 'none';
     document.getElementById('doanhThuChartContainer').style.display = chartType === 'doanhThu' ? 'block' : 'none';
     document.getElementById('thuocChartContainer').style.display = chartType === 'thuoc' ? 'block' : 'none';
