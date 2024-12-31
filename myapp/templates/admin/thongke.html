@@ -7,60 +7,73 @@
 {% block body %}
 <div class="dashboard">
     <h1>Thống kê</h1>
-    <!-- Hàng ngang chứa dropdown và biểu đồ -->
     <div class="row">
-        <!-- Dropdowns bên trái -->
         <div class="dropdown-column">
+            <!-- Dropdown chọn loại biểu đồ -->
             <div class="dropdown-container">
                 <label for="chartSelector">Chọn biểu đồ:</label>
                 <select id="chartSelector">
-                    <option value="tanSuatChart">Tần suất khám</option>
-                    <option value="doanhThuChart">Doanh thu</option>
-                    <option value="thuocChart">Tần suất sử dụng thuốc</option>
+                    <option value="tanSuat">Tần suất khám</option>
+                    <option value="doanhThu">Doanh thu</option>
+                    <option value="thuoc">Tần suất sử dụng thuốc</option>
                 </select>
             </div>
-
+            <!-- Dropdown chọn năm -->
+            <div class="dropdown-container">
+                <label for="yearSelector">Chọn năm:</label>
+                <select id="yearSelector">
+                    {% for year in tan_suat_theo_nam.keys() %}
+                    <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Dropdown chọn tháng (chỉ áp dụng cho tần suất sử dụng thuốc) -->
+            <div class="dropdown-container" id="monthSelector" style="display: none;">
+                <label for="monthSelector">Chọn tháng:</label>
+                <select id="monthInput">
+                    <option value="0">Cả năm</option>
+                    {% for i in range(1, 13) %}
+                    <option value="{{ i }}">Tháng {{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Dropdown chọn kiểu biểu đồ -->
             <div class="dropdown-container">
                 <label for="chartTypeSelector">Chọn kiểu biểu đồ:</label>
                 <select id="chartTypeSelector">
                     <option value="bar">Cột</option>
-                    <option value="line">Đường</option>
                     <option value="pie">Tròn</option>
                 </select>
             </div>
         </div>
 
-        <!-- Biểu đồ bên phải -->
+        <!-- Khu vực hiển thị biểu đồ -->
         <div class="chart-column">
             <div id="tanSuatChartContainer" class="chart-container">
                 <canvas id="tanSuatChart"></canvas>
-                <h2>Thống kê tần suất khám theo tháng</h2>
+                <h2>Thống kê tần suất khám</h2>
             </div>
 
             <div id="doanhThuChartContainer" class="chart-container" style="display: none;">
                 <canvas id="doanhThuChart"></canvas>
-                <h2>Thống kê doanh thu theo tháng</h2>
+                <h2>Thống kê doanh thu</h2>
             </div>
 
-            <!-- Biểu đồ Tần suất sử dụng thuốc -->
             <div id="thuocChartContainer" class="chart-container" style="display: none;">
                 <canvas id="thuocChart"></canvas>
-                <h2>Tần suất sử dụng thuốc theo tháng</h2>
+                <h2>Thống kê tần suất sử dụng thuốc</h2>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Truyền dữ liệu từ server -->
 <script id="chartDataScript" type="application/json">
     {
-        "labels": {{ doanh_thu_labels|tojson }},
-        "tanSuat": {{ doanh_thu_data.tan_suat|tojson }},
-        "doanhThu": {{ doanh_thu_data.doanh_thu|tojson }},
-        "thuoc": {{ thuoc_data|tojson }}
+        "labels": {{ labels|tojson }},
+        "tanSuat": {{ tan_suat_theo_nam|tojson }},
+        "doanhThu": {{ doanh_thu_theo_nam|tojson }},
+        "thuoc": {{ thuoc_theo_nam|tojson }}
     }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/admin/thongke.js') }}"></script>
 {% endblock %}

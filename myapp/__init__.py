@@ -41,7 +41,11 @@ app = Flask(__name__)
     
     # Configurations
 app.secret_key = os.urandom(24)
+<<<<<<< HEAD
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Ngodongnguyen2004?@localhost/PhongY'
+=======
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:079204022585B%40o@localhost/PhongY'
+>>>>>>> 6dffbdeacf9d61e3c186e94b16d3810cca27c9b9
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
